@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>库房设置</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: white;
+        }
+        aside{
+            margin: 5px 10px;
+            width: 14%;
+            min-width: 200px;
+            height: 750px;
+        }
+        aside h2{
+            width: 100%;
+            height: 50px;
+            background-color: #009E94;
+            font-size: 24px;
+            color:white;
+            line-height: 2;
+            text-indent: 15px;
+        }
+        ul.domtree, ul.domtree ul {
+            margin: 0;
+            padding: 0 0 0 2em;
+        }
+
+        ul.domtree{
+            border: #4E5465 solid 1px;
+            height: 100%;
+            font-size: 16px;
+        }
+
+        ul.domtree li {
+            list-style: none;
+            position: relative;
+        }
+
+        ul.domtree > li:first-child:before {
+            border-style: none none solid none;
+        }
+
+        ul.domtree li:before {
+            position: absolute;
+            content: '';
+            top: 0.01em;
+            left: -0.7em;
+            width: 0.5em;
+            height: 0.64em;
+            border-style: none none solid solid;
+            border-width: 0.05em;
+            border-color: #aaa;
+        }
+
+        ul.domtree li:not(:last-child):after {
+            position: absolute;
+            content: '';
+            top: 0.7em;
+            left: -0.7em;
+            bottom: 0;
+            border-style: none none none solid;
+            border-width: 0.05em;
+            border-color: #aaa;
+        }
+    </style>
+</head>
+<body>
+<aside class="site-inline">
+    <h2>库房管理</h2>
+    <ul class="domtree" id="tree">
+        <li>
+            一级菜单
+            <ul>
+                <li>二级菜单</li>
+                <li>
+                    二级菜单
+                    <ul>
+                        <li>三级菜单</li>
+                        <li>三级菜单</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            一级菜单2
+            <ul>
+                <li>二级菜单</li>
+                <li>
+                    二级菜单
+                    <ul>
+                        <li>三级菜单</li>
+                        <li>三级菜单</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+</aside>
+<main>
+    <table class="layui-table" lay-data="{height:'100%',
+    url:'http://192.168.2.11:83/mock/25/admin/areamodule/araeRegion',
+    page:true,id='table'}" lay-filter="table">
+        <thead>
+        <tr>
+            <th lay-data="{filed:'zizeng',width:50,fixed:'left',type:'number'}">序号</th>
+            <th lay-data="{filed:'rdStoreName'}">所属仓库</th>
+            <th lay-data="{filed:'name'}">区名称</th>
+            <th lay-data="{}"></th>
+        </tr>
+        </thead>
+    </table>
+</main>
+</body>
+<script type="text/javascript">
+
+</script>
+</html>
