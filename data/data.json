@@ -1,0 +1,42 @@
+{
+  "rows": [
+    {
+      "quNumLeft": 5,
+      "httpPort": 2,
+      "ip": "192.168.2.152:8081",
+      "gdlType": 3,
+      "updateTime": "2018-08-02 11:44:14",
+      "rdStoreName": "1",
+      "rows": 2,
+      "speed": 1,
+      "capacity": 1,
+      "tcpPort": 2,
+      "floors": 2,
+      "createTime": "2018-07-31 09:22:42",
+      "tempture": 1,
+      "name": "测试区",
+      "width": 1,
+      "humi": 1,
+      "staticCol": 2,
+      "quNumRigth": 6,
+      "id": 3,
+      "cols": 2,
+      "fkStoreId": 1,
+      "videoIp": "{\"id\": 123}"
+    }
+  ],
+  "currentPage": 1,
+  "pageSize": 10,
+  "isFirstPage": 1,
+  "isLastPage": 1,
+  "previusPage": 1,
+  "nextPage": 1,
+  "msg": "",
+  "error": null,
+  "page": 1,
+  "total": 5,
+  "pageList": [
+    1
+  ],
+  "state": 0
+}
