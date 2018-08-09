@@ -5,122 +5,211 @@
     <title>库房设置</title>
     <link rel="stylesheet" href="../layui/css/layui.css">
     <script type="text/javascript" src="../layui/layui.js"></script>
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-        }
-        body{
-            background-color: white;
-        }
-        aside{
-            margin: 5px 10px;
-            width: 14%;
-            min-width: 200px;
-            height: 750px;
-        }
-        aside h2{
-            width: 100%;
-            height: 50px;
-            background-color: #009E94;
-            font-size: 24px;
-            color:white;
-            line-height: 2;
-            text-indent: 15px;
-        }
-        ul.domtree, ul.domtree ul {
-            margin: 0;
-            padding: 0 0 0 2em;
-        }
-
-        ul.domtree{
-            border: #4E5465 solid 1px;
-            height: 100%;
-            font-size: 16px;
-        }
-
-        ul.domtree li {
-            list-style: none;
-            position: relative;
-        }
-
-        ul.domtree > li:first-child:before {
-            border-style: none none solid none;
-        }
-
-        ul.domtree li:before {
-            position: absolute;
-            content: '';
-            top: 0.01em;
-            left: -0.7em;
-            width: 0.5em;
-            height: 0.64em;
-            border-style: none none solid solid;
-            border-width: 0.05em;
-            border-color: #aaa;
-        }
-
-        ul.domtree li:not(:last-child):after {
-            position: absolute;
-            content: '';
-            top: 0.7em;
-            left: -0.7em;
-            bottom: 0;
-            border-style: none none none solid;
-            border-width: 0.05em;
-            border-color: #aaa;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/ys_storeSetting.css">
 </head>
 <body>
 <aside class="site-inline">
-    <h2>库房管理</h2>
+    <div class="title">
+        <h2>库房管理</h2>
+        <i class="layui-icon layui-icon-add-circle icon" id="add"></i>
+    </div>
     <ul class="domtree" id="tree">
-        <li>
-            一级菜单
-            <ul>
-                <li>二级菜单</li>
-                <li>
-                    二级菜单
-                    <ul>
-                        <li>三级菜单</li>
-                        <li>三级菜单</li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li>
-            一级菜单2
-            <ul>
-                <li>二级菜单</li>
-                <li>
-                    二级菜单
-                    <ul>
-                        <li>三级菜单</li>
-                        <li>三级菜单</li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
+
     </ul>
 
 </aside>
-<main>
-    <table class="layui-table" lay-data="{height:'100%',
-    url:'http://192.168.2.11:83/mock/25/admin/areamodule/araeRegion',
-    page:true,id='table'}" lay-filter="table">
-        <thead>
-        <tr>
-            <th lay-data="{filed:'zizeng',width:50,fixed:'left',type:'number'}">序号</th>
-            <th lay-data="{filed:'rdStoreName'}">所属仓库</th>
-            <th lay-data="{filed:'name'}">区名称</th>
-            <th lay-data="{}"></th>
-        </tr>
-        </thead>
-    </table>
-</main>
-</body>
-<script type="text/javascript">
+<main class="main">
+    <table id="table" lay-filter="table">
 
-</script>
+        <!--<thead>-->
+        <!--<tr>-->
+        <!--<th lay-data="{filed:'xuhao',width:50,fixed:'left',type:'number'}">序号</th>-->
+        <!--<th lay-data="{filed:'rdStoreName'}">所属仓库</th>-->
+        <!--<th lay-data="{filed:'name'}">区名称</th>-->
+        <!--<th lay-data="{filed:'quNumRigth'}">区号</th>-->
+        <!--<th lay-data="{filed:'cols'}">列数</th>-->
+        <!--<th lay-data="{filed:'divs'}">节数</th>-->
+        <!--<th lay-data="{filed:'lays'}">层数</th>-->
+        <!--<th lay-data="{filed:'staticCol'}">固定列号</th>-->
+        <!--<th lay-data="{filed:'gdlType'}">固定列位置</th>-->
+        <!--<th lay-data="{filed:'width'}">密集架宽度</th>-->
+        <!--<th lay-data="{filed:'speed'}">运行速度</th>-->
+        <!--<th lay-data="{filed:'ventgaps'}">通风间隔</th>-->
+        <!--<th lay-data="{filed:'ip'}">主机名</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+    </table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+</main>
+
+<!--添加仓库-->
+<div id="storeAdd" class="store">
+    <div class="input-group">
+        <label for="s-id">仓库代码</label>
+        <input type="text" id="s-id" required="required">
+        <p id="warnMsg"></p>
+    </div>
+    <div class="input-group">
+        <label for="s-name">仓库名称</label>
+        <input type="text" id="s-name">
+    </div>
+    <div class="input-group">
+        <label for="s-name">模拟库房</label>
+        <input type="text" id="s-sim">
+    </div>
+    <div class="btn-group">
+        <button class="layui-btn layui-btn-radius" id="yes">确定</button>
+        <button class="layui-btn layui-btn-radius layui-btn-primary" id="cancel">取消</button>
+    </div>
+</div>
+
+<!--修改密集架-->
+<div id="shelfEdit" class="shelf">
+    <div class="hardware">
+        <div class="shelf-input-l">
+            <label for="store">所属库房</label>
+            <input type="text" id="store" placeholder="测试库房" disabled>
+        </div>
+        <div class="shelf-input-r">
+            <label for="q-name">区名称</label>
+            <input type="text" id="q-name">
+        </div>
+        <div class="shelf-input-l">
+            <label for="g-position">固定列所在位置</label>
+            <select id="g-position">
+                <option value="">请先选择...</option>
+                <option value="-1">固定列在左</option>
+                <option value="1">固定列在右</option>
+                <option value="0">固定列在中间</option>
+            </select>
+        </div>
+        <div class="shelf-input-r">
+            <label for="cols">该区共有</label>
+            <select id="cols">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select> 列
+        </div>
+        <div class="gdl-box">
+            <label for="g-setting" class="gdl">从左边起第几列</label>
+            <select id="g-setting" class="gdl-sel" disabled>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select> 为固定列
+        </div>
+        <div class="shelf-input-l">
+            <label for="col">本区区号</label>
+            <select id="col">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+        </div>
+        <div class="shelf-input-r">
+            <label for="col-r">右区区号</label>
+            <select id="col-r" disabled>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+        </div>
+        <div class="shelf-input-l">
+            <label for="divs">每列有</label>
+            <select id="divs">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select> 节
+        </div>
+        <div class="shelf-input-r">
+            <label for="lays">每节有</label>
+            <select id="lays">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select> 层
+        </div>
+        <div class="shelf-input-l">
+            <label for="capacity">每层有</label>
+            <select id="capacity">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select> 容量
+        </div>
+    </div>
+    <hr />
+    <div class="envm">
+        <div class="shelf-input-l">
+            <label for="ventgaps">通风间隔</label>
+            <select id="ventgaps">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select> /分钟
+        </div>
+        <div class="shelf-input-r">
+            <label for="width">密集架宽度</label>
+            <select id="width">
+                <option>45</option>
+                <option>46</option>
+                <option>47</option>
+                <option>48</option>
+            </select>
+        </div>
+        <div class="shelf-input-l">
+            <label for="speed">运行速度</label>
+            <select id="speed">
+                <option>100</option>
+                <option>101</option>
+                <option>102</option>
+                <option>103</option>
+                <option>104</option>
+            </select>
+        </div>
+        <div class="shelf-input-r">
+            <label for="videoIp">绑定摄像头</label>
+            <select id="videoIp">
+                <option>不绑定摄像头</option>
+                <option>aaaa</option>
+                <option>444</option>
+                <option>yyy</option>
+            </select>
+        </div>
+    </div>
+    <hr />
+    <div class="net">
+        <div class="net-input-group">
+            <label for="IP" class="label">密集架IP</label>
+            <input type="text" id="IP">
+        </div>
+        <div class="net-input-group">
+            <label for="port2" class="label label1">通信端口(连接方式二)</label>
+            <input type="text" id="port2">
+        </div>
+        <div class="net-input-group">
+            <label for="port1" class="label label1">HTTP端口(连接方式一)</label>
+            <input type="text" id="port1">
+        </div>
+    </div>
+    <div class="btn-group">
+        <button class="layui-btn layui-btn-radius" id="save">保存</button>
+        <button class="layui-btn layui-btn-radius layui-btn-primary" id="cancel-shelf">取消</button>
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="../js/ys_storeSetting.js"></script>
 </html>
