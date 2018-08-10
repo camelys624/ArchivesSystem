@@ -20,32 +20,17 @@
 </aside>
 <main class="main">
     <table id="table" lay-filter="table">
-
-        <!--<thead>-->
-        <!--<tr>-->
-        <!--<th lay-data="{filed:'xuhao',width:50,fixed:'left',type:'number'}">序号</th>-->
-        <!--<th lay-data="{filed:'rdStoreName'}">所属仓库</th>-->
-        <!--<th lay-data="{filed:'name'}">区名称</th>-->
-        <!--<th lay-data="{filed:'quNumRigth'}">区号</th>-->
-        <!--<th lay-data="{filed:'cols'}">列数</th>-->
-        <!--<th lay-data="{filed:'divs'}">节数</th>-->
-        <!--<th lay-data="{filed:'lays'}">层数</th>-->
-        <!--<th lay-data="{filed:'staticCol'}">固定列号</th>-->
-        <!--<th lay-data="{filed:'gdlType'}">固定列位置</th>-->
-        <!--<th lay-data="{filed:'width'}">密集架宽度</th>-->
-        <!--<th lay-data="{filed:'speed'}">运行速度</th>-->
-        <!--<th lay-data="{filed:'ventgaps'}">通风间隔</th>-->
-        <!--<th lay-data="{filed:'ip'}">主机名</th>-->
-        <!--</tr>-->
-        <!--</thead>-->
     </table>
     <script type="text/html" id="barDemo">
+        <button class="layui-btn layui-btn-xs layui-btn-primary" lay-event="add">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
         <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 </main>
 
-<!--添加仓库-->
+<!--仓库面板-->
 <div id="storeAdd" class="store">
     <div class="input-group">
         <label for="s-id">仓库代码</label>
@@ -66,7 +51,7 @@
     </div>
 </div>
 
-<!--修改密集架-->
+<!--密集架面板-->
 <div id="shelfEdit" class="shelf">
     <div class="hardware">
         <div class="shelf-input-l">
@@ -81,9 +66,9 @@
             <label for="g-position">固定列所在位置</label>
             <select id="g-position">
                 <option value="">请先选择...</option>
-                <option value="-1">固定列在左</option>
-                <option value="1">固定列在右</option>
-                <option value="0">固定列在中间</option>
+                <option value="1">固定列在左</option>
+                <option value="2">固定列在右</option>
+                <option value="3">固定列在中间</option>
             </select>
         </div>
         <div class="shelf-input-r">
@@ -99,7 +84,8 @@
         </div>
         <div class="gdl-box">
             <label for="g-setting" class="gdl">从左边起第几列</label>
-            <select id="g-setting" class="gdl-sel" disabled>
+            <select id="g-setting" class="gdl-sel" disabled="disabled">
+                <option>0</option>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -116,7 +102,7 @@
         </div>
         <div class="shelf-input-r">
             <label for="col-r">右区区号</label>
-            <select id="col-r" disabled>
+            <select id="col-r" disabled="disabled">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -193,15 +179,15 @@
     <div class="net">
         <div class="net-input-group">
             <label for="IP" class="label">密集架IP</label>
-            <input type="text" id="IP">
+            <input type="text" id="IP" autocomplete="off">
         </div>
         <div class="net-input-group">
             <label for="port2" class="label label1">通信端口(连接方式二)</label>
-            <input type="text" id="port2">
+            <input type="text" id="port2" autocomplete="off">
         </div>
         <div class="net-input-group">
             <label for="port1" class="label label1">HTTP端口(连接方式一)</label>
-            <input type="text" id="port1">
+            <input type="text" id="port1" autocomplete="off">
         </div>
     </div>
     <div class="btn-group">
