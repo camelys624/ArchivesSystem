@@ -5,13 +5,24 @@
     <title>库房设置</title>
     <link rel="stylesheet" href="../layui/css/layui.css">
     <script type="text/javascript" src="../layui/layui.js"></script>
-    <link rel="stylesheet" href="../css/ys_storeSetting.css">
+    <link rel="stylesheet" href="../css/storeSetting.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 <aside class="site-inline">
     <div class="title">
         <h2>库房管理</h2>
-        <i class="layui-icon layui-icon-add-circle icon" id="add"></i>
+        <div class="layui-btn-group icon">
+            <button class="layui-btn layui-btn-sm" id="add">
+                <i class="layui-icon">&#xe654;</i>
+            </button>
+            <button class="layui-btn layui-btn-sm" id="edit">
+                <i class="layui-icon">&#xe642;</i>
+            </button>
+            <button class="layui-btn layui-btn-sm" id="delete">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+        </div>
     </div>
     <ul class="domtree" id="tree">
 
@@ -19,8 +30,7 @@
 
 </aside>
 <main class="main">
-    <table id="table" lay-filter="table">
-    </table>
+    <table id="table" lay-filter="table"></table>
     <script type="text/html" id="barDemo">
         <button class="layui-btn layui-btn-xs layui-btn-primary" lay-event="add">
             <i class="layui-icon">&#xe608;</i> 添加
@@ -64,7 +74,7 @@
         </div>
         <div class="shelf-input-l">
             <label for="g-position">固定列所在位置</label>
-            <select id="g-position">
+            <select id="g-position" lay-verify="">
                 <option value="">请先选择...</option>
                 <option value="1">固定列在左</option>
                 <option value="2">固定列在右</option>
@@ -197,5 +207,5 @@
 
 </div>
 </body>
-<script type="text/javascript" src="../js/ys_storeSetting.js"></script>
+<script type="text/javascript" src="../js/storeSetting.js"></script>
 </html>

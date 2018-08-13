@@ -1,0 +1,52 @@
+/**
+*
+* author: ys
+* time: 2018/8/13
+*
+**/
+
+.layui-btn-group{
+    margin-top: 10px;
+}
+
+.layui-btn-group > i{
+    font-size: 10px;
+}
+.btn-group{
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.menu{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 180px;
+    margin: 2px 0 0;
+    padding: 5px 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    /*border: 1px solid #ccc;*/
+    border: 1px solid rgba(0, 0, 0, .15);
+    -webkit-box-shadow: 2px 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 2px 6px 12px rgba(0, 0, 0, .175);
+
+}
+.menu > li{
+    height: 30px;
+    width: 200px;
+    padding-left: 15px;
+    line-height: 2;
+}
+.menu > li:hover{
+    background-color: rgba(0, 0, 0, .1);
+    cursor: pointer;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>档案信息</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/file-info.css">
+    <script type="text/javascript" src="../layui/layui.js"></script>
+</head>
+<body>
+<aside class="site-inline">
+    <div class="title">
+        <h2>档案库</h2>
+    </div>
+    <ul class="domtree" id="tree">
+
+    </ul>
+</aside>
+<main class="main">
+    <div class="layui-btn-group">
+        <button class="layui-btn layui-btn-primary" id="entry"><i class="layui-icon">&#xe642;</i>录入</button>
+        <button class="layui-btn layui-btn-primary" id="search"><i class="layui-icon">&#xe615;</i>查询</button>
+        <button class="layui-btn layui-btn-primary" id="box"><i class="layui-icon">&#xe857;</i>档案盒</button>
+        <div class="btn-group">
+            <button class="layui-btn layui-btn-primary" id="borrow"><i class="layui-icon">&#xe656;</i>档案借阅<i class="layui-icon">&#xe625;</i></button>
+            <ul class="menu" id="borrow-menu">
+                <li id="directBorrow">直接借阅</li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button class="layui-btn layui-btn-primary" id="operating"><i class="layui-icon">&#xe621;</i>Excel操作<i class="layui-icon">&#xe625;</i></button>
+            <ul class="menu" id="Excel-menu">
+                <li id="import">从Excel导入</li>
+                <li id="export">导出当前页到Excel</li>
+                <li id="allExport">导出查询的所有数据到Excel</li>
+            </ul>
+        </div>
+        <button class="layui-btn layui-btn-primary" id="upload"><i class="layui-icon">&#xe67c;</i>附件</button>
+    </div>
+    <table id="table" lay-filter="table"></table>
+</main>
+<div id="editFile"></div>
+</body>
+<script type="text/javascript" src="../js/fileInfo.js"></script>
+</html>
