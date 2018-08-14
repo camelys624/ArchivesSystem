@@ -50,3 +50,38 @@
     background-color: rgba(0, 0, 0, .1);
     cursor: pointer;
 }
+
+.input-group{
+
+}
+
+.search-box{
+    width: 365px;
+    height: 200px;
+    display: none;
+}
+.search-box select,.search-box input{
+    width: 160px;
+    height: 30px;
+    border-radius: 4px;
+}
+.search-box select{
+    margin: 20px 10px 5px;
+}
+.btn-box{
+    margin-left: 40px;
+    /*width: 70px;*/
+    display: inline-block;
+}
+.search-box input{
+    border: solid #9F9F9F 1px;
+    margin: 10px 8px;
+}
+
+#file-box{
+    display:none;
+}
+#file-box > .layui-btn{
+    margin-top: 5px;
+    margin-left: 10px;
+}

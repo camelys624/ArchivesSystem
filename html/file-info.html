@@ -23,13 +23,15 @@
         <button class="layui-btn layui-btn-primary" id="search"><i class="layui-icon">&#xe615;</i>查询</button>
         <button class="layui-btn layui-btn-primary" id="box"><i class="layui-icon">&#xe857;</i>档案盒</button>
         <div class="btn-group">
-            <button class="layui-btn layui-btn-primary" id="borrow"><i class="layui-icon">&#xe656;</i>档案借阅<i class="layui-icon">&#xe625;</i></button>
+            <button class="layui-btn layui-btn-primary" id="borrow"><i class="layui-icon">&#xe656;</i>档案借阅<i
+                    class="layui-icon">&#xe625;</i></button>
             <ul class="menu" id="borrow-menu">
                 <li id="directBorrow">直接借阅</li>
             </ul>
         </div>
         <div class="btn-group">
-            <button class="layui-btn layui-btn-primary" id="operating"><i class="layui-icon">&#xe621;</i>Excel操作<i class="layui-icon">&#xe625;</i></button>
+            <button class="layui-btn layui-btn-primary" id="operating"><i class="layui-icon">&#xe621;</i>Excel操作<i
+                    class="layui-icon">&#xe625;</i></button>
             <ul class="menu" id="Excel-menu">
                 <li id="import">从Excel导入</li>
                 <li id="export">导出当前页到Excel</li>
@@ -40,7 +42,34 @@
     </div>
     <table id="table" lay-filter="table"></table>
 </main>
-<div id="editFile"></div>
+<div id="editFile">
+
+</div>
+<div id="search-box" class="search-box">
+    <select id="info">
+        <option value="0">题名</option>
+        <option value="1">档号</option>
+        <option value="2">档案条码</option>
+        <option value="3">存放位置</option>
+        <option value="4">档案盒条码</option>
+        <option value="5">著录人</option>
+        <option value="6">著录时间</option>
+    </select>
+    <select id="status">
+        <option value="0">精确查找</option>
+        <option value="1">迷糊查找</option>
+    </select>
+    <input type="text" id="s-value" name="search">
+    <div class="btn-box">
+        <button class="layui-btn layui-btn-lg" id="s-btn">查询</button>
+    </div>
+    <input type="date" id="time-start">-<input type="date" id="time-end">
+</div>
+
+<div id="file-box">
+    <button class="layui-btn" id="group-box"><i class="layui-icon">&#xe857;</i>确认组盒</button>
+    <table id="box-table" lay-filter="table"></table>
+</div>
 </body>
 <script type="text/javascript" src="../js/fileInfo.js"></script>
 </html>
