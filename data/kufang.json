@@ -1,0 +1,71 @@
+{
+  "rows": [
+    {
+      "rdTypeName": "智能编写书籍",
+      "arcName": "档案名称1123",
+      "fkLocationId": 1607694352528703500,
+      "rdLocationAddr": "2库vgyg",
+      "araeRegion": {
+        "id": 1,
+        "quNumLeft": 12,
+        "name": "23号仓库",
+        "capacity": 600,
+        "speed": 1,
+        "width": 1,
+        "ip": "192.168.2.152:8081",
+        "httpPort": 1,
+        "tcpPort": 1,
+        "videoIp": "{\"id\": 123465, \"name\": 654}",
+        "tempture": null,
+        "humi": 32,
+        "createTime": "2018-07-04 00:00:00",
+        "updateTime": "2018-07-31 00:00:00",
+        "fkStoreId": 23,
+        "rdStoreName": "1",
+        "quNumRigth": 1,
+        "gdlType": 2,
+        "cols": 7,
+        "divs": 9,
+        "lays": 2,
+        "staticCol": 1,
+        "ventgaps": null
+      },
+      "fkBoxId": 5,
+      "updateTime": "2018-07-31 00:00:00",
+      "updateOperator": "杜浩",
+      "archivesBarcode": "A010100101L00266",
+      "araeLocation": {
+        "id": 1607694352528703500,
+        "fkRegionId": 1,
+        "col": 1,
+        "lay": 1,
+        "div": 1,
+        "rfid": "E2 00 00 16 63 01 00 47 17 30 65 2B",
+        "localtion": 0,
+        "fkStoreId": 23,
+        "rdRegionNum": null
+      },
+      "deleted": 0,
+      "archivesNumber": "4123",
+      "createTime": "2018-07-04 00:00:00",
+      "rfid": "E2 00 00 16 63 01 00 47 17 30 65 2B",
+      "id": 43342433,
+      "fkTypeId": 2,
+      "status": 2
+    }
+  ],
+  "currentPage": 1,
+  "pageSize": 10,
+  "isFirstPage": 1,
+  "isLastPage": 1,
+  "previusPage": 1,
+  "nextPage": 1,
+  "msg": "操作成功",
+  "error": null,
+  "page": 1,
+  "total": 8,
+  "pageList": [
+    1
+  ],
+  "state": true
+}

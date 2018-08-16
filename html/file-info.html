@@ -19,7 +19,7 @@
 </aside>
 <main class="main">
     <div class="layui-btn-group">
-        <button class="layui-btn layui-btn-primary" id="entry"><i class="layui-icon">&#xe642;</i>录入</button>
+        <button class="layui-btn layui-btn-primary" id="entry" disabled="disabled"><i class="layui-icon">&#xe642;</i>录入</button>
         <button class="layui-btn layui-btn-primary" id="search"><i class="layui-icon">&#xe615;</i>查询</button>
         <button class="layui-btn layui-btn-primary" id="box"><i class="layui-icon">&#xe857;</i>档案盒</button>
         <div class="btn-group">
@@ -42,9 +42,7 @@
     </div>
     <table id="table" lay-filter="table"></table>
 </main>
-<div id="editFile">
 
-</div>
 <div id="search-box" class="search-box">
     <select id="info">
         <option value="0">题名</option>
@@ -65,10 +63,11 @@
     </div>
     <input type="date" id="time-start">-<input type="date" id="time-end">
 </div>
-
-<div id="file-box">
-    <button class="layui-btn" id="group-box"><i class="layui-icon">&#xe857;</i>确认组盒</button>
-    <table id="box-table" lay-filter="table"></table>
+<div class="layui-inline">
+    <label class="layui-form-label">中文版</label>
+    <div class="layui-input-inline">
+        <input type="text" class="layui-input" id="test1" placeholder="yyyy-MM-dd">
+    </div>
 </div>
 </body>
 <script type="text/javascript" src="../js/fileInfo.js"></script>

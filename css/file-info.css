@@ -85,3 +85,13 @@
     margin-top: 5px;
     margin-left: 10px;
 }
+.file-import{
+    display: none;
+}
+
+.upload{
+    width: 300px;
+    min-height: 200px;
+    border-radius: 6px;
+    display: none;
+}

@@ -1,4 +1,3 @@
-
 /**
  *
  * author: ys
@@ -6,10 +5,12 @@
  *
  **/
 
-layui.use(['tree', 'layer', 'table'], function () {
+layui.use(['tree', 'layer', 'table','form','layedit'], function () {
     let tree = layui.tree,
         layer = layui.layer,
         table = layui.table,
+        form = layui.form,
+        layedit = layui.layedit,
         $ = layui.$;
 
 
@@ -20,11 +21,12 @@ layui.use(['tree', 'layer', 'table'], function () {
     let index = null,
         shelf = null;
     let store_id = null,
-        store_name = null;
+        store_name = null,
+        barcode;
     let nodes = [];
     let createTree = function () {
         $.ajax({
-            url: base + '/admin/areamodule/araeStoreInfo/getStoreAndRegion',
+            url: base + 'admin/areamodule/araeStoreInfo/getStoreAndRegion',
             type: 'GET',
             success: function (result) {
                 let store = [],
@@ -32,10 +34,6 @@ layui.use(['tree', 'layer', 'table'], function () {
                 let storeData = result.list;
                 for (let i = 0; i < storeData.length; i++) {
                     region = storeData[i].region;
-                    for (let j = 0; j < region.length; j++) {
-                        region[j].name = region[j].qu_num;
-
-                    }
                     storeData[i].name = storeData[i].store_name;
                     store.push({
                         name: storeData[i].name,
@@ -54,7 +52,7 @@ layui.use(['tree', 'layer', 'table'], function () {
                             store_id = node.fkStoreId;
                             store_name = node.name;
                         } else {
-                            showTable(node);
+                            showTable(node.ip);
                         }
                     }
                 });
@@ -71,7 +69,7 @@ layui.use(['tree', 'layer', 'table'], function () {
      **/
     let showTable = function (_node) {
         let value = '';
-        value = 'map[ip]=' + _node.ip;
+        value = 'map[ip]=' + _node;
         $.ajax({
             url: base + '/admin/areamodule/araeRegion',
             data: value,
@@ -116,6 +114,8 @@ layui.use(['tree', 'layer', 'table'], function () {
             area: '500px',
             content: $('#storeAdd'),
         });
+
+
         url = base + '/admin/areamodule/araeStoreInfo/add';
         status = 1;
     });
@@ -127,13 +127,13 @@ layui.use(['tree', 'layer', 'table'], function () {
             area: '500px',
             content: $('#storeAdd')
         });
+
         url = base + '/admin/areamodule/araeStoreInfo/update';
         status = 0;
     });
 
     $('#delete').click(function () {
-        let storeData = {id:store_id};
-        console.log(JSON.stringify(storeData));
+        let storeData = {id: store_id};
         index = layer.open({
             type: 0,
             content: '确认删除该仓库?!',
@@ -141,7 +141,7 @@ layui.use(['tree', 'layer', 'table'], function () {
                 $.ajax({
                     type: 'POST',
                     url: base + '/admin/areamodule/araeStoreInfo/delete',
-                    data: storeData,
+                    data: JSON.stringify(storeData),
                     contentType: 'application/json',
                     dataType: 'json',
                     success: function (result) {
@@ -158,16 +158,20 @@ layui.use(['tree', 'layer', 'table'], function () {
         });
     });
     $('#yes').click(function () {
-        store_id = document.getElementById('s-id').value;
+        barcode = document.getElementById('s-id').value;
         store_name = document.getElementById('s-name').value;
         let reg = /^[0-9a-zA-Z]+$/;
-        let barcode = new Date();
         let storeAddData = {
             name: store_name,
+            img: "E:\\image.pig",
             quantuty: 1024,
             capacity: 10240,
             borrowNum: 512,
-            barcode: barcode.toLocaleDateString()
+            barcode: barcode,
+            disabled: 0,
+            tempture: 35,
+            humi: 50,
+            storeNum: 100
         };
         let storeEditData = {
             id: store_id,
@@ -176,7 +180,7 @@ layui.use(['tree', 'layer', 'table'], function () {
             disabled: 1,
             capacity: 10240,
             borrowNum: 512,
-            barcode: barcode.toLocaleDateString()
+            barcode: barcode
         };
         let storeData = null;
         if (status === 1) {
@@ -191,13 +195,12 @@ layui.use(['tree', 'layer', 'table'], function () {
                 document.getElementById('warnMsg').innerHTML = '只能输入数字和字母！！';
             } else {
                 document.getElementById('warnMsg').innerHTML = '';
-
                 $.ajax({
                     type: 'POST',
                     url: url,
-                    data: storeData,
-                    contentType: 'application/json',
-                    dataType: 'json',
+                    data: JSON.stringify(storeData),
+                    contentType:'application/json',
+                    dataType:'json',
                     success: function (result) {
                         $('#tree').find('li').remove();
                         layer.msg(result.msg);
@@ -222,6 +225,7 @@ layui.use(['tree', 'layer', 'table'], function () {
     let tool = table.on('tool(table)', function (obj) {
         let data = obj.data,
             layEvent = obj.event;
+
         if (layEvent === 'edit') {
             shelf = layer.open({
                 type: 1,
@@ -229,16 +233,82 @@ layui.use(['tree', 'layer', 'table'], function () {
                 area: '800px',
                 content: $('#shelfEdit')
             });
+            $('#save').hide();
+            $('#save2').show();
+
+            form.val('shelfEdit',{
+                "rdStoreName":data.rdStoreName,
+                "name":data.name,
+                "gdlType":data.gdlType,
+                "cols": data.cols,
+                "staticCol":data.staticCol,
+                "col": data.col,
+                "divs": data.divs,
+                "quNumRigth": data.quNumRigth,
+                "lays": data.lays,
+                "capacity": data.capacity,
+                "width": data.width,
+                "ventgaps": data.ventgaps,
+                "speed": data.speed,
+                "tempture": data.tempture,
+                "ip": data.ip,
+                "tcpPort": data.tcpPort,
+                "httpPort": data.httpPort
+            });
             url = base + '/admin/areamodule/araeRegion/update';
+
+            // form.on('select(gPosition)', function (options) {
+            //     if (options.value == 3) {
+            //         $('#g-setting').removeAttr("disabled");
+            //         $('#col-r').removeAttr("disabled");
+            //     } else {
+            //         $('#g-setting').attr('disabled', true);
+            //         $('#col-r').attr('disabled', true);
+            //     }
+
+                form.on('submit(save2)', function (value) {
+                    let dataList = value.field;
+                    dataList.id = data.id;
+                    dataList.fkStoreId = shelf.fkStoreId;
+                    dataList.quNumLeft = dataList.col;
+                    dataList.videoIps = {ip:Math.round(10*Math.random()),name:value.field.videoIps};
+                    console.log(JSON.stringify(dataList));
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: JSON.stringify(dataList),
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        success: function (result) {
+                            $('#tree').find('li').remove();
+                            layer.msg(result.msg);
+                            createTree();
+                            layer.close(index);
+                        },
+                        error: function () {
+                            console.log("error")
+                        }
+                    });
+                    return false;
+                })
+            // });
+
+            // createShelf(data);
         } else if (layEvent === 'del') {
             layer.confirm('真的删除该密集架信息吗？', function (index) {
                 let quData = {id: obj.data.id};
+                console.log(quData);
                 $.ajax({
                     url: base + '/admin/areamodule/araeRegion/delete',
                     type: 'POST',
-                    data: quData,
+                    data: JSON.stringify(quData),
                     contentType: 'application/json',
-                    dataType: 'json'
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#tree').find('li').remove();
+                        layer.msg(result.msg);
+                        createTree();
+                    }
                 });
                 obj.del();
                 layer.close(index);
@@ -250,7 +320,14 @@ layui.use(['tree', 'layer', 'table'], function () {
                 area: '800px',
                 content: $('#shelfEdit')
             });
-            url = base + '/admin/areamodule/araeRegion/add';
+            $('#save2').hide();
+            $('#save').show();
+            form.val('shelfEdit',{
+                "rdStoreName":data.rdStoreName
+            });
+
+            url = base + 'admin/areamodule/araeRegion/add';
+            createShelf(data);
         }
 
 
@@ -262,122 +339,41 @@ layui.use(['tree', 'layer', 'table'], function () {
      *
      **/
 
-    let data = '';
+    //判断固定列位置
+    //首先监听select的值
+    let createShelf = function (shelf) {
+            form.on('select(gPosition)', function (options) {
+                if (options.value == 3) {
+                    $('#g-setting').removeAttr("disabled");
+                    $('#col-r').removeAttr("disabled");
+                } else {
+                    $('#g-setting').attr('disabled', true);
+                    $('#col-r').attr('disabled', true);
+                }
 
-    let gdlSelect = document.getElementById('g-position');
-    gdlSelect.onclick = function () {
-        let gdlIndex = gdlSelect.selectedIndex,
-            gValue = gdlSelect.options[gdlIndex].value;
-        if (gValue == 3) {
-            $('#g-setting').removeAttr("disabled");
-            $('#col-r').removeAttr("disabled");
-        } else {
-            $('#g-setting').attr('disabled', true);
-            $('#col-r').attr('disabled', true);
+                form.on('submit(save)', function (data) {
+                    let dataList = data.field;
+                    dataList.fkStoreId = shelf.fkStoreId;
+                    dataList.quNumLeft = dataList.col;
+                    dataList.videoIps = {ip:Math.round(10*Math.random()),name:data.field.videoIps};
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: JSON.stringify(dataList),
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        success: function (result) {
+                            $('#tree').find('li').remove();
+                            layer.msg(result.msg);
+                            createTree();
+                            layer.close(index);
+                        },
+                        error: function () {
+                            console.log("error")
+                        }
+                    });
+                })
+            });
         }
-    };
-    let getValue = function () {
-        let qName = document.getElementById('q-name').value;
-
-        let gdlSelect = document.getElementById('g-position'),
-            gdlIndex = gdlSelect.selectedIndex,
-            gValue = gdlSelect.options[gdlIndex].value;
-
-        let cols = document.getElementById('cols'),
-            colsIndex = cols.selectedIndex,
-            colsValue = cols.options[colsIndex].text;
-
-        let gSetting = document.getElementById('g-setting'),
-            gSettingIndex = gSetting.selectedIndex,
-            gSettingValue = gSetting.options[gSettingIndex].text;
-
-        let rCol = document.getElementById('col-r'),
-            rColIndex = rCol.selectedIndex,
-            rColValue = rCol.options[rColIndex].text;
-
-
-        let col = document.getElementById('col'),
-            colIndex = col.selectedIndex,
-            colValue = col.options[colIndex].text;
-
-        let divs = document.getElementById('divs'),
-            divsIndex = divs.selectedIndex,
-            divsValue = divs.options[divsIndex].text;
-
-        let lays = document.getElementById('lays'),
-            laysIndex = lays.selectedIndex,
-            laysValue = lays.options[laysIndex].text;
-
-        let capacity = document.getElementById('capacity'),
-            capIndex = capacity.selectedIndex,
-            capValue = capacity.options[capIndex].text;
-
-        let ventgaps = document.getElementById('ventgaps'),
-            vgIndex = ventgaps.selectedIndex,
-            vgValue = ventgaps.options[vgIndex].text;
-
-        let width = document.getElementById('width'),
-            wIndex = width.selectedIndex,
-            wValue = width.options[wIndex].text;
-
-        let speed = document.getElementById('speed'),
-            sIndex = speed.selectedIndex,
-            sValue = speed.options[sIndex].text;
-
-        let videoIp = document.getElementById('videoIp'),
-            vIpIndex = videoIp.selectedIndex,
-            vIpValue = videoIp.options[vIpIndex].text;
-
-        let IP = document.getElementById('IP').value;
-
-        let port2 = document.getElementById('port2').value;
-
-        let port1 = document.getElementById('port1').value;
-
-        data = {
-            quNumLeft: colValue,
-            name: qName,
-            capacity: capValue,
-            speed: sValue,
-            width: wValue,
-            ip: IP,
-            httpPort: port1,
-            tcpPort: port2,
-            videoIps: vIpValue,
-            tempture: 1,
-            humi: 1,
-            fkStoreId: store_id,
-            rdStoreName: store_name,
-            quNumRigth: rColValue,
-            gdlType: gValue,
-            cols: colsValue,
-            divs: divsValue,
-            lays: laysValue,
-            staticCol: gSettingValue,
-            ventgaps: vgValue
-        };
-    };
-
-
-    $('#save').click(function () {
-        getValue();
-        console.log(data);
-        $.ajax({
-            url: url,
-            type: 'POST',
-            contentType: 'application/json',
-            data: data,
-            success: function (result) {
-                layer.msg(result.msg);
-                layer.close(shelf);
-            },
-            error: function (result) {
-                layer.msg(result.msg);
-            }
-        })
-    });
-    $('#cancel-shelf').click(function () {
-        layer.close(shelf);
-    });
 
 });
