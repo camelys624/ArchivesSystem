@@ -76,10 +76,6 @@ ul.domtree li:not(:last-child):after {
     right: 20px;
 }
 
-.form-dis{
-    margin-top: 15px;
-    display: none;
-}
 
 .disBox{
     width: 100%;

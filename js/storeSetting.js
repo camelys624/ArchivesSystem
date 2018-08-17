@@ -5,7 +5,7 @@
  *
  **/
 
-layui.use(['tree', 'layer', 'table','form','layedit'], function () {
+layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
     let tree = layui.tree,
         layer = layui.layer,
         table = layui.table,
@@ -199,8 +199,8 @@ layui.use(['tree', 'layer', 'table','form','layedit'], function () {
                     type: 'POST',
                     url: url,
                     data: JSON.stringify(storeData),
-                    contentType:'application/json',
-                    dataType:'json',
+                    contentType: 'application/json',
+                    dataType: 'json',
                     success: function (result) {
                         $('#tree').find('li').remove();
                         layer.msg(result.msg);
@@ -236,12 +236,12 @@ layui.use(['tree', 'layer', 'table','form','layedit'], function () {
             $('#save').hide();
             $('#save2').show();
 
-            form.val('shelfEdit',{
-                "rdStoreName":data.rdStoreName,
-                "name":data.name,
-                "gdlType":data.gdlType,
+            form.val('shelfEdit', {
+                "rdStoreName": data.rdStoreName,
+                "name": data.name,
+                "gdlType": data.gdlType,
                 "cols": data.cols,
-                "staticCol":data.staticCol,
+                "staticCol": data.staticCol,
                 "col": data.col,
                 "divs": data.divs,
                 "quNumRigth": data.quNumRigth,
@@ -257,53 +257,53 @@ layui.use(['tree', 'layer', 'table','form','layedit'], function () {
             });
             url = base + '/admin/areamodule/araeRegion/update';
 
-            // form.on('select(gPosition)', function (options) {
-            //     if (options.value == 3) {
-            //         $('#g-setting').removeAttr("disabled");
-            //         $('#col-r').removeAttr("disabled");
-            //     } else {
-            //         $('#g-setting').attr('disabled', true);
-            //         $('#col-r').attr('disabled', true);
-            //     }
+            form.on('select(gPosition)', function (options) {
+                if (options.value == 3) {
+                    $('#g-setting').removeAttr("disabled");
+                    $('#col-r').removeAttr("disabled");
+                } else {
+                    $('#g-setting').attr('disabled', true);
+                    $('#col-r').attr('disabled', true);
+                }
+            });
 
-                form.on('submit(save2)', function (value) {
-                    let dataList = value.field;
-                    dataList.id = data.id;
-                    dataList.fkStoreId = shelf.fkStoreId;
-                    dataList.quNumLeft = dataList.col;
-                    dataList.videoIps = {ip:Math.round(10*Math.random()),name:value.field.videoIps};
-                    console.log(JSON.stringify(dataList));
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: JSON.stringify(dataList),
-                        contentType: 'application/json',
-                        dataType: 'json',
-                        success: function (result) {
-                            $('#tree').find('li').remove();
-                            layer.msg(result.msg);
-                            createTree();
-                            layer.close(index);
-                        },
-                        error: function () {
-                            console.log("error")
-                        }
-                    });
-                    return false;
-                })
+            form.on('submit(save2)', function (value) {
+                let dataList = value.field;
+                dataList.id = data.id;
+                dataList.fkStoreId = data.fkStoreId;
+                dataList.quNumLeft = dataList.col;
+                dataList.videoIps = {ip: Math.round(10 * Math.random()), name: value.field.videoIps};
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: JSON.stringify(dataList),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#tree').find('li').remove();
+                        layer.msg(result.msg);
+                        createTree();
+                        layer.close(index);
+                    },
+                    error: function () {
+                        console.log("error")
+                    }
+                });
+                return false;
+            })
             // });
 
             // createShelf(data);
         } else if (layEvent === 'del') {
             layer.confirm('真的删除该密集架信息吗？', function (index) {
-                let quData = {id: obj.data.id};
-                console.log(quData);
+                let quData = {"id": obj.data.id};
+                console.log(JSON.stringify(quData));
                 $.ajax({
-                    url: base + '/admin/areamodule/araeRegion/delete',
+                    url: base + 'admin/areamodule/araeStoreInfo/delete',
                     type: 'POST',
                     data: JSON.stringify(quData),
                     contentType: 'application/json',
-                    dataType: 'json',
+                    dataType:'json',
                     success: function (result) {
                         $('#tree').find('li').remove();
                         layer.msg(result.msg);
@@ -322,8 +322,8 @@ layui.use(['tree', 'layer', 'table','form','layedit'], function () {
             });
             $('#save2').hide();
             $('#save').show();
-            form.val('shelfEdit',{
-                "rdStoreName":data.rdStoreName
+            form.val('shelfEdit', {
+                "rdStoreName": data.rdStoreName
             });
 
             url = base + 'admin/areamodule/araeRegion/add';
@@ -339,8 +339,8 @@ layui.use(['tree', 'layer', 'table','form','layedit'], function () {
      *
      **/
 
-    //判断固定列位置
-    //首先监听select的值
+        //判断固定列位置
+        //首先监听select的值
     let createShelf = function (shelf) {
             form.on('select(gPosition)', function (options) {
                 if (options.value == 3) {
@@ -350,30 +350,31 @@ layui.use(['tree', 'layer', 'table','form','layedit'], function () {
                     $('#g-setting').attr('disabled', true);
                     $('#col-r').attr('disabled', true);
                 }
-
-                form.on('submit(save)', function (data) {
-                    let dataList = data.field;
-                    dataList.fkStoreId = shelf.fkStoreId;
-                    dataList.quNumLeft = dataList.col;
-                    dataList.videoIps = {ip:Math.round(10*Math.random()),name:data.field.videoIps};
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: JSON.stringify(dataList),
-                        contentType: 'application/json',
-                        dataType: 'json',
-                        success: function (result) {
-                            $('#tree').find('li').remove();
-                            layer.msg(result.msg);
-                            createTree();
-                            layer.close(index);
-                        },
-                        error: function () {
-                            console.log("error")
-                        }
-                    });
-                })
             });
+
+            form.on('submit(save)', function (data) {
+                let dataList = data.field;
+                dataList.fkStoreId = shelf.fkStoreId;
+                dataList.quNumLeft = dataList.col;
+                dataList.videoIps = {ip: Math.round(10 * Math.random()), name: data.field.videoIps};
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: JSON.stringify(dataList),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#tree').find('li').remove();
+                        layer.msg(result.msg);
+                        createTree();
+                        layer.close(index);
+                    },
+                    error: function () {
+                        console.log("error")
+                    }
+                });
+            })
+
         }
 
 });

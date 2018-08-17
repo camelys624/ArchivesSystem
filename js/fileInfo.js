@@ -29,8 +29,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
     // 创建树菜单
     let createTree = function () {
         $.ajax({
-            url: 'http://192.168.2.11:83/mock/25/admin/areamodule/fileArchivesType/selectMenu',
+            url: base + 'admin/areamodule/fileArchivesType/selectMenu',
             type: 'GET',
+            data:'id=1',
             success: function (result) {
                 let fileInfoData = result.list;
                 nodes = fileInfoData;
@@ -87,9 +88,17 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
                 }
                 if ('fkBoxId' in result.row) cols.push({field: 'fkBoxId', title: '未知'});
                 if ('archivesBarcode' in result.row) cols.push({field: 'archivesBarcode', title: '未知'});
-                if ('archivesNumber' in result.row) cols.push({field: 'archivesNumber', title: '什么ID'});
                 if ('createTime' in result.row) cols.push({field: 'createTime', title: '著录时间'});
                 if ('fkTypeId' in result.row) cols.push({field: 'fkTypeId', title: 'ID'});
+
+                cols.push({
+                    field: 'right',
+                    title: '操作',
+                    width: 180,
+                    align: 'center',
+                    toolbar: '#toolbar',
+                    fixed: 'right'
+                });
                 result.row.name = result.row.araeRegion.name;
                 createTable(result, cols);
                 createForm(cols);
@@ -122,7 +131,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
             }
         }
 
-        let form = '<form id="fileEdit" class="layui-form" style="display: none;margin-top: 10px" action="" lay-filter="addFile">' + items +
+        let form = '<form id="fileEdit" class="layui-form" style="display: none;margin-top: 10px" action="" lay-filter="fileEdit">' + items +
             '<div class="layui-form-item">' +
             '<label class="layui-form-label">备注</label>' +
             '<div class="layui-input-block">' +
@@ -142,30 +151,19 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
                 <div class="layui-input-inline">
                     <input type="text" name="RFID" class="layui-input">
                 </div>
+                <button id="RFID" class="layui-btn layui-btn-primary">打印条码</button>
              </div>`
             +
             '<div class="layui-form-item">' +
             '<div class="layui-input-block">' +
-            '<button class="layui-btn" lay-submit="" lay-filter="file-btn">确定</button>' +
+            '<button class="layui-btn" lay-submit="" lay-filter="fileBtn">确定</button>' +
             '<button type="reset" class="layui-btn layui-btn-primary">重置</button>' +
             '</div>' +
             '</div>' + '</form>';
         $('body').append(form);
     };
 
-    //下拉按钮菜单
-    $('#borrow').click(function () {
-        $('#Excel-menu').hide();
-        $('#borrow-menu').toggle();
-    });
-    $('#operating').click(function () {
-        $('#borrow-menu').hide();
-        $('#Excel-menu').toggle();
-    });
-
     $('#search').click(function () {
-        $('#Excel-menu').hide();
-        $('#borrow-menu').hide();
         search = layer.open({
             type: 1,
             title: '档案查询',
@@ -221,10 +219,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
             }
         });
     });
+
     //导入文档信息
     $('#entry').click(function () {
-        $('#Excel-menu').hide();
-        $('#borrow-menu').hide();
         edit = layer.open({
             type: 1,
             title: '编辑档案',
@@ -232,16 +229,14 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
             content: $('#fileEdit')
         });
     });
-    //日期
-    laydate.render({
-        elem: '#date-time'
-    });
+
 
     //定义事件监听
-    form.on('submit(file-btn)', function (data) {
+    form.on('submit(fileBtn)', function (data) {
         let value = data.field;
+        console.log(value);
         $.ajax({
-            url: base + '/admin/areamodule/fileArchivesInfo/add',
+            url: base + 'admin/areamodule/fileArchivesInfo/add',
             type: 'POST',
             data: value,
             contentType: 'application/json',
@@ -249,14 +244,12 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
             success: function (result) {
                 layer.msg(result.msg);
             }
-
-        })
+        });
+        return false;
     });
 
 
     $('#box').click(function () {
-        $('#Excel-menu').hide();
-        $('#borrow-menu').hide();
         box = layer.open({
             type: 2,
             title: '档案组盒',
@@ -264,6 +257,107 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
             offset: '100px',
             content: ['../html/table.html', 'no']
         });
+
+    });
+
+    /**
+     * 档案借阅
+     */
+
+    table.on('checkbox(table)', function (obj) {
+        console.log(obj);
+    });
+    let getCheckedData = function () {
+        let checkStatus = table.checkStatus('table')
+            , data = checkStatus.data;
+        if (data.length !== 0) {
+            table.render({
+                elem: '#borrowFile',
+                page: false,
+                cols: [[
+                    {field: 'xuhao', type:'numbers', title: '序号'},
+                    {field: 'arcName', title: '档案名称'},
+                    {field: 'archivesNumber', title: '档案编号'},
+                    {field: 'name', title: '库房'},
+                    {field: 'rdLocationAddr', title: '位置'},
+                    {field: 'updateOperator', title: '著录人'}
+                ]],
+                data: data
+            });
+
+            layer.open({
+                type: 1,
+                title: '借阅',
+                area:'950px',
+                content: $('#borrowForm')
+            });
+        }else {
+            layer.msg('没有选择数据，请选择数据!');
+        }
+    };
+    $('#directBorrow').click(function () {
+        getCheckedData();
+    });
+
+
+    let borrowFile = table.on('tool(table)', function (obj) {
+        let data = obj.data,
+            layEvent = obj.event;
+        if (layEvent === 'edit') {
+            edit = layer.open({
+                type: 1,
+                title: '编辑档案',
+                area: ['700px', '450px'],
+                content: $('#fileEdit')
+            });
+
+            // form.val('fileEdit', {
+            //     "rdTypeName": data.rdStoreName,
+            //     "arcName": data.arcName,
+            //     "fkTemplateId": data.fkTemplateId,
+            //     "archivesNumber": data.archivesNumber,
+            //     "storeid": data.storeid,
+            //     "quNum": data.quNum,
+            //     "div": data.div,
+            //     "col": data.col,
+            //     "lay": data.lay,
+            //     "location": data.location,
+            //     "rfid": data.rfid,
+            //     "updateOperator": data.updateOperator,
+            //     "fkBoxId": data.fkBoxId,
+            //     "createTime": data.createTime,
+            //     "fkTypeId": data.fkTypeId
+            // });
+        } else if (layEvent === 'del') {
+            layer.confirm('真的删除该档案信息吗？', function (index) {
+                let fileID = {id: obj.data.id};
+                $.ajax({
+                    url: base + 'admin/areamodule/fileArchivesInfo/delete',
+                    type: 'POST',
+                    data: JSON.stringify(fileID),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function (result) {
+                        layer.msg(result.msg);
+                    }
+                });
+                obj.del();
+                layer.close(index);
+            });
+        } else if (layEvent === 'station') {
+            layer.open({
+                type: 1,
+                title: '更改位置',
+                content: $('#station')
+            });
+        } else if (layEvent === 'open') {
+            layer.confirm('确定打开架体？', function (num) {
+                console.log(num);
+                // $.ajax({
+                //     url: base + 'admin/areamodule/fileOptionFrame/update',
+                // })
+            });
+        }
 
     });
 
@@ -288,6 +382,18 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
             layer.msg(result.msg);
         }
     })
+
+    $('#export').click(function () {
+        // let url = base + 'admin/areaModule/FileBoxInfo/selectll?page='+ page + '&pageSize=' +pageSize;
+       $.ajax({
+           url:base + 'admin/areaModule/FileBoxInfo/selectll?page=1&pageSize=5',
+           type:'GET',
+           success: function (result) {
+               console.log(JSON.stringify(result));
+               layer.msg(result.msg);
+           }
+       })
+    });
 
 
 });
