@@ -91,14 +91,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
                 if ('createTime' in result.row) cols.push({field: 'createTime', title: '著录时间'});
                 if ('fkTypeId' in result.row) cols.push({field: 'fkTypeId', title: 'ID'});
 
-                cols.push({
-                    field: 'right',
-                    title: '操作',
-                    width: 180,
-                    align: 'center',
-                    toolbar: '#toolbar',
-                    fixed: 'right'
-                });
+                cols.push({field: 'right', title: '操作', width: 180, align: 'center', toolbar: '#toolbar', fixed: 'right'});
                 result.row.name = result.row.araeRegion.name;
                 createTable(result, cols);
                 createForm(cols);
@@ -167,9 +160,15 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
         search = layer.open({
             type: 1,
             title: '档案查询',
-            area: '365px',
+            area: ['650px','400px'],
             content: $('#search-box')
         });
+    });
+    laydate.render({
+        elem:'#startTime'
+    });
+    laydate.render({
+        elem: '#endTime'
     });
 
     $('#s-btn').click(function () {
@@ -268,8 +267,8 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
         console.log(obj);
     });
     let getCheckedData = function () {
-        let checkStatus = table.checkStatus('table')
-            , data = checkStatus.data;
+        let checkStatus = table.checkStatus('table'),
+            data = checkStatus.data;
         if (data.length !== 0) {
             table.render({
                 elem: '#borrowFile',

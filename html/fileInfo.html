@@ -5,7 +5,7 @@
     <title>档案信息</title>
     <link rel="stylesheet" href="../layui/dist/css/layui.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/file-info.css">
+    <link rel="stylesheet" href="../css/fileIInfo.css">
     <script type="text/javascript" src="../layui/dist/layui.js"></script>
 </head>
 <body>
@@ -27,7 +27,7 @@
             <button class="layui-btn layui-btn-primary" id="borrow" data-toggle="dropdown"><i class="layui-icon">&#xe656;</i>档案借阅<i
                     class="layui-icon">&#xe625;</i></button>
             <ul class="layui-dropdown-menu menu" id="borrow-menu">
-                <li id="directBorrow" data-type="getCheckData">直接借阅</li>
+                <li id="directBorrow" data-type="getCheckData"><a>直接借阅</a></li>
             </ul>
         </div>
         <div class="layui-btn-dropdown">
@@ -39,9 +39,9 @@
                 <li><a href="http://192.168.2.128:8081/admin/areamodule/fileBoxInfo/selectFuzzy">导出查询的所有数据到Excel</a></li>
             </ul>
         </div>
-        <button class="layui-btn layui-btn-primary" id="upload"><i class="layui-icon">&#xe67c;</i>附件</button>
+        <button class="layui-btn layui-btn-primary" id="upload"><i class="layui-icon">&#xe64c;</i>附件</button>
     </div>
-    <table id="table" class="table" lay-filter="table"></table>
+    <table id="table" lay-filter="table"></table>
     <script type="text/html" id="toolbar">
         <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="edit">修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -49,33 +49,65 @@
             <button class="layui-btn layui-btn-xs" lay-event="operate" data-toggle="dropdown">更多操作<i
                     class="layui-icon">&#xe625;</i></button>
             <ul class="layui-dropdown-menu menu">
-                <li lay-event="station">更改位置</li>
-                <li lay-event="open">打开架体</li>
+                <li lay-event="station"><a href="#">更改位置</a></li>
+                <li lay-event="open"><a href="#">打开架体</a></li>
             </ul>
         </div>
     </script>
 </main>
 
-<div id="search-box" class="search-box">
-    <select id="info">
-        <option value="0">题名</option>
-        <option value="1">档号</option>
-        <option value="2">档案条码</option>
-        <option value="3">存放位置</option>
-        <option value="4">档案盒条码</option>
-        <option value="5">著录人</option>
-        <option value="6">著录时间</option>
-    </select>
-    <select id="status">
-        <option value="0">精确查找</option>
-        <option value="1">迷糊查找</option>
-    </select>
-    <input type="text" id="s-value" name="search">
-    <div class="btn-box">
-        <button class="layui-btn layui-btn-lg" id="s-btn">查询</button>
+<form class="layui-form form-dis" id="search-box">
+    <div class="layui-form-item">
+        <div class="layui-form-inline">
+            <label class="layui-form-label">查询条件：</label>
+            <div class="layui-input-inline">
+                <select name="">
+                    <option value="0">题名</option>
+                    <option value="1">档号</option>
+                    <option value="2">档案条码</option>
+                    <option value="3">存放位置</option>
+                    <option value="4">档案盒条码</option>
+                    <option value="5">著录人</option>
+                    <option value="6">著录时间</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-inline">
+            <label class="layui-form-label">查询方式：</label>
+            <diV class="layui-input-inline">
+                <select name="">
+                    <option value="0">精确查找</option>
+                    <option value="1">模糊查找</option>
+                </select>
+            </div>
+        </div>
     </div>
-    <input type="date" id="time-start">-<input type="date" id="time-end">
-</div>
+    <div class="layui-form-item">
+        <div class="layui-form-inline">
+            <label class="layui-form-label">起：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="startTime" placeholder="yyyy-MM-dd">
+            </div>
+        </div>
+        <div class="layui-form-inline">
+            <label class="layui-form-label">止：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="endTime" placeholder="yyyy-MM-dd">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-form-inline">
+            <label class="layui-form-label">输入信息</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-inline">
+            <button class="layui-btn" lay-submit="" lay-filter="search">查询</button>
+        </div>
+    </div>
+</form>
 
 <form class="layui-form form-dis" id="borrowForm">
     <div class="layui-form-item" style="width: 900px">
@@ -174,5 +206,6 @@
     </div>
 </form>
 </body>
+<script type="text/javascript" src="../js/global.js"></script>
 <script type="text/javascript" src="../js/fileInfo.js"></script>
 </html>

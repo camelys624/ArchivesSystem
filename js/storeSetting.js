@@ -14,16 +14,6 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
         $ = layui.$;
 
 
-    let base = 'http://192.168.2.128:8081/';
-    let url = null;
-
-    //定义空弹出面板
-    let index = null,
-        shelf = null;
-    let store_id = null,
-        store_name = null,
-        barcode;
-    let nodes = [];
     let createTree = function () {
         $.ajax({
             url: base + 'admin/areamodule/araeStoreInfo/getStoreAndRegion',

@@ -2,9 +2,6 @@ layui.use('table',function () {
     let table = layui.table,
         $ = layui.$;
 
-    let base = 'http://192.168.2.128:8081/';
-    let url = null;
-
     url = base + '/admin/areamodule/fileBoxInfo';
     $.ajax({
         url: url,
