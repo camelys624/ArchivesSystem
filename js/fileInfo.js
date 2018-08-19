@@ -62,7 +62,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
         let value = '';
         value = 'map[ip]=1,map[arcName-like]=123';
         $.ajax({
-            url: base + '/admin/areaModule/FileArchivesInfo/query',
+            url: base + 'admin/areaModule/FileArchivesInfo/query',
             // data: value,
             dataType: 'json',
             type: 'GET',
@@ -137,7 +137,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
                 <div class="layui-input-inline">
                     <input type="text" name="station" class="layui-input" disabled>
                 </div>
-                <button id="choose" class="layui-btn layui-btn-primary">选择</button>
+                <button id="setStation" class="layui-btn layui-btn-primary">选择</button>
              </div>
              <div class="layui-form-item">
                 <label class="layui-form-label">档案条码</label>
@@ -164,26 +164,25 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
             content: $('#search-box')
         });
     });
-    laydate.render({
-        elem:'#startTime'
-    });
-    laydate.render({
-        elem: '#endTime'
+
+    $('.layui-anim').on('click','dd',function () {
+       console.log($(this).html());
     });
 
-    $('#s-btn').click(function () {
-        let info = document.getElementById('info'),
-            infoIndex = info.selectedIndex,
-            infoValue = info.options[infoIndex].value;
-        let status = document.getElementById('status'),
-            statusIndex = status.selectedIndex,
-            statusValue = status.options[statusIndex];
-        let value = document.getElementById('s-value').value;
-        let timeStart = document.getElementById('time-start').value;
-        let timeEnd = document.getElementById('time-end').value;
-        if (statusValue === 0) {
+    form.on('submit(search)',function (data) {
+        console.log(JSON.stringify(data.field));
+        let searchData = data.field;
+        if(searchData.factor !== '6'){
+            $('#startTime').attr('disabled',true);
+            $('#endTime').attr('disabled',true);
+        }else {
+            console.log(searchData.factor);
+            $('#startTime').removeAttr('disabled');
+            $('#endTime').removeAttr('disabled');
+        }
+        if (searchData.styles === 0) {
             console.log("hello");
-        } else if (statusValue === 1) {
+        } else if (searchData.factor === 1) {
             switch (infoValue) {
                 case 0:
                     url = base + '/admin/areamodule/fileArchivesInfo?map[arcName-like]=' + value;
@@ -211,13 +210,30 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
             }
         }
 
-        $.ajax({
-            url: url,
-            success: function (result) {
-                createTable(result.rows);
-            }
-        });
+        return false;
+        // $.ajax({
+        //     url: url,
+        //     success: function (result) {
+        //         createTable(result.rows);
+        //     }
+        // });
     });
+
+    laydate.render({
+        elem:'#startTime'
+    });
+    laydate.render({
+        elem:'#endTime'
+    });
+
+    laydate.render({
+        elem:'#borrowTime'
+    });
+    laydate.render({
+        elem: '#borrowDay'
+    });
+
+
 
     //导入文档信息
     $('#entry').click(function () {
@@ -367,20 +383,22 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate'], function () {
         elem: '#import',
         url: base + '/admin/areamodule/fileBoxInfo/execlImport',
         accept: 'file',
+        auto:true,
         done: function (result) {
+            console.log(result);
             layer.msg(result.msg);
         },
         error: function () {
-            console.log("erro")
+            console.log("error");
         }
     });
     uploadInst = upload.render({
         elem: '#upload',
-        url: base + '/admin/areamodule/fileBoxInfo/execlImport',
+        url: base + 'admin/areamodule/fileBoxInfo/execlImport',
         done: function (result) {
             layer.msg(result.msg);
         }
-    })
+    });
 
     $('#export').click(function () {
         // let url = base + 'admin/areaModule/FileBoxInfo/selectll?page='+ page + '&pageSize=' +pageSize;

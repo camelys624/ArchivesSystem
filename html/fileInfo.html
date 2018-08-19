@@ -61,7 +61,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">查询条件：</label>
             <div class="layui-input-inline">
-                <select name="">
+                <select name="factor">
                     <option value="0">题名</option>
                     <option value="1">档号</option>
                     <option value="2">档案条码</option>
@@ -75,7 +75,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">查询方式：</label>
             <diV class="layui-input-inline">
-                <select name="">
+                <select name="styles">
                     <option value="0">精确查找</option>
                     <option value="1">模糊查找</option>
                 </select>
@@ -86,13 +86,13 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">起：</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" id="startTime" placeholder="yyyy-MM-dd">
+                <input type="text" class="layui-input" name="startTime" id="startTime" placeholder="yyyy-MM-dd" autocomplete="off" disabled="disabled">
             </div>
         </div>
         <div class="layui-form-inline">
             <label class="layui-form-label">止：</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" id="endTime" placeholder="yyyy-MM-dd">
+                <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off" placeholder="yyyy-MM-dd">
             </div>
         </div>
     </div>
@@ -100,7 +100,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">输入信息</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input">
+                <input type="text" name="info" class="layui-input">
             </div>
         </div>
         <div class="layui-form-inline">
@@ -167,13 +167,13 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">借阅日期：</label>
             <div class="layui-input-inline">
-                <input type="text" name="time" class="layui-input" id="borrowTime">
+                <input type="text" name="time" class="layui-input" id="borrowTime" placeholder="yyyy-MM-dd">
             </div>
         </div>
         <div class="layui-form-inline">
             <label class="layui-form-label">借阅天数：</label>
             <div class="layui-input-inline">
-                <input type="text" name="borrowDay" autocomplete="off" class="layui-input">
+                <input type="text" name="borrowDay" autocomplete="off" class="layui-input" id="borrowDay" placeholder="yyyy-MM-dd">
             </div>
         </div>
         <div class="layui-form-inline">
