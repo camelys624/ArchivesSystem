@@ -1,0 +1,29 @@
+ #action input {
+        width: 100px;
+        height: 30px;
+        font-size: 15px;
+        background-color: #FFFFFF;
+    }
+
+    #action select {
+        width: 115px;
+        height: 30px;
+    }
+
+    #searchDiv {
+        display: none;
+        line-height: 25px;
+        margin-left: 15px;
+        margin-top: 10px;
+    }
+
+    #searchDiv select {
+        width: 115px;
+        height: 30px;
+    }
+
+    #searchDiv input {
+        box-sizing: content-box;
+        width: 250px;
+        height: 30px;
+    }

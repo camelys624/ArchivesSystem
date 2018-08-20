@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>档案盒查询详情界面</title>
+
+    <script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../js/url.js"></script>
+    <script src="../../js/ls/queryBox.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
+    <link rel="stylesheet" href="../../css/ls/querybox.css">
+</head>
+
+<body class="body_info">
+
+<form class="layui-form-item layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui_input_block">
+            <label class="name_text">档案盒</label>
+            <input type="text" name="map[boxBarcode]" required lay-verify="required" placeholder="请输入查询内容" value="123"  autocomplete="off" class="layui-input">
+            <button class="layui-btn" lay-submit lay-filter="search">检索</button>
+        </div>
+    </div>
+</form>
+
+<div class="quinfo" style="display: none">
+    <div class="onediv">
+        <form>
+            <fieldset class="fieldset_tx">
+                <legend>档案盒</legend>
+                <div class="layui-row">
+                    <div class=""  id="left">
+                        <label>盒名称:</label>
+                        <span id="name"> </span>
+                        <!-- <input type="text" autocomplete="off" /> -->
+                        <br />
+                        <label>盒号:</label>
+                        <span id="box"> </span>
+                        <!--   <input type="text" autocomp lete="off" />-->
+                        <br />
+                        <label>期限:</label>
+                        <span id="time"> </span>
+                        <!--  <input type="text" autocomplete="off" /> -->
+                        <br/>
+                        <label>位置:</label>
+                        <span id="position"> </span>
+                        <!--  <input type="text" autocomplete="off" /> -->
+                    </div>
+                    <div class=""  id="right">
+                        <button class="shu_txt" lay-submit lay-filter="search">打开架体</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <fieldset class="filed2">
+            <legend>盒内档案</legend>
+            <table class="layui-table" id="list" lay-filter="table_list" ></table>
+            <!--<table>-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>提名</th>-->
+                    <!--<th>存放位置</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>vfvg</td>-->
+                    <!--<td>vfvg</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        </fieldset>
+
+        <fieldset class="filed3">
+            <legend>借阅情况</legend>
+            <div class="borrowing">
+                <p>
+                    <label>借阅状态:</label>
+                    <span id="state_"> </span>
+                    <!--   <input type="text" autocomplete="off" /> -->
+                </p>
+                <p>
+                    <label>借阅日期:</label>
+                    <span id="datetime_"> </span>
+                    <!--  <input type="text" autocomplete="off" /> -->
+                </p>
+                <p>
+                    <label>借阅人:</label>
+                    <span id="people"> </span>
+                    <!--  <input type="text" autocomplete="off" /> -->
+                </p>
+            </div>
+        </fieldset>
+    </div>
+    <div class="div4">
+        <fieldset class="filed4">
+            <legend>档案信息</legend>
+
+            <ul class="ui_list2">
+                <li>Coffee</li>
+                <li>Milk</li>
+            </ul>
+        </fieldset>
+    </div>
+</div>
+</body>
+
+</html>

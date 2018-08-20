@@ -1,0 +1,103 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    /*background-color: #f0f0f0;*/
+}
+.borrow-bg{
+    width:100%;
+    height: 1080px;
+    background-color: #f0f0f0;
+}
+.CountTime{
+    width: 99%;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:10px;
+    border:1px solid #e6e6e6;
+    background-color: white;
+    border-radius:6px;
+    position: relative;
+    box-sizing: border-box;
+}
+.CountTime .CountText{
+    position: absolute;
+    font-size: 16px;
+    top: -1em;
+    left: 0.5%;
+    line-height: 2em;
+    padding: 0 0.5em;
+    background-color: #fff;
+}
+.layui-inline{
+    line-height: 60px;
+}
+.layui-form-label{
+    line-height: 40px;
+    font-size: 16px;
+    padding-right: 0px;
+}
+.layui-input-inline{
+    margin-left: 6px;
+}
+
+.layui-input{
+    width: 120px;
+    height: 30px;
+}
+.layui-form-label1{
+    font-size: 16px;
+    margin-left: 10px;
+}
+.dataType{
+    display: inline-block;
+    line-height: 60px;
+}
+.dataType-text{
+    font-size: 16px;
+    margin-left: 10px;
+    line-height: 40px;
+}
+.selectDate{
+    font-size: 14px;
+    width: 100px;
+    height: 30px;
+    border:1px solid #e3e9ef;
+    background-color: #fff;
+    border-radius: 2px;
+    margin-left: 6px;
+}
+/*.selectValue{*/
+    /*text-align: center;*/
+/*}*/
+.count-btn{
+    width: 80px;
+    height: 42px;
+    border:1px solid #707070;
+    border-radius: 2px;
+    background-color: #ededed;
+    margin-left: 15px;
+    font-size: 16px;
+    color: black;
+    letter-spacing: 2px;
+}
+.export-btn{
+    width: 76px;
+    height: 30px;
+    border:1px solid #707070;
+    border-radius: 2px;
+    background-color: #ededed;
+    margin-left: 15px;
+    font-size: 16px;
+    color: black;
+    letter-spacing: 2px;
+}
+.max-frame{
+    height: 740px;
+    margin-top: 1px;
+    border: 1px solid #000000;
+    background-color: #e6e6e6;
+
+}

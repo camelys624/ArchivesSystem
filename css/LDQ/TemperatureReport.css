@@ -1,0 +1,115 @@
+.mjj-top ,.details-choose{
+    width: 100%;
+    height: 50px;
+}
+.mjj-text{
+    line-height: 50px;
+    font-size: 15px;
+    letter-spacing: 1px;
+    margin-left: 30px;
+}
+#mjj-select ,#mjj-select1{
+    width: 130px;
+    height: 25px;
+}
+.btn-Single{
+    display: inline-block;
+}
+.ReportType{
+    font-size: 15px;
+    margin-left: 30px;
+    letter-spacing: 2px;
+
+}
+.radioText{
+    margin-left: 5px;
+    font-size: 16px;
+}
+.radios{
+    width:14px;
+    height:14px;
+    margin-left: 12px;
+    vertical-align:middle;
+}
+.btn-search, .btn-printing, .btn-detail{
+    width: 53px;
+    height: 32px;
+    font-size: 15px;
+    color: white;
+    letter-spacing: 2px;
+    border-radius: 4px;
+    margin-left: 35px;
+    border-style: none;
+    background-color: #009688;
+}
+.btn-printing{
+    background-color: #FF5722;
+    margin-left: 20px;
+}
+.btn-detail{
+    background-color: #1E9FFF;
+    margin-left: 20px;
+}
+
+/*详情页内容*/
+.layui-form-label, .layui-form-label1{
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+.layui-input{
+    width: 120px;
+    height: 30px;
+    margin-top: 5px;
+    display: inline-block;
+    border: 1px solid rgb(169, 169, 169);
+}
+
+.btn-find{
+    width: 60px;
+    height: 30px;
+    border-radius: 2px;
+    border-style: none;
+    background-color: #009688;
+    color: white;
+    letter-spacing: 3px;
+    font-size: 15px;
+    text-align: center;
+    margin-left: 40px;
+}
+#details{
+    display: none;
+}
+
+/*报表日期
+*/
+.reportDate{
+    width: 100%;
+    height: 50px;
+}
+.dateText{
+    margin-left: 30px;
+    font-size: 16px;
+}
+.layui-input1{
+    width: 110px;
+    height: 25px;
+}
+.week-num{
+    margin-left: 20px;
+    font-size: 16px;
+    display: none;
+}
+#select-week{
+    width: 90px;
+    height: 30px;
+    display: none;
+}
+#ChartView{
+    width: 70%;
+    height: 600px;
+    font-size: 24px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 600px;
+}

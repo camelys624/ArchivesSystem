@@ -1,0 +1,52 @@
+.left p {
+    background-color: pink;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    height: 50px;
+    padding-top: 20px;
+}
+
+#userManagement,
+#accessTemplate {
+    display: none;
+}
+
+#editUser {
+    display: none;
+    line-height: 25px;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.editInput {
+    width: 300px;
+    line-height: 25px;
+    float: left;
+    margin-top: 25px;
+    margin-right: 50px;
+}
+
+.labelName {
+    width: 120px;
+    text-align: right;
+    margin-left: 5px;
+    font-size: 16px;
+    line-height: 25px;
+    float: left;
+}
+
+.labelName label {
+    display: inline-block;
+    margin-top: 27px;
+}
+
+.submitButton {
+    margin: 20px 0 0 240px;
+}
+
+.edit {
+    height: 0px;
+    width: 0px;
+    overflow: hidden;
+}

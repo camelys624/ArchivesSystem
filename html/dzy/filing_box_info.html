@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>档案盒信息</title>
+    <script src="../../layui/jquery-1.11.1.min.js"></script>
+    <script src="../../layui/layui.all.js"></script>
+    <script src="../../js/dzy/filing_box_info.js"></script>
+    <script src="../../js/dzy/model.js"></script>
+    <script src="../../js/dzy/proTree.js"></script>
+    <link href="../../layui/css/layui.css" rel="stylesheet">
+    <link href="../../css/public.css" rel="stylesheet">
+    <link href="../../css/dzy/data_dic.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main">
+        <div class="top_btn_bar">
+            <button class="layui-btn layui-btn-sm" id="filebox_add">添加</button>
+            <button class="layui-btn layui-btn-sm" id="filebox_query">查询</button>
+            <!--    <button class="layui-btn layui-btn-sm" id="Borrowing">档案盒借阅</button>-->
+            <button class="layui-btn layui-btn-sm" id="Excel_operation">Excel操作</button>
+            <!--            <button class="layui-btn layui-btn-sm">盒内档案</button>-->
+        </div>
+        <div class="filing_con">
+            <table id="filing_info_table" lay-filter="filing_info"></table>
+        </div>
+    </div>
+    <div class="operation_model">
+        <script type="text/html" id="filebox_operation">
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="one">更多操作</a>
+        </script>
+    </div>
+    <!--更多操作模块-->
+    <div id="operation_model">
+        <span class="layui-btn layui-btn-xs" id="modify_info">修改</span>
+        <span class="layui-btn layui-btn-danger layui-btn-xs" id="filebox_del">删除</span>
+        <span class="layui-btn layui-btn-normal layui-btn-xs" id="Borrowing">借阅</span>
+        <span class="layui-btn layui-btn-warm layui-btn-xs" id="chenge_location">更改位置</span>
+        <span class="layui-btn layui-btn-danger layui-btn-xs" id="">打开架体</span>
+        <span class="layui-btn layui-btn-xs" id="filebox_file">盒内档案</span>
+    </div>
+    <div style="height:5px;overflow-y:hidden;">
+        <!--添加档案盒-->
+        <div id="add_content" class="layer_form">
+            <form class="layui-form">
+                <p>
+                    <label>盒名称</label>
+                    <input type="text" name="boxName">
+                    <label>盒号</label>
+                    <input type="text" name="boxNum">
+                </p>
+                <p>
+                    <label>全宗号</label>
+                    <input type="text" name="fondsNo">
+                    <label>档号</label>
+                    <input type="text" name="filesNo">
+                </p>
+                <p>
+                    <label>责任者</label>
+                    <input type="text" name="accurate">
+                    <label>起止件号</label>
+                    <input type="text" name="stpNumber">
+                </p>
+                <p>
+                    <label>保管期限</label>
+                    <select name="duration">
+                        <option value="">永久</option>
+                        <option value="">定期30年</option>
+                        <option value="">定期10年</option>
+                    </select>
+                    <label>密级</label>
+                    <select name="security">
+                        <option value="公开">公开</option>
+                        <option value="秘密级">秘密级</option>
+                        <option value="机密级">机密级</option>
+                        <option value="绝密级">绝密级</option>
+                    </select>
+                </p>
+                <!--
+                <p>
+                    <label>页数</label>
+                    <input type="text" name="">
+                </p>
+-->
+                <p>
+                    <label>存放位置</label>
+                    <input type="text" name="rdLocationAddr" disabled>
+                    <span class="layui-btn layui-btn-sm layui-btn-normal" id="saveoption_choose">选择</span>
+                    <span>成功录入数据<span id="">0</span>条</span>
+                </p>
+                <label>摘要</label>
+                <textarea cols="65" rows="4" name="details"></textarea>
+                <p>
+                    <label>RFID</label>
+                    <input type="text" name="rfid" style="width:20em;">
+                </p>
+                <p>
+                    <label>条码</label>
+                    <input type="text" name="">
+                    <button class="layui-btn layui-btn-sm layui-btn-normal" id="">打印条码</button>
+                    <span class="layui-btn layui-btn-md" lay-submit lay-filter="fileboxadd_save" id="fileboxadd_save">保存</span>
+                    <span class="layui-btn layui-btn-md" id="filebox_cancel">取消</span>
+                </p>
+            </form>
+        </div>
+        <!--查询档案盒-->
+        <div id="query_content" class="layer_form">
+            <p>
+                <select name="query_field" id="query_field">
+                    <option value="盒名称">盒名称</option>
+                    <option value="盒号">盒号</option>
+                    <option value="条码">条码</option>
+                    <option value="存放位置">存放位置</option>
+                    <option value="著录时间范围">著录时间范围</option>
+                    <option value="密级">密级</option>
+                    <option value="创建时间范围">创建时间范围</option>
+                </select>
+                <select name="query_way" id="query_way">
+                    <option value="模糊查询">模糊查询</option>
+                    <option value="精准查询">精准查询</option>
+
+                </select>
+            </p>
+            <p>
+                <label>查询内容</label>
+                <input type="text" name="query_content" id="query_text">
+            </p>
+            <p>
+                <input type="date" name="" id="query_datestar" disabled>
+                <input type="date" name="" id="query_dateend" disabled>
+            </p>
+            <p>
+                <span class="layui-btn" id="query_submit">查询</span>
+            </p>
+        </div>
+        <!--档案盒借阅-->
+        <div id="Borrowing_content" class="layer_form">
+            <form name="" id="Borrowing_form" class="layui-form">
+                <P class="text-center">
+                    <label>经办人：</label>
+                    <input type="text" name="creater" required lay-verify="required" placeholder="必填" value="管理员" disabled>
+                    <label>档案盒ID</label>
+                    <input type="text" disabled name="fkBoxId" id="bor_fkBoxId">
+                </P>
+                <P>
+                    <label>借阅人：</label>
+                    <input type="text" name="userName" required lay-verify="required" placeholder="必填" maxlength="8">
+                    <label>借阅部门：</label>
+                    <input type="text" name="company">
+                    <label>借阅目的：</label>
+                    <select name="useIntention">
+                        <option value="工作考察">工作考察</option>
+                        <option value="编史修志">编史修志</option>
+                        <option value="学术研究">学术研究</option>
+                        <option value="经济建设">经济建设</option>
+                        <option value="宣传教育">宣传教育</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </P>
+                <P>
+                    <label>手机号：</label>
+                    <input type="text" name="userPhone" required lay-verify="required" placeholder="必填">
+                    <label>固定电话：</label>
+                    <input type="text" name="userTel">
+                    <label>E-mail：</label>
+                    <input type="text" name="userEmail">
+                </P>
+                <P>
+                    <label style="width:8em;">预计归还日期：</label>
+                    <input type="date" name="rec_expTime" required lay-verify="required" placeholder="必填">
+                    <label style="width:9em;">借阅人身份证号：</label>
+                    <input type="text" name="id_code" style="width:19em;" required lay-verify="required" placeholder="必填">
+                </P>
+                <label>备注:</label>
+                <textarea cols="91" rows="5" name="remark"></textarea>
+                <p class="text-center">
+                    <button class="layui-btn layui-btn-sm layui-btn-normal">打印凭证</button>
+                    <button class="layui-btn" lay-submit lay-filter="Borrowing_yes">借阅</button>
+                    <button type="reset" class="layui-btn">重填</button>
+                </p>
+            </form>
+            <h3 style="font-size:16px;font-weight:600;">该档案盒内档案</h3>
+            <div class="Borrowing_file">
+                <table id="bor_file_table"></table>
+            </div>
+        </div>
+
+        <!--显示盒内档案-->
+        <div id="file_con">
+            <table id="file_table"></table>
+        </div>
+        <!--Excel操作-->
+        <div id="Excel_content">
+            <span class="layui-btn" id="">从Excel导入</span>
+            <span class="layui-btn" id="export_excel">导出当前页到Excel</span>
+            <span class="layui-btn" id="">导出查询的所有数据到Excel</span>
+        </div>
+
+        <!--选择档案盒位置-->
+        <div id="saveoption_con">
+            <div class="saveoption_left">
+                <ul class="tree">
+
+                </ul>
+            </div>
+            <div class="saveoption_right">
+
+            </div>
+            <div class="saveoption_on">
+                <span class="layui-btn" id="location_yes">确定</span>
+                <span class="layui-btn close_btn">取消</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

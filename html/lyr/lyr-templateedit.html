@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>档案库编辑</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/LYR/lyr-templateedit.css" />
+		<link rel="stylesheet" type="text/css" href="../../js/LYR/ztree/zTreeStyle.css" />
+		<script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
+	</head>
+
+	<body>
+		<div class="layui-side layui-bg-gray">
+			<blockquote class="layui-elem-quote layui-bg-black sideblock">
+				<p>档案库编辑
+					<i class="layui-icon layui-layout-right layui-icon-refresh" onclick="refresh()"></i>
+				</p>
+			</blockquote>
+			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+		<div class="layui-body">
+			<iframe id="menuframe" name="menuframe" src="lyr-createtem.html" frameborder="no"></iframe>
+		</div>
+		<!--<script src="../js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="../../js/LYR/ztree/jquery-1.4.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/LYR/ztree/jquery.ztree.all-3.5.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/LYR/lyr-templateedit.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/url.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+	<div class="right-menu" id="right-one">
+		<li onclick="addify()">添加档案类型</li>
+	</div>
+	<div class="right-menu" id="right-menu">
+		<li onclick="addify()">添加档案类型</li>
+		<li onclick="addify(1)">修改档案类型</li>
+		<li onclick="addfy()">添加档案库</li>
+		<li onclick="deletify()">禁用档案类型</li>
+	</div>
+	<div class="right-menu" id="right-last">
+		<li onclick="modfy()">修改档案库</li>
+		<li onclick="deletfy()">禁用档案库</li>
+	</div>
+	<!-- 树增删改弹出框-->
+	<div class="layui-form" id="filetype">
+		<div class="layui-form-item">
+			<label class="layui-form-label">档案类型名称：</label>
+			<div class="layui-input-inline">
+				<input type="text" id="filetypename" name="filetypename" placeholder="文本名称" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" onclick="addifysave()">确定</button>
+				<button class="layui-btn" onclick="cance()">取消</button>
+			</div>
+		</div>
+	</div>
+	<!--档案库弹出层-->
+	<div class="layui-form" id="archival">
+		<div class="layui-form-item">
+			<label class="layui-form-label archivallable">档案库名称：</label>
+			<div class="layui-input-inline" id="archivaldiv">
+				<input type="text" id="archivalname" name="archivalname" lay-verify="required" placeholder="文本名称" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label archivallable">档案库模版：</label>
+			<div class="layui-input-inline" id="archivaldiv1">
+				<input type="text" id="archivaltype" name="archivaltype" lay-verify="required" placeholder="模版名称" autocomplete="off" class="layui-input"disabled>
+				<!--<select lay-verify="required" id="archivaltype" lay-filter="changeoption"disabled >-->
+            <!--</select>-->
+			</div>
+		</div>
+		<fieldset class="layui-elem-field">
+			<legend>选择档案模版</legend>
+			<div class="layui-field-box">
+				<table class="layui-hide" id="LAY_table_template" lay-filter="template"></table>
+			</div>
+		</fieldset>
+		<div class="layui-form-item" >
+			<div class="layui-input-block archivalbutton">
+				<button class="layui-btn" onclick="saveselect()">保存</button>
+				<button class="layui-btn" onclick="cance()">取消</button>
+			</div>
+		</div>
+	</div>
+
+</html>

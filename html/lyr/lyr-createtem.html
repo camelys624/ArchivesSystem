@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>创建模版</title>
+		<link rel="stylesheet" type="text/css" href="../../js/LYR/jqueryui/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/LYR/lyr-createtem.css" />
+	</head>
+
+	<body>
+		<div class="layui-form">
+			<div class="layui-form-item frombutton">
+				<button class="layui-btn" onclick="appendText('label')">文本框</button>
+				<button class="layui-btn" onclick="appendText('select') ">下拉框</button>
+				<button class="layui-btn" onclick="appendText('date')">时间框 </button>
+				<button class="layui-btn" lay-submit lay-filter="save" id="save">保存</button>
+			</div>
+			<div class="layui-form-item" id="editform">
+				<div class="layui-inline">
+					<label class="layui-form-label">模版名称:</label>
+					<div class="layui-input-inline">
+						<input type="text" id="atName" name="atName" lay-verify="required" placeholder="请输入模版名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">模版属性:</label>
+					<div class="layui-input-block">
+						<select lay-verify="required" id="type" name="type" lay-verify="required" lay-filter="datachange">
+                                <option>档案案卷</option>
+                                <option>档案卷内</option>
+                                <option>一式一件</option>
+                                <option>工程项目</option>
+                                <option>电子文件</option>
+                         </select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">备注:</label>
+					<div class="layui-input-inline">
+						<input type="text" id="mark" lay-verify="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form" id="fromcontent">
+		</div>
+		<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
+		<script src="../../js/LYR/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/url.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/LYR/lyr-createtem.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+	<!-- 文本框弹出层-->
+	<div class="layui-form layertext" id="layerlabel">
+		<div class="layui-form-item">
+			<label class="layui-form-label">文本名称：</label>
+			<div class="layui-input-inline">
+				<input type="text" id="labelname" name="labelname" required lay-verify="required" placeholder="文本名称" autocomplete="off" value="caption" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="formDemo">确定</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</div>
+	<!-- 下拉框弹出层-->
+	<div class="layui-form layertext" id="layerselect">
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">文本名称：</label>
+				<div class="layui-input-inline">
+					<input type="text" id="selectname" name="selectname" placeholder="文本名称" autocomplete="off" value="caption" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">参数类型：</label>
+				<div class="layui-input-inline">
+					<select lay-verify="required" id="selecttype" name="selecttype" lay-filter="changeoption"></select>
+				</div>
+			</div>
+			<div class="tableheader">
+				<table class="layui-hide" id="lay_table_user" lay-filter="user"></table>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn layui-layout-right" lay-submit lay-filter="formDemo">确定</button>
+			</div>
+		</div>
+	</div>
+	<!-- 时间弹出层-->
+	<div class="layui-form layertext" id="layerdate">
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">文本名称：</label>
+				<div class="layui-input-inline">
+					<input type="text" id="datename" name="datename" placeholder="文本名称" autocomplete="off" value="caption" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn layui-layout-right" lay-submit lay-filter="formDemo">确定</button>
+			</div>
+		</div>
+	</div>
+	<!-- div右击事件-->
+	<div class="right-menu" id="right-menu">
+		<li onclick="modify()">修改</li>
+		<br/>
+		<li onclick="delet()">删除</li>
+	</div>
+</html>

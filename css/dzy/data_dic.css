@@ -1,0 +1,211 @@
+th,
+td {
+    text-align: center;
+}
+
+
+/*通用样式*/
+
+select {
+    box-sizing: content-box;
+    padding: 2px;
+}
+
+li>ul {
+    margin-left: 1em;
+}
+
+
+/*更多操作按钮组*/
+
+#operation_model {
+    position: absolute;
+    height: 26px;
+    padding: 6px;
+    background: #ddd;
+    border: 1px solid #666;
+    border-right: none;
+    display: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    overflow: hidden;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.main_side .side_title {
+    color: #fff;
+    font-size: 17px;
+    text-indent: 1em;
+    height: 34px;
+    line-height: 34px;
+    background: rgb(66, 156, 148);
+}
+
+#side_ul li {
+    cursor: pointer;
+    text-indent: 1em;
+    line-height: 30px;
+    font-size: 15px;
+}
+
+#side_ul li:hover {
+    color: orange;
+}
+
+.side_list_act {
+    background: green;
+    color: #fff;
+}
+
+#add,
+#edit {
+    text-align: center;
+    padding: 40px 40px 0px;
+    display: none;
+}
+
+
+/*档案盒信息样式*/
+
+.top_btn_bar {
+    padding: 3px;
+}
+
+
+/*改写layui默认样式*/
+
+#Borrowing_content .layui-form-select {
+    display: none;
+}
+
+
+/*档案盒信息操作内容*/
+
+.layer_form {
+    display: none;
+    padding: 10px;
+}
+
+.layer_form p {
+    line-height: 55px;
+    height: 55px;
+    font-size: 14px;
+}
+
+.layer_form label {
+    display: inline-block;
+    width: 6em;
+    text-align: right;
+    margin-right: 0.5em;
+    font-size: 14px;
+}
+
+.layer_form input,
+.layer_form select {
+    width: 12em;
+    font-size: 14px;
+    height: 20px;
+    line-height: 22px;
+}
+
+#add_content select {
+    background: #ddd;
+}
+
+#saveoption_choose {
+    margin-right: 7em;
+}
+
+#fileboxadd_save {
+    margin-left: 5em;
+}
+
+#saveoption_con {
+    padding-top: 3px;
+}
+
+.saveoption_left {
+    width: 220px;
+    border: 1px solid #999;
+    height: 480px;
+    margin-left: 5px;
+    float: left;
+    overflow-y: auto;
+    padding-left: 20px;
+}
+
+.saveoption_right {
+    border: 1px solid #999;
+    margin-left: 233px;
+    height: 410px;
+    margin-right: 5px;
+    overflow-y: auto;
+}
+
+.saveoption_right p:hover {
+    background: #ccc;
+    cursor: default;
+}
+
+.saveoption_on {
+    text-align: center;
+    padding: 5px;
+}
+
+.saveoption_on span {
+    margin: 0px 100px;
+}
+
+
+/*档案盒信息查询模块,借阅模块*/
+
+#query_content {
+    text-align: center;
+}
+
+#Borrowing_content label {
+    width: 5em;
+}
+
+#Borrowing_content input,
+#Borrowing_content select {
+    width: 10em;
+    font-size: 15px;
+    height: 22px;
+    line-height: 22px;
+}
+
+.Borrowing_file {
+    border: 1px solid #666;
+    min-height: 10em;
+    font-size: 15px;
+}
+
+.layui-form select {
+    display: inline-block;
+}
+
+
+/*Excel操作*/
+
+#Excel_content {
+    padding-top: 10px;
+}
+
+#Excel_content span {
+    margin: 5px;
+}
+
+
+/*选择位置*/
+
+.right_left {
+    z-index: 10;
+}
+
+
+/*档案上架*/

@@ -1,0 +1,214 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+.main_side{
+  display: inline-block;
+  background: green;
+}
+.main_content{
+  display: inline-block;
+  background: yellow;
+}
+
+/*@media screen and (min-width:100px) and (max-width:767px){*/
+  /*.onediv{*/
+      /*width: 21%;*/
+  /*}*/
+  /*.div4{*/
+      /*width: 78%;*/
+  /*}*/
+/*}*/
+/*@media screen and (min-width:767px) and (max-width:942px){*/
+  /*.onediv{*/
+      /*width: 18%;*/
+  /*}*/
+  /*.div4{*/
+      /*width: 81%;*/
+  /*}*/
+/*}*/
+/*@media screen and (min-width:942px) and (max-width:1200px){*/
+  /*.onediv{*/
+      /*width: 16%;*/
+  /*}*/
+  /*.div4{*/
+      /*width: 83%;*/
+  /*}*/
+/*}*/
+/*@media screen and (min-width:1200px){*/
+  /*.onediv{*/
+      /*width: 12%;*/
+  /*}*/
+  /*.div4{*/
+      /*width: 87%;*/
+  /*}*/
+/*}*/
+/**
+
+**/
+.layui-form-item{
+  text-align: center;
+}
+.layui_input_block{
+  margin-top: 50px;
+  text-align: center;
+}
+.layui-input{
+  width: 500px;display: inline-block;
+}
+.layui-btn{
+  margin-left: 25px;
+  font-size: 18px;
+}
+table{
+    font-size:16px;
+}
+.layui-input{
+  font-size: 18px;
+}
+/**
+  querybox.css
+**/
+legend{
+  font-size: 18px;
+}
+ 
+.body_info{
+  margin: 20px;
+}
+.name_text{
+  margin-right:25px;
+  font-size: 18px;
+}
+
+.fieldset_tx{
+  width: 100%;
+  height: 230px;
+  text-align: center ;
+}
+.layui-row{
+  margin-top: 15px;
+}
+fieldset{
+    border-color: #f2f2f2;
+}
+
+#left,#right{
+    display: inline-block;
+    float: left;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+#left{
+    width: 75%;
+}
+#right{
+    width: 15%;
+}
+.fieldset_tx label{
+  width: 4em;
+  text-align: right;
+  display: inline-block;
+  height: 43px;
+    font-size: 18px;
+}
+
+.fieldset_tx input{
+  margin: 6px;
+  text-align: left;
+  display: inline-block;
+}
+ .shu_txt{
+   text-align: center;
+   box-sizing: content-box;
+     width:20px;
+    height: 120px;
+    line-height:24px;
+    border:0px solid #333;  
+    padding: 5px 10px;
+     background-color: #009688;
+    color: white;
+    border-radius: 3px;
+    font-size: 18px;
+     /*margin: 10% 15px 0px auto;*/
+ }
+ table{
+  width: 100%;
+ }
+
+tr{
+  border-bottom:2px solid #e2e2e2;
+  height: 30px;
+}
+th{
+  width:50%;
+  color: white;
+  background-color: #009688;
+  font-size: 16px;
+}
+ .filed2{
+   margin-top: 20px;
+   width: 100%;
+   height: 362px;
+   text-align: center;
+ }
+ 
+ .ui_list{
+   float: left;
+   height: 200px;
+ }
+ /* 借阅 */
+ .filed3{
+     width: 100%;
+     height: 230px;
+     text-align: center ;
+ }
+ 
+ .borrowing{
+  text-align: center;
+ }
+
+.borrowing p{
+    margin: 22px 0;
+}
+ .layui-col-md8 label{
+   font-size: 16px;
+ }
+ .quinfo{
+     height: 850px;
+ }
+ .onediv{
+  width: 400px;
+  min-width: 200px;
+height: 100%;
+  float: left;
+ }
+ 
+ /* 档案信息 */
+ 
+.div4{
+    margin-left: 420px;
+    height: 100%;
+}
+.filed4{
+  text-align: center;
+    height: 100%;
+}
+.ui_list2{
+  float: left;
+}
+.borrowing label{
+width: 5em;
+text-align: right;
+display: inline-block;
+height: 43px;
+margin-right: 3px;
+    font-size: 18px;
+}
+span{
+    font-size: 16px;
+  display: inline-block;
+  min-width: 6em;
+  border-bottom: 1px solid #d2d2d2;
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>档案上架</title>
+    <script src="../../layui/jquery-1.11.1.min.js"></script>
+    <script src="../../layui/layui.all.js"></script>
+    <script src="../../js/dzy/filing_box_info.js"></script>
+    <script src="../../js/dzy/model.js"></script>
+    <link href="../../layui/css/layui.css" rel="stylesheet">
+    <link href="../../css/public.css" rel="stylesheet">
+    <link href="../../css/dzy/data_dic.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main">
+        <div class="top_btn_bar">
+            <button class="layui-btn layui-btn-sm" id="fileshelf_query">查询</button>
+            <button class="layui-btn layui-btn-sm" id="all_Onshelf">全部上架</button>
+        </div>
+        <div class="fileshelf_con">
+            <table id="fileshelf_info_table" lay-filter="fileshelf_info"></table>
+        </div>
+    </div>
+    <div class="operation_model">
+        <script type="text/html" id="Onshelf_operation">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="one_Onshelf">档案上架</a>
+            <a class="layui-btn layui-btn-xs" lay-event="send_Onshelf">发送上架任务</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="send_Offshelf">发送下架任务</a>
+        </script>
+    </div>
+</body>
+
+</html>

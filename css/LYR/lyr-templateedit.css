@@ -1,0 +1,62 @@
+.sideblock{
+	border: none;
+	height: 15px
+}
+.sideblock i{
+	margin: 1em 5px
+}
+.right-menu{
+	background-color:White;
+	border:1px solid #cccccc; 
+	box-shadow: 0 1px 1px #888,1px 0 1px #ccc;
+	padding:10px;
+	position: absolute;
+	display:none;
+	z-index: 1000
+}
+.right-menu li{
+	cursor:Pointer;
+	font-size:10px
+}
+.right-menu li:hover{
+    background-color:#FFE6B0;
+}
+#filetype{
+	background-color: transparent;
+	display:none;
+	padding:15px 10px 0 0
+}
+#filetype label{
+	width: 100px
+}
+#archival{
+	background-color: transparent;
+	display:none;
+	padding:10px 0 0 0;
+}
+.archivallable{
+	width:100px
+}
+#archivaldiv{
+	width: 300px;
+}
+#archivaldiv1{
+	width: 300px;
+}
+.archivalbutton{
+	margin-left: 260px;
+}
+#menuframe{
+	width: 100%;
+	height:calc(100% - 3px);
+}
+
+
+
+.layui-field-box{
+	padding:0;
+}
+.layui-table, .layui-table-view{
+	margin: 0;
+}
+

@@ -1,0 +1,74 @@
+body {
+        padding: 0;
+        margin: 0;
+        background-image: url(../../img/YQ/background.png);
+        background-repeat: no-repeat;
+        width: 1920px;
+        position: absolute;
+    }
+
+    form {
+        width: 540px;
+        height: 395px;
+        border: 1px solid #FFFFFF;
+        background-color: #FFFFFF;
+        margin-left: 36%;
+        margin-top: 15%;
+    }
+
+    form img {
+        margin: 23px 0 0 120px;
+        float: left;
+    }
+
+    form #p1 {
+        color: #6296ea;
+        display: inline-block;
+        font-size: 24px;
+        margin-left: 10px;
+        margin-top: 25px;
+        vertical-align: middle;
+        float: left;
+    }
+
+    form #p2 {
+        float: left;
+        color: #909090;
+        display: inline-block;
+        font-size: 15px;
+        margin-top: 5px;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+
+    form input {
+        width: 432px;
+        height: 52px;
+        margin: 25px 0 0 35px;
+        line-height: 20px;
+        border: 2px solid #f2f2f2;
+        padding-left: 40px;
+    }
+
+    form input[type="text"] {
+        margin-top: 60px;
+        background-image: url(../../img/YQ/username.png);
+    }
+
+    form input[type="password"] {
+        background-image: url(../../img/YQ/password.png);
+    }
+
+    form input[type="submit"] {
+        color: #FFFFFF;
+        box-sizing: content-box;
+        font-size: 27px;
+        border: 1px solid #6296ea;
+        background-color: #6296ea;
+    }
+
+    .image {
+        background-repeat: no-repeat;
+        background-size: 25px 24px;
+        background-position: 5px 15px;
+    }
