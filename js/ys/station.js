@@ -8,67 +8,121 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
 
     let createStation = function (_node) {
         let station = '';
-        for(let i = 0;i < _node.divs; i++){
-            // language=HTML
-            station += `<p value="1">{{node.name}}{{i}}层左</p>
-                        <p value="2">{{node.name}}{{i}}层右</p>`;
+        if (_node.qu_num !== undefined) {
+            for (let i = 0; i < _node.children.length; i++) {
+                for (let j = 1; j <= _node.children[i].divs; j++) {
+                    for (let h = 1; h <= _node.children[i].lays; h++) {
+                        station += '<p value="1">' + _node.children[i].name + j + '节' + h + '层左</p>' +
+                            '<p value="2">' + _node.children[i].name + j + '节' + h + '层右</p>';
+                    }
+                }
+            }
+        } else if (_node.divs !== undefined) {
+            for (let i = 1; i <= _node.divs; i++) {
+                // language=HTML
+                for (let h = 1; h <= _node.lays; h++) {
+                    station += '<p value="1">' + _node.name + i + '节' + h + '层左</p>' +
+                        '<p value="2">' + _node.name + i + '节' + h + '层右</p>';
+                }
+
+            }
+        } else if (_node.children === undefined) {
+            for (let i = 1; i <= _node.parentDivs; i++) {
+                for (let h = 1; h <= _node.parentLays; h++) {
+                    if (_node.typeId === 1) {
+                        station += '<p value="1">' + _node.parentName + i+'节' + h + '层' + _node.name + '</p>';
+                    } else {
+                        station += '<p value="2">' + _node.parentName +i+ '节' + h + '层' + _node.name + '</p>';
+                    }
+                }
+            }
         }
-        $('#station').innerHTML = station;
+        $('#station').append(station);
     };
 
     let createTree = function () {
-        $.ajax({
-            url: base + 'admin/areamodule/araeStoreInfo/getStoreAndRegion',
-            type: 'GET',
-            success: function (result) {
-                let store = [],
-                    cols = [],
-                    qu = {},
-                    region;
-                let storeData = result.list;
-                console.log(JSON.stringify(storeData));
-                for (let i = 0; i < storeData.length; i++) {
-                    region = storeData[i].region;
+            $.ajax({
+                    url: base + 'admin/areamodule/araeStoreInfo/getStoreAndRegion',
+                    type: 'GET',
+                    success: function (result) {
+                        console.log(JSON.stringify(result));
+                        let store = [],
+                            cols = [],
+                            qu = {},
+                            region;
+                        let storeData = result.list;
+                        for (let i = 0; i < storeData.length; i++) {
+                            region = storeData[i].region;
 
-                    for (let q = 0;q < region.length; q++){
-                        (function (num) {
-                            for(let j = 0; j < region[num].cols; j++){
-                                let colsName = region[num].name + j + '列';
-                                let child = {
-                                    name: colsName,
-                                    id:j,
-                                    divs:region.divs
-                                };
-                                cols.push(child);
-                                region[num].children = cols;
+                            for (let q = 0; q < region.length; q++) {
+                                for (let j = 0; j < region[q].cols; j++) {
+                                    let colsName = region[q].qu_num+'区' + j + '列';
+                                    let child = {
+                                        name: colsName,
+                                        id: j,
+                                        divs: region[q].divs,
+                                        lays: region[q].lays,
+                                        children: [
+                                            {
+                                                name: '左边',
+                                                parentName: colsName,
+                                                typeId: 1,
+                                                parentLays: region[q].lays,
+                                                parentDivs: region[q].divs
+                                            },
+                                            {
+                                                name: '右边',
+                                                parentName: colsName,
+                                                typeId: 2,
+                                                parentLays: region[q].lays,
+                                                parentDivs: region[q].divs
+                                            }
+                                        ]
+                                    };
+                                    cols.push(child);
+                                }
+                                region[q].name = region[q].qu_num;
+                                region[q].children = cols;
+                                cols = [];
+
                             }
-                        }(q))
+                            storeData[i].name = storeData[i].store_name;
+                            store.push({
+                                name: storeData[i].name,
+                                fkStoreId: storeData[i].id,
+                                children: region
+                            });
 
-                        // for(let h = 0;h < cols.length;h++){
-
-                        // }
+                        }
+                        nodes = store;
+                        //树形菜单
+                        tree({
+                            elem: '#stationTree',
+                            nodes: nodes,
+                            click: function (node) {
+                                console.log(node);
+                                $('#station').empty();
+                                createStation(node);
+                            }
+                        });
                     }
-                    storeData[i].name = storeData[i].store_name;
-                    store.push({
-                        name: storeData[i].name,
-                        fkStoreId: storeData[i].id,
-                        children: region
-                    });
-
                 }
-                nodes = store;
-                console.log(nodes);
-                //树形菜单
-                tree({
-                    elem: '#tree',
-                    nodes: nodes,
-                    click: function (node) {
-                        createStation(node);
-                    }
-                });
-            }
-        });
-    };
+            );
+        }
+    ;
 
     createTree();
-});
+
+    $('#station').on('click', 'p', function () {
+
+        console.log($(this).html());
+        $('p').css('background-color', '');
+        $('p').css('color', '');
+        $(this).css('background-color', 'gray');
+        $(this).css('color', 'white');
+        station = $(this).html();
+
+
+    });
+})
+;

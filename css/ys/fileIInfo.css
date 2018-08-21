@@ -5,20 +5,21 @@
 *
 **/
 
-.layui-btn-group{
+.layui-btn-group {
     margin-top: 10px;
 }
 
-.layui-btn-group > i{
+.layui-btn-group > i {
     font-size: 10px;
 }
-.btn-group{
+
+.btn-group {
     position: relative;
     display: inline-block;
     vertical-align: middle;
 }
 
-.menu{
+.menu {
     position: absolute;
     top: 100%;
     left: 0;
@@ -40,51 +41,77 @@
     box-shadow: 2px 6px 12px rgba(0, 0, 0, .175);
 
 }
-.menu > li{
+
+.menu > li {
     height: 30px;
     width: 200px;
     line-height: 2;
 }
 
-.input-group{
+.input-group {
 
 }
 
-.search-box{
+.station-box {
+    height: 500px;
+    width: 600px;
+    float: left;
+}
+
+.station {
+    font-size: 24px;
+}
+
+.station p {
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.station p:hover {
+    background-color: #D0D0D0;
+}
+
+.search-box {
     width: 365px;
     height: 200px;
     display: none;
 }
-.search-box select,.search-box input{
+
+.search-box select, .search-box input {
     width: 160px;
     height: 30px;
     border-radius: 4px;
 }
-.search-box select{
+
+.search-box select {
     margin: 20px 10px 5px;
 }
-.btn-box{
+
+.btn-box {
     margin-left: 40px;
     /*width: 70px;*/
     display: inline-block;
 }
-.search-box input{
+
+.search-box input {
     border: solid #9F9F9F 1px;
     margin: 10px 8px;
 }
 
-#file-box{
-    display:none;
-}
-#file-box > .layui-btn{
-    margin-top: 5px;
-    margin-left: 10px;
-}
-.file-import{
+#file-box {
     display: none;
 }
 
-.upload{
+#file-box > .layui-btn {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.file-import {
+    display: none;
+}
+
+.upload {
     width: 300px;
     min-height: 200px;
     border-radius: 6px;

@@ -19,27 +19,28 @@
 </aside>
 <main class="main">
     <div class="layui-btn-group">
-        <button class="layui-btn layui-btn-primary" id="entry" disabled="disabled"><i class="layui-icon">&#xe642;</i>录入
+        <button class="layui-btn" id="entry" disabled="disabled">录入
         </button>
-        <button class="layui-btn layui-btn-primary" id="search"><i class="layui-icon">&#xe615;</i>查询</button>
-        <button class="layui-btn layui-btn-primary" id="box"><i class="layui-icon">&#xe857;</i>档案盒</button>
+        <button class="layui-btn" id="search">查询</button>
+        <button class="layui-btn" id="box">档案盒</button>
         <div class="layui-btn-dropdown">
-            <button class="layui-btn layui-btn-primary" id="borrow" data-toggle="dropdown"><i class="layui-icon">&#xe656;</i>档案借阅<i
+            <button class="layui-btn" id="borrow" data-toggle="dropdown">档案借阅<i
                     class="layui-icon">&#xe625;</i></button>
             <ul class="layui-dropdown-menu menu" id="borrow-menu">
                 <li id="directBorrow" data-type="getCheckData"><a>直接借阅</a></li>
             </ul>
         </div>
         <div class="layui-btn-dropdown">
-            <button class="layui-btn layui-btn-primary" id="operating" data-toggle="dropdown"><i class="layui-icon">&#xe621;</i>Excel操作<i
+            <button class="layui-btn" id="operating" data-toggle="dropdown">Excel操作<i
                     class="layui-icon">&#xe625;</i></button>
             <ul class="layui-dropdown-menu menu" id="Excel-menu">
                 <li id="import"><a href="#">从Excel导入</a></li>
                 <li id="export"><a href="#">导出当前页到Excel</a></li>
-                <li><a href="http://192.168.2.128:8081/admin/areamodule/fileBoxInfo/selectFuzzy">导出查询的所有数据到Excel</a></li>
+                <li><a href="http://192.168.2.128:8081/admin/areamodule/fileBoxInfo/selectFuzzy">导出查询的所有数据到Excel</a>
+                </li>
             </ul>
         </div>
-        <button class="layui-btn layui-btn-primary" id="upload"><i class="layui-icon">&#xe64c;</i>附件</button>
+        <button class="layui-btn" id="upload">附件</button>
     </div>
     <table id="table" lay-filter="table"></table>
     <script type="text/html" id="toolbar">
@@ -55,6 +56,25 @@
         </div>
     </script>
 </main>
+
+<div class="station-box form-dis" id="stationBox" lay-filter="stationBox">
+    <div class="" style="width: 200px;float: left">
+        <blockquote class="layui-elem-quote layui-bg-black sideblock">
+            <p>
+                位置选择
+            </p>
+        </blockquote>
+        <ul id="stationTree">
+
+        </ul>
+    </div>
+    <div style="float: left;width:390px;margin-left: 10px">
+        <div class="station" id="station">
+
+        </div>
+    </div>
+</div>
+
 
 <form class="layui-form form-dis" id="search-box">
     <div class="layui-form-item">
@@ -86,13 +106,15 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">起：</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" name="startTime" id="startTime" placeholder="yyyy-MM-dd" autocomplete="off" disabled="disabled">
+                <input type="text" class="layui-input" name="startTime" id="startTime" placeholder="yyyy-MM-dd"
+                       autocomplete="off" disabled="disabled">
             </div>
         </div>
         <div class="layui-form-inline">
             <label class="layui-form-label">止：</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off" placeholder="yyyy-MM-dd">
+                <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off"
+                       placeholder="yyyy-MM-dd">
             </div>
         </div>
     </div>
@@ -173,7 +195,8 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">借阅天数：</label>
             <div class="layui-input-inline">
-                <input type="text" name="borrowDay" autocomplete="off" class="layui-input" id="borrowDay" placeholder="yyyy-MM-dd">
+                <input type="text" name="borrowDay" autocomplete="off" class="layui-input" id="borrowDay"
+                       placeholder="yyyy-MM-dd">
             </div>
         </div>
         <div class="layui-form-inline">
@@ -213,4 +236,5 @@
 </body>
 <script type="text/javascript" src="../../js/ys/global.js"></script>
 <script type="text/javascript" src="../../js/ys/fileInfo.js"></script>
+<script type="text/javascript" src="../../js/ys/station.js"></script>
 </html>
