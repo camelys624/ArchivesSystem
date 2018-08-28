@@ -148,7 +148,9 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
       for(let s=0;s<100;s++){
           staticCol += '<option>'+s+'</option>';
       }
-      for(let v=0;)
+      for(let v=1;v<=30;v++){
+          ventgaps += '<option>'+ v+'</option>';
+      }
     };
 
     let status = null;
