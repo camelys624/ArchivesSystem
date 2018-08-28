@@ -142,9 +142,13 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
       let cols='',staticCol='',ventgaps='',
           quNum='',divs='',quNumRigth='',
           lays='',capacity='',width='',speed='';
-      for(let i=0;i<100;i++){
-          cols+='<option>'+i+'</option>';
+      for(let c=0;c<100;c++){
+          cols+='<option>'+c+'</option>';
       }
+      for(let s=0;s<100;s++){
+          staticCol += '<option>'+s+'</option>';
+      }
+      for(let v=0;)
     };
 
     let status = null;
