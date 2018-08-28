@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>其他设置</title>
+    <script src="../../layui/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../../css/YQ/public.css">
+    <script src="../../layui/layui.all.js" merge="true"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/YQ/otherSettings.css">
+    <script src="../../js/YQ/otherSettings.js"></script>
+</head>
+
+<body>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>密集架连接方式</legend>
+    </fieldset>
+    <form class="formstyle">
+        <br>
+        <br>
+        <div class="layui-input-block">
+            <input type="radio" name="conect" checked="checked" value="连接方式一">连接方式一
+            <input type="radio" name="conect" value="连接方式二">连接方式二
+            <input type="radio" name="conect" value="连接方式三">连接方式三
+        </div>
+    </form>
+    <br>
+    <br>
+    <br>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>库房环境系统</legend>
+    </fieldset>
+    <form class="formstyle" action="">
+        <br>
+        <br>
+        <div class="layui-input-block">
+            <input type="radio" name="switch" checked="checked">关
+            <input type="radio" name="switch" id="switch-open">开
+        </div>
+    </form>
+    <br>
+    <br>
+    <br>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>电子档案</legend>
+    </fieldset>
+    <form class="formstyle">
+        <div class="layui-form-item filediv">
+            <br>
+            <br>
+            <label class="layui-form-label">服务器IP：</label>
+            <div class="layui-input-block">
+                <input type="text" name="serverIP" autocomplete="off" value="192.168.2.187" class="layui-input inputstyle">
+            </div>
+            <br>
+            <div class="layui-form-item">
+                <label class="layui-form-label">存放路径：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="path" autocomplete="off" value="D：电子档案" class="layui-input inputstyle" disabled="disabled" id="path">
+                </div>
+                <label for="filePath" id="pathLabel" class="layui-btn">浏&nbsp;&nbsp;&nbsp;览...</label>
+                <input type="file" name="filePath" id="filePath" onchange="getvl(this)">
+                <br>
+            </div>
+                <span id="tip">（请勿随意更改）</span>
+        </div>
+        </div>
+    </form>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-var url = "http://192.168.2.128:8081";
+var url = "http://192.168.2.130:8081";
 var fileboxOperation = new Object; //定义更多操作对象
 var location;
 $(function () {
@@ -14,31 +14,26 @@ $(function () {
     gettable_data(); //获取档案盒列表信息
     open_layer(); //注册打开弹出框事件
 
-
-
-
-    //Excel操作
-    //    $("#export_excel").click(function () {
-    //        $.ajax({
-    //            type: 'GET',
-    //            url: url + '/admin/areamodule/fileBoxInfo/selectFuzzy',
-    //            data: '',
-    //            success: function (res) {
-    //                if (res.msg) {
-    //                    layer.msg(res.msg);
-    //                }
-    //            }
-    //        });
-    //    });
-
     fileboxOperation.btn();
 });
 
 /*档案盒操作按钮*/
 fileboxOperation.btn = function () {
 
+    //取消默认鼠标右键事件
+    $(document).bind('contextmenu', function (e) {
+        e.preventDefault();
+        return false;
+    });
+    $(".main").mousedown(function (e) {
+        if (e.which == 1) {
+            $("#mousedown_right").hide();
+        }
+    });
+
     //修改档案盒信息
-    $("#modify_info").click(function () {
+    $("#modify_info,#modify_info_m").click(function () {
+        //console.log(fileboxOperation.trdata);
         $("#add_content input[name='boxName']").val(fileboxOperation.trdata.boxName);
         $("#add_content input[name='boxNum']").val(fileboxOperation.trdata.boxNum);
         $("#add_content input[name='fondsNo']").val(fileboxOperation.trdata.fondsNo);
@@ -57,11 +52,14 @@ fileboxOperation.btn = function () {
             content: $("#add_content")
         });
         tableon_hiden();
+        fileboxOperation.add_chenge = "chenge";
+        $("#mousedown_right").hide();
     });
 
     //删除档案盒事件
-    $("#filebox_del").click(function () {
+    $("#filebox_del,#filebox_del_m").click(function () {
         fileboxOperation.delete();
+        $("#mousedown_right").hide();
     });
 
     /*提交表单信息*/
@@ -104,7 +102,7 @@ fileboxOperation.btn = function () {
     });
 
     //档案盒借阅
-    $("#Borrowing").click(function () {
+    $("#Borrowing,#Borrowing_m").click(function () {
         if (fileboxOperation.trdata.status == 1) { //判断档案盒目前状态，1：未在架，2：在架，3：已借出
             layer.msg("该档案盒未在架，无法借阅！");
         } else if (fileboxOperation.trdata.status == 3) {
@@ -120,10 +118,11 @@ fileboxOperation.btn = function () {
             $("#bor_fkBoxId").val(fileboxOperation.trdata.id);
             fileboxOperation.box_file("bor_file_table");
         }
+        $("#mousedown_right").hide();
     });
 
     //查看盒内档案
-    $("#filebox_file").click(function () {
+    $("#filebox_file,#filebox_file_m").click(function () {
         layer.open({
             type: 1,
             title: '盒内档案',
@@ -132,6 +131,7 @@ fileboxOperation.btn = function () {
         });
         tableon_hiden();
         fileboxOperation.box_file("file_table");
+        $("#mousedown_right").hide();
     });
 
     //查询档案盒
@@ -227,7 +227,6 @@ fileboxOperation.btn = function () {
                 $(".saveoption_right").append(p);
             }
         }
-        console.log(location.btn);
     });
 
     //点击左右边
@@ -262,8 +261,14 @@ fileboxOperation.btn = function () {
         } else if (location.slide == "右") {
             location.locationg = 2;
         };
-        $(this).parent().children().css("background", "");
-        $(this).css("background", "green");
+        $(this).parent().children().css({
+            background: "",
+            color: "#000"
+        });
+        $(this).css({
+            background: "rgb(0,150,136)",
+            color: "#fff"
+        });
     });
 
     //确定提交位置
@@ -278,7 +283,7 @@ fileboxOperation.btn = function () {
             fileboxOperation.trdata.locationg = parseInt(location.locationg);
         };
 
-        if (location.btn == "chenge_location") {
+        if (location.btn == "chenge_location" || location.btn == "chenge_location_m") {
             transmit();
             if (location.col == undefined || location.lay == undefined || location.div == undefined || location.col == '' || location.lay == '' || location.div == '') {
                 layer.msg("请选择位置");
@@ -305,6 +310,7 @@ fileboxOperation.btn = function () {
                     }
                 });
             };
+            //  console.log(jsonData);
             location.storeId = ''; //清空位置信息
             location.rdRegionNum = '';
             location.regionId = '';
@@ -363,9 +369,9 @@ fileboxOperation.delete = function () {
         }
     });
 };
-/*Ajax请求添加档案盒*/
+/*Ajax请求添加/修改档案盒*/
 fileboxOperation.add = function (data) {
-    var jsonData = JSON.stringify(data);
+
     data.storeId = parseInt(location.storeId);
     data.rdRegionNum = parseInt(location.rdRegionNum);
     data.regionId = parseInt(location.regionId);
@@ -373,12 +379,21 @@ fileboxOperation.add = function (data) {
     data.lay = parseInt(location.lay);
     data.div = parseInt(location.div);
     data.locationg = parseInt(location.locationg);
+
+    if (fileboxOperation.add_chenge == "add") {
+        var url2 = '/admin/areamodule/fileBoxInfo/add';
+    }
+    if (fileboxOperation.add_chenge == "chenge") {
+        data.id = fileboxOperation.trdata.id;
+        var url2 = "/admin/areamodule/fileBoxInfo/update";
+    }
+    var jsonData = JSON.stringify(data);
     $.ajax({
         type: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        url: url + '/admin/areamodule/fileBoxInfo/add',
+        url: url + url2,
         data: jsonData,
         success: function (res) {
             if (res.state) {
@@ -507,25 +522,32 @@ fileboxOperation.location = function () {
                         slide_ul.append(left);
                         slide_ul.append(right);
                         slide_ul.hide();
-                        District_column.append(slide_ul); //把左右边加入区列
+                        if (slide_ul.text() != "") {
+                            District_column.append(slide_ul); //把左右边加入区列
+                        }
                         column_ul.append(District_column); //把区列加入密集架
                         column_ul.hide();
                     };
-                    Dense_frame.append(column_ul);
+                    if (column_ul.text() != "") {
+                        Dense_frame.append(column_ul);
+                    }
+
                     Room_ul.append(Dense_frame);
                     Room_ul.hide();
                 };
-                Storage_Room.append(Room_ul);
+                if (Room_ul.text() != "") {
+                    Storage_Room.append(Room_ul);
+                }
 
                 $(".saveoption_left .tree").append(Storage_Room);
 
             };
-            $('li:has(ul)').css({
+            $('.saveoption_left li:has(ul)').css({
                 cursor: 'pointer',
-                'list-style-image': 'url(../img/DZY/+.gif)'
+                'list-style-image': 'url(../../img/DZY/+.gif)'
             }).children().hide();
 
-            $('li:not(:has(ul))').css({
+            $('.saveoption_left li:not(:has(ul))').css({
                 cursor: 'default',
                 'list-style-image': 'none'
             });
@@ -601,6 +623,7 @@ function open_layer() {
             area: ['680px', '590px'],
             content: $("#add_content")
         });
+        fileboxOperation.add_chenge = "add";
         tableon_hiden();
     });
     //档案盒信息查询
@@ -626,7 +649,7 @@ function open_layer() {
     });
 
     //选择添加档案盒存放位置,打开更改位置
-    $("#saveoption_choose,#chenge_location").click(function () {
+    $("#saveoption_choose,#chenge_location,#chenge_location_m").click(function () {
         layer.open({
             type: 1,
             title: '更改位置',
@@ -636,6 +659,7 @@ function open_layer() {
         tableon_hiden();
         location.btn = $(this).attr("id");
         fileboxOperation.location();
+        $("#mousedown_right").hide();
     });
 
 };
@@ -645,30 +669,123 @@ function gettable_data() {
     //获取档案盒列表信息
     //var offset_top = 0;
     fileboxOperation.offset_top = 0;
-    $.ajax({
-        type: "GET",
-        url: url + "/admin/areamodule/fileBoxInfo?map[deleted]=0",
-        data: "", //请求参数
-        success: function (data) {
-            //console.log(data);
-            var cols = getMapping("fileBoxInfo", false, 'filebox_operation');
-            //console.log(cols);
-            layui.use(['table', 'layer'], function () {
-                var table = layui.table,
-                    layer = layui.layer;
-                table.render({
-                    elem: '#filing_info_table',
-                    height: 580,
-                    page: true, //开启分页
-                    cols: [cols],
-                    data: data.rows
-                });
-                //调用档案盒监听工具条
-                fileboxOperation.tableon();
 
-            });
-        }
+    layui.use(['table', 'layer'], function () {
+        var table = layui.table,
+            layer = layui.layer;
+        var cols = getMapping("fileBoxInfo", false, 'filebox_operation');
+        table.render({ //其它参数在此省略
+            //            elem: '#filing_info_table',
+            height: 'full-65',
+            page: true, //开启分页
+            elem: '#filing_info_table',
+            cols: [cols],
+            url: url + "/admin/areamodule/fileBoxInfo?map[deleted]=0",
+            response: {
+                statusName: 'code', //数据状态的字段名称，默认：code
+                statusCode: 1, //成功的状态码，默认：0
+                msgName: 'msg', //状态信息的字段名称，默认：msg
+                countName: 'total', //数据总数的字段名称，默认：count
+                dataName: 'rows' //数据列表的字段名称，默认：data
+            },
+            request: {
+                pageName: 'currentPage', //页码的参数名称，默认：page          
+                limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            },
+            done: function (res, curr, count) {
+                var data = res.rows;
+                $('.layui-table-body tr').each(function (e) {
+                    //表单鼠标右键操作
+                    $(this).mousedown(function (e) {
+                        var index = $(this).attr('data-index');
+                        if (e.which == 3) {
+                            tableon_hiden(); //隐藏更多操作导航条
+                            $("#mousedown_right").show();
+                            var x = e.originalEvent.x + 'px';
+                            var y = e.originalEvent.y + 'px';
+                            $("#mousedown_right").css({
+                                top: y,
+                                left: x
+                            });
+                            fileboxOperation.trdata = data[index];
+                        }
+                        if (e.which == 1) {
+                            $("#mousedown_right").hide();
+                            //tableon_hiden();
+                        }
+                    });
+                })
+            }
+        });
+
+        //调用档案盒监听工具条
+        fileboxOperation.tableon();
+
     });
+    //        $.ajax({
+    //        type: "GET",
+    //        url: url + "/admin/areamodule/fileBoxInfo?map[deleted]=0",
+    //        data: "", //请求参数
+    //        success: function (data) {
+    //            //console.log(data);
+    //            console.log(data);
+    //            var cols = getMapping("fileBoxInfo", false, 'filebox_operation');
+    //            for (var i = 0; i < data.rows.length; i++) {
+    //                if (data.rows[i].status == 1) {
+    //                    data.rows[i].status = "未在架";
+    //                } else if (data.rows[i].status == 2) {
+    //                    data.rows[i].status = "在架";
+    //                } else if (data.rows[i].status == 3) {
+    //                    data.rows[i].status = "已借出";
+    //                }
+    //
+    //                if (data.rows[i].deleted == 0) {
+    //                    data.rows[i].deleted = "可删除";
+    //                } else if (data.rows[i].deleted == 1) {
+    //                    data.rows[i].deleted = "不可删除";
+    //                }
+    //            }
+    //                layui.use(['table', 'layer'], function () {
+    //                    var table = layui.table,
+    //                        layer = layui.layer;
+    //                    table.render({
+    //                        elem: '#filing_info_table',
+    //                        height: 'full-65',
+    //                        page: true, //开启分页
+    //                        cols: [cols],
+    //                        data: data.rows,
+    //                        done: function (res, curr, count) {
+    //                            var data = res.data;
+    //                            $('.layui-table-body tr').each(function (e) {
+    //                                //表单鼠标右键操作
+    //                                $(this).mousedown(function (e) {
+    //                                    var index = $(this).attr('data-index');
+    //                                    if (e.which == 3) {
+    //                                        tableon_hiden(); //隐藏更多操作导航条
+    //                                        $("#mousedown_right").show();
+    //                                        var x = e.originalEvent.x + 'px';
+    //                                        var y = e.originalEvent.y + 'px';
+    //                                        $("#mousedown_right").css({
+    //                                            top: y,
+    //                                            left: x
+    //                                        });
+    //                                        fileboxOperation.trdata = data[index];
+    //                                    }
+    //                                    if (e.which == 1) {
+    //                                        $("#mousedown_right").hide();
+    //                                    }
+    //                                    //console.log(data[index]);
+    //                                });
+    //    
+    //                            })
+    //                        }
+    //                    });
+    //                //调用档案盒监听工具条
+    //                fileboxOperation.tableon();
+    //
+    //            });
+    //        }
+    //    });
 
     //获取未上架档案列表信息
     $.ajax({
@@ -737,6 +854,9 @@ function getMapping(key, checkbox, operation_name) {
             a["field"] = row.code;
             a["title"] = row.svalue;
             a["width"] = 120;
+            if (row.code == "status") {
+                a["templet"] = '#titleTpl';
+            }
             re.push(a);
         }
     }

@@ -1,21 +1,21 @@
-var url = "http://192.168.2.128:8081";
+var url = "http://192.168.2.130:8081";
 var StorageRoom_list = [];
 var xNum;
-$(function (){
+$(function () {
 
     // 获取库房信息
     $.ajax({
-        method:"GET",   //请求方式
-        url:url + "/admin/areamodule/areaEnvironmentLog/selectRegionList",
-        success:function(data) {    //返回结果
+        method: "GET",   //请求方式
+        url: url + "/admin/areamodule/areaEnvironmentLog/selectRegionList",
+        success: function (data) {    //返回结果
             // console.log(data);
             StorageRoom_list = data.row;
             // console.log(JSON.stringify(StorageRoom_list));
             if (StorageRoom_list.length > 0) {
                 var selectList = $("#mjj-select");
                 var selectList1 = $("#mjj-select1");  // 详情页的库房选择
-                for (var i = 0; i < StorageRoom_list.length; i++){
-                    var option = '<option class="options" value="' + StorageRoom_list[i].storeid+'">' + StorageRoom_list[i].name + '</option>';
+                for (var i = 0; i < StorageRoom_list.length; i++) {
+                    var option = '<option class="options" value="' + StorageRoom_list[i].storeid + '">' + StorageRoom_list[i].name + '</option>';
                     selectList.append(option);
                     selectList1.append(option);
                 }
@@ -25,10 +25,10 @@ $(function (){
     });
 
     // 获取每月有几周
-    jQuery.getWeeks= function (year, month) {
+    jQuery.getWeeks = function (year, month) {
         var d = new Date();
         // 该月第一天
-        d.setFullYear(year, month-1, 1);
+        d.setFullYear(year, month - 1, 1);
         var w1 = d.getDay();
         if (w1 == 0) w1 = 7;
         // 该月天数
@@ -38,32 +38,29 @@ $(function (){
         var d1;
         if (w1 != 1) d1 = 7 - w1 + 2;
         else d1 = 1;
-        var week_count = Math.ceil((dd-d1+1)/7);
+        var week_count = Math.ceil((dd - d1 + 1) / 7);
         return week_count;
     };
 
     // 对单选按钮选中状态的判断
     // var RadioType = $('input:radio:checked').val();
-    $(':radio').click(function(){
+    $(':radio').click(function () {
         var RadioType = $(this).val();  //获取选中的radio的值
         // console.log(RadioType);
-        if(RadioType === "m" || RadioType === "d"){
-            $("#select-week").css("display","none");
-            $(".week-num").css("display","none");
+        if (RadioType === "m" || RadioType === "d") {
+            $("#select-week").css("display", "none");
+            $(".week-num").css("display", "none");
         }
-        else if(RadioType === "w"){
-            $("#select-week").css("display","inline");
-            $(".week-num").css("display","inline");
+        else if (RadioType === "w") {
+            $("#select-week").css("display", "inline");
+            $(".week-num").css("display", "inline");
         }
     });
 
 
     // 查找数据
 
-    $(".btn-search").bind("click",function () {
-        // 返回天数的数据
-        var data_num = [];
-
+    $(".btn-search").bind("click", function () {
         // 温度数据
         var data_wd = [];
 
@@ -76,8 +73,8 @@ $(function (){
 
         var RoomId = $("#mjj-select  option:selected").val();
         var RoomName = $("#mjj-select  option:selected").text();
-        for (var i = 0; i < StorageRoom_list.length; i++){
-            if(RoomName == StorageRoom_list[i].name){
+        for (var i = 0; i < StorageRoom_list.length; i++) {
+            if (RoomName == StorageRoom_list[i].name) {
                 var regionid = StorageRoom_list[i].regionid;
             }
         }
@@ -85,38 +82,35 @@ $(function (){
 
         var startDate = $('#startTime1').val();
         var weekNum = $('#select-week').val();
-        if(RadioType === "m" || RadioType === "d"){
+        if (RadioType === "m" || RadioType === "d") {
             weekNum = '';
         }
         // var RadioText = $('input:checked').val();
         var RadioText = $("input:radio:checked").next("label").text();
         console.log(RadioText);
         // 计算x轴显示的数字
-        if (RadioText === "月"){
-            // var xNum;
+        if (RadioText === "月") {
             var mon = startDate.split("-")[1];
-            var nian = startDate.substring(0,4);
+            var nian = startDate.substring(0, 4);
             console.log(mon);
-            if(mon ==='01'||mon ==='03'||mon === '05'||mon ==='07'||mon === '08'||mon === '10'||mon === '12'){
-                xNum=31;
+            if (mon === '01' || mon === '03' || mon === '05' || mon === '07' || mon === '08' || mon === '10' || mon === '12') {
+                xNum = 31;
             }
-            else if(mon ==='02'){
-                if((nian%4 === 0 && nian%100 !== 0)||nian%400 === 0){
-                    xNum=29;
-                }else{
-                    xNum=28;
+            else if (mon === '02') {
+                if ((nian % 4 === 0 && nian % 100 !== 0) || nian % 400 === 0) {
+                    xNum = 29;
+                } else {
+                    xNum = 28;
                 }
-            }else{
-                xNum=30;
+            } else {
+                xNum = 30;
             }
 
-        }else if(RadioText === "周") {
+        } else if (RadioText === "周") {
             xNum = 7;
-        }else{
+        } else {
             xNum = 24;
         }
-        // console.log(xNum);
-        // console.log(weekNum);
         $.ajax({
             method: "GET",
             url: url + "/admin/areamodule/areaEnvironmentLog/selectLineChartData?",
@@ -232,9 +226,9 @@ $(function (){
                     myChart.setOption(option);
 
 
-                }else{
+                } else {
                     $('#ChartView').append("暂无数据！")
-            }
+                }
 
             }
         });
@@ -250,11 +244,11 @@ $(function (){
     var NowDate = year + "-" + month + "-" + date;
 
     // 根据时间的年月 得到周数
-    var years = NowDate.substring(0,4);
+    var years = NowDate.substring(0, 4);
     var months = NowDate.split("-")[1];
     var monthNum = jQuery.getWeeks(years, months);
     var selectWeek = $("#select-week");
-    for (var w = 1; w <= monthNum; w++){
+    for (var w = 1; w <= monthNum; w++) {
         var optionW = '<option class="option-week" value="' + w + '">' + w + '</option>';
         selectWeek.append(optionW);
     }
@@ -282,18 +276,18 @@ $(function (){
         laydate2.render({
             elem: '#startTime1',
             value: NowDate,
-            done: function(value){
+            done: function (value) {
                 $("#select-week").empty();
                 $('#startTime1').change();  // 一定要加上这句！！！不然没有回调！！！
                 // console.log(value); //得到日期生成的值，如：2017-08-18
-                var years = value.substring(0,4);
+                var years = value.substring(0, 4);
                 var months = value.split("-")[1];
-                if(months.split("")[0] === '0'){
+                if (months.split("")[0] === '0') {
                     months = months.substring(0);
                 }
                 var monthNum = jQuery.getWeeks(years, months);
                 var selectWeek = $("#select-week");
-                for (var w = 1; w <= monthNum; w++){
+                for (var w = 1; w <= monthNum; w++) {
                     var optionW = '<option class="option-week" value="' + w + '">' + w + '</option>';
                     selectWeek.append(optionW);
                 }
@@ -305,17 +299,59 @@ $(function (){
     // 详情弹出框
     $(".btn-detail").bind("click", function () {
         layui.use('layer', function () {
-        var layer = layui.layer;
-        layer.open({
-            type: 1,
-            title: "详情",
-            content:$("#details"), //这里content是一个普通的String
-            area: ['1300px', '800px']
+            var layer = layui.layer;
+            layer.open({
+                type: 1,
+                title: "详情",
+                content: $("#details"), //这里content是一个普通的String
+                area: ['1300px', '800px']
+
+            });
+            //  详情里的查找
+            $(".btn-find").bind("click", function () {
+                var RoomIds = $("#mjj-select1  option:selected").val();
+                var RoomNames = $("#mjj-select1  option:selected").text();
+                for (var i = 0; i < StorageRoom_list.length; i++) {
+                    if (RoomNames === StorageRoom_list[i].name) {
+                        var regionids = StorageRoom_list[i].regionid;
+                    }
+                }
+                var report_startDate = $('#startTime').val() + " 00:00:00";
+                var report_endDate = $('#endTime').val() + " 23:59:59";
+                $.ajax({
+                    method: "GET",
+                    url: url + "/admin/areamodule/areaEnvironmentLog/select?",
+                    data: "map[storeId]=" + RoomIds + "&map[regionId]=" + regionids + "&map[createTime-gte]=" + report_startDate + "&map[createTime-lte]=" + report_endDate,
+                    success: function (data) {
+                        var report_data = data.rows;
+                        for (var s = 0; s < report_data.length; s++) {
+                            var wds = report_data[s].datas;
+                            console.log(wds)
+
+                        }
+                        layui.use('table', function () {
+                            var table = layui.table;
+                            table.render({
+                                elem: '#wd-sd',
+                                page: true,
+                                data: report_data,
+                                cols: [[
+                                    {field: 'tourPlayerId', width: 100, title: '序号', type: 'numbers', fixed: 'left'},
+                                    {field: 'datas', width: 180, title: '温度', sort: true},
+                                    {field: 'datas', width: 180, title: '湿度', sort: true},
+                                    {field: 'createTime', width: 300, title: '创建时间', sort: true}
+                                ]]
+
+                            });
+                        });
+                    }
+                });
+            });
+
         });
 
     });
 
-    });
 });
 
 

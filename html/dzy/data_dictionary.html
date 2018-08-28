@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>数据字典</title>
@@ -11,50 +12,57 @@
     <link href="../../css/public.css" rel="stylesheet">
     <link href="../../css/dzy/data_dic.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="main">
-        <div class="main_side">
-            <p class="side_title">数据字典</p>
-            <ul id="side_ul">
-            
-            </ul>
+        <div class="layui-side layui-bg-gray ">
+            <blockquote class="layui-elem-quote layui-bg-black sideblock">
+                <p>数据字典</p>
+            </blockquote>
+            <ul id="side_ul"></ul>
         </div>
-        <div class="main_content">
+        <div class="layui-body main_content">
             <div style="padding:5px 5px 0px;">
                 <button class="layui-btn layui-btn-sm" id="add_btn">+新增</button>
             </div>
             <table id="data_table" lay-filter="test"></table>
+            <!--鼠标右键弹出层-->
+            <div id="mousedown_right">
+                <p id="updete">修改</p>
+                <p id="del">删除</p>
+            </div>
         </div>
+
         <!--数据字典添加-->
         <div id="add">
-            <form  class="layui-form" id="add_form">
+            <form class="layui-form" id="add_form">
                 <div class="layui-form-item">
                     <label class="layui-form-label">字典类型</label>
                     <div class="layui-input-block">
-                      <input type="text" name="fkTypeCode" required  lay-verify="required" placeholder="请输入字典类型datatype" autocomplete="off" class="layui-input">
+                        <input type="text" name="fkTypeCode" required lay-verify="required" placeholder="请输入字典类型datatype" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">字典名称</label>
                     <div class="layui-input-block">
-                      <input type="text" name="svalue" required  lay-verify="required" placeholder="请输入字典名称" autocomplete="off" class="layui-input">
+                        <input type="text" name="svalue" required lay-verify="required" placeholder="请输入字典名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">字典值</label>
                     <div class="layui-input-block">
-                      <input type="text" name="code" required  lay-verify="required" placeholder="字典名称的英文" autocomplete="off" class="layui-input">
+                        <input type="text" name="code" required lay-verify="required" placeholder="字典名称的英文" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item" style="display:none;">
                     <label class="layui-form-label">父ID</label>
                     <div class="layui-input-block">
-                      <input type="text" name="parentId"  placeholder="" autocomplete="off" class="layui-input">
+                        <input type="text" name="parentId" placeholder="" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                      <button class="layui-btn" lay-submit lay-filter="add_save">保存</button>
-                      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button class="layui-btn" lay-submit lay-filter="add_save">保存</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </form>
         </div>
@@ -64,38 +72,40 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">字典类型</label>
                     <div class="layui-input-block">
-                      <input type="text" name="fkTypeCode" required  lay-verify="required" placeholder="请输入字典类型datatype" autocomplete="off" class="layui-input">
+                        <input type="text" name="fkTypeCode" required lay-verify="required" placeholder="请输入字典类型datatype" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">字典名称</label>
                     <div class="layui-input-block">
-                      <input type="text" name="svalue" required  lay-verify="required" placeholder="请输入字典名称" autocomplete="off" class="layui-input">
+                        <input type="text" name="svalue" required lay-verify="required" placeholder="请输入字典名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">字典值</label>
                     <div class="layui-input-block">
-                      <input type="text" name="code" required  lay-verify="required" placeholder="字典名称的英文" autocomplete="off" class="layui-input">
+                        <input type="text" name="code" required lay-verify="required" placeholder="字典名称的英文" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">ID</label>
                     <div class="layui-input-block">
-                      <input type="text" name="id" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input" disabled>
+                        <input type="text" name="id" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" disabled>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                      <button class="layui-btn" lay-submit lay-filter="edit_save">修改</button>
-                      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <button class="layui-btn" lay-submit lay-filter="edit_save">修改</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </form>
         </div>
         <script type="text/html" id="barDemo">
-          <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">新增</a>-->
-          <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">新增</a>-->
+            <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </script>
     </div>
+
 </body>
+
 </html>

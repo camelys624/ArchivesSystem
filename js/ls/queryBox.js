@@ -2,12 +2,16 @@ let details;
 let table;
 let Infobox;
 let Borrowing;
+let rdRegionNum, col, lay, div, localtion;//区列节层1左2右
 
 $(function () {
-    var fkRegionId,col,lay,div,localtion;
     layui.use(["form","table"],function () {
         var form = layui.form;
         table = layui.table;
+        form.on('submit(open_frame)',function (data) {
+           console.log(rdRegionNum+''+ col+''+ lay+''+ div+''+ localtion);
+            return false;
+        });
         //监听提交
         form.on('submit(search)',function (data) {
             $.ajax({
@@ -22,7 +26,7 @@ $(function () {
                         $("#time").text(res.row.endTime);
                         $("#position").text(res.row.rdLocationAddr);
                         var locations = res.row.araeLocation;
-                        fkRegionId = locations.fkRegionId;
+                        rdRegionNum = locations.rdRegionNum;
                         col = locations.col;
                         lay = locations.lay;
                         div = locations.div;
@@ -113,17 +117,39 @@ $(function () {
             url:url+template,
             data:"map[id]="+id,
             success:function (res) {
-                console.log(res.rows[0].templateDefinition);
-                const temp = details.split(",");
-                for (let i = 0; i < temp.length; i++) {
-                    const divElement = temp[0];
-             //   var jsonObj = eval('('+divElement+')');// eval();方法
-                    var jsonObj = JSON.parse(divElement);  // JSON.parse(); 方法
-                 //const div = divElement.split(":");
-                    console.log(jsonObj);
+                const detnum = [];
+                const detailnum = JSON.parse(details);
+                for (var key in detailnum) {
+                    detnum.push(key);
                 }
+                console.log(detnum);
                 if(res.state){
-
+                    const tem = JSON.parse(res.rows[0].templateDefinition);
+                    for (let i = 0; i < tem.length; i++) {
+                        const templateElement = tem[i];
+                        for (let j = 0; j < detnum.length; j++) {
+                            const re = detnum[j];//获取key值
+                            if(templateElement.ATI_Name===re){
+                                console.log(detailnum[key]); //获取对应的value值
+                              //1 文本框 2 下拉框 3 时间控件
+                                var input;
+                                var div=$('<div style="top:' +templateElement.ATI_X+ 'px;left:'+templateElement.ATI_Y+'px;"></div>');
+                                switch (templateElement.ATI_TypeId) {
+                                    case 1:
+                                        input = $('<label style="font-size: 18px">' + templateElement.ATI_Name  + '</label>' + '<input disabled value="'+ detailnum[key] +'" type="text" style="height:' +templateElement.ATI_Height+ 'px;width:'+templateElement.ATI_Width+'px" />');
+                                        break;
+                                    case 2:
+                                        input = $('<select style="height:' +templateElement.ATI_Height+ 'px;width:'+templateElement.ATI_Width+'px"><option>'+ templateElement.ATI_Name +'</option></select>');
+                                        break;
+                                    case 3:
+                                        input = $('<label>' + templateElement.ATI_Name  + '</label>' + '<input class="layui-icon layui-icon-date" disabled value="'+ detailnum[key] +'" type="text" style="height:' +templateElement.ATI_Height+ 'px;width:'+templateElement.ATI_Width+'px;" />'+'<i class="layui-icon layui-icon-date"></i>');
+                                        break;
+                                }
+                                div.append(input);
+                                $("#fileInfo").append(div);
+                            }
+                        }
+                    }
                 }else{
                     layer.msg(res.msg);
                 }

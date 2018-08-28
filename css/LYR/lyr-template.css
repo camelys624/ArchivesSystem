@@ -1,0 +1,19 @@
+body{
+	-webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+#tableul{
+	margin-top: -5px;
+}
+#myContextMenu{
+	display: none;
+}
+#myContextMenu li{
+  margin-top: 5px;
+}
+#myContextMenu li:hover{
+  background: #CCCCCC;
+  cursor: pointer;
+}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>条码归还</title>
+
+    <link href="../../layui/css/layui.css" rel="stylesheet">
+    <link href="../../css/dzy/data_dic.css" rel="stylesheet">
+    <link href="../../css/dzy/return_file.css" rel="stylesheet">
+    <script src="../../layui/jquery-1.11.1.min.js"></script>
+    <script src="../../layui/layui.all.js"></script>
+    <script src="../../js/dzy/return_file.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <div id="returnfile_top">
+            <div id="returnfile_top1">
+                <p>
+                    <label>条码归还</label>
+                    <input type="text" name="" id="bar_code">
+                </p>
+                <p>已输入&nbsp;&nbsp;<span id="Num_of_words">0</span>&nbsp;&nbsp;位</p>
+            </div>
+            <div id="returnfile_top2">
+                <button class="layui-btn" id="submite_query">查询</button>
+                <button class="layui-btn" id="open_rfid">打开RFID</button>
+            </div>
+            <div id="returnfile_top3">
+                <p>
+                    <label>归还日期</label>
+                    <input type="date" name="return_date" id="date_info">
+                </p>
+                <p>
+                    <input type="checkbox" name="" id="">
+                    <label>输入条码后自动归还</label>
+                    <button id="return_btn" class="layui-btn layui-btn-sm" data-type="getCheckData">归还</button>
+                </p>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="returnfile_table">
+            <table id="return_table" lay-filter="table_result"></table>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -64,7 +64,7 @@
 		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<button class="layui-btn" lay-submit lay-filter="formDemo">确定</button>
-				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				<button class="layui-btn" onclick="cance()">取消</button>
 			</div>
 		</div>
 	</div>
@@ -74,7 +74,7 @@
 			<div class="layui-inline">
 				<label class="layui-form-label">文本名称：</label>
 				<div class="layui-input-inline">
-					<input type="text" id="selectname" name="selectname" placeholder="文本名称" autocomplete="off" value="caption" class="layui-input">
+					<input type="text" id="selectname" name="selectname" required lay-verify="required"placeholder="文本名称" autocomplete="off" value="caption" class="layui-input">
 				</div>
 			</div>
 			<div class="layui-inline">
@@ -89,7 +89,8 @@
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button class="layui-btn layui-layout-right" lay-submit lay-filter="formDemo">确定</button>
+				<button class="layui-btn" lay-submit lay-filter="formDemo">确定</button>
+				<button class="layui-btn" onclick="cance()">取消</button>
 			</div>
 		</div>
 	</div>
@@ -99,13 +100,14 @@
 			<div class="layui-inline">
 				<label class="layui-form-label">文本名称：</label>
 				<div class="layui-input-inline">
-					<input type="text" id="datename" name="datename" placeholder="文本名称" autocomplete="off" value="caption" class="layui-input">
+					<input type="text" id="datename" name="datename" required lay-verify="required"placeholder="文本名称" autocomplete="off" value="caption" class="layui-input">
 				</div>
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button class="layui-btn layui-layout-right" lay-submit lay-filter="formDemo">确定</button>
+				<button class="layui-btn" lay-submit lay-filter="formDemo">确定</button>
+				<button class="layui-btn" onclick="cance()">取消</button>
 			</div>
 		</div>
 	</div>

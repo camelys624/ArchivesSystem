@@ -9,32 +9,32 @@
     <link rel="stylesheet" href="../../css/ys/style.css">
 </head>
 <body>
-<aside class="site-inline">
-    <div class="title">
-        <h2>库房管理</h2>
-        <div class="layui-btn-group icon">
-            <button class="layui-btn layui-btn-sm" id="add">
+<aside class="layui-side layui-bg-gray">
+    <blockquote class="layui-elem-quote layui-bg-black sideblock">
+        <p>
+            档案信息
+        </p>
+        <div class="layui-btn-group icon" style="float: right">
+            <button class="layui-btn layui-btn-xs rgba" id="add">
                 <i class="layui-icon">&#xe654;</i>
             </button>
-            <button class="layui-btn layui-btn-sm" id="edit">
+            <button class="layui-btn layui-btn-xs rgba" id="edit" disabled="disabled">
                 <i class="layui-icon">&#xe642;</i>
             </button>
-            <button class="layui-btn layui-btn-sm" id="delete">
+            <button class="layui-btn layui-btn-xs rgba" id="delete" disabled="disabled">
                 <i class="layui-icon">&#xe640;</i>
             </button>
         </div>
-    </div>
+    </blockquote>
     <ul class="domtree" id="tree">
 
     </ul>
 
 </aside>
-<main class="main">
+<main class="layui-body">
+    <button class="layui-btn margin" id="shelfAdd">添加</button>
     <table id="table" lay-filter="table"></table>
     <script type="text/html" id="barDemo">
-        <button class="layui-btn layui-btn-xs layui-btn-primary" lay-event="add">
-            <i class="layui-icon">&#xe608;</i> 添加
-        </button>
         <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
@@ -45,20 +45,20 @@
     <div class="layui-form-item">
         <label for="s-id" class="layui-form-label">仓库代码</label>
         <div class="layui-input-inline">
-            <input type="text" id="s-id" name="barcode" required="required" class="layui-input">
+            <input type="text" id="s-id" name="barcode" autocomplete="off" required="required" class="layui-input">
         </div>
         <p id="warnMsg"></p>
     </div>
     <div class="layui-form-item">
         <label for="s-name" class="layui-form-label">仓库名称</label>
         <div class="layui-input-inline">
-            <input type="text" id="s-name" name="name" class="layui-input">
+            <input type="text" id="s-name" name="name" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label for="s-name" class="layui-form-label">模拟库房</label>
         <div class="layui-input-inline">
-            <input type="text" id="s-sim" class="layui-input">
+            <input type="text" id="s-sim" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="btn-group">
@@ -114,6 +114,7 @@
         <label class="layui-form-label">从左边起第几列</label>
         <div class="layui-input-inline">
             <select id="g-setting" name="staticCol" class="disBox" lay-ignore disabled="disabled">
+                <option>0</option>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -126,7 +127,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">本区区号</label>
             <div class="layui-input-inline">
-                <select id="col" name="col">
+                <select id="col" name="quNum">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -278,6 +279,12 @@
     </div>
 
 </form>
+
+<ul class="menu_right" id="mousedown_right">
+    <li id="add_right">添加</li>
+    <li id="edit_right">修改</li>
+    <li id="del_right">删除</li>
+</ul>
 </body>
 <script type="text/javascript" src="../../js/ys/global.js"></script>
 <script type="text/javascript" src="../../js/ys/storeSetting.js"></script>

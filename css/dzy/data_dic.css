@@ -15,6 +15,14 @@ li>ul {
     margin-left: 1em;
 }
 
+.layui-elem-quote {
+    border-left: none;
+}
+
+body .main tr th {
+    text-align: center;
+}
+
 
 /*更多操作按钮组*/
 
@@ -36,15 +44,6 @@ li>ul {
     text-align: center;
 }
 
-.main_side .side_title {
-    color: #fff;
-    font-size: 17px;
-    text-indent: 1em;
-    height: 34px;
-    line-height: 34px;
-    background: rgb(66, 156, 148);
-}
-
 #side_ul li {
     cursor: pointer;
     text-indent: 1em;
@@ -53,11 +52,11 @@ li>ul {
 }
 
 #side_ul li:hover {
-    color: orange;
+    color: #000;
 }
 
 .side_list_act {
-    background: green;
+    background: rgb(0, 150, 136);
     color: #fff;
 }
 
@@ -205,6 +204,30 @@ li>ul {
 
 .right_left {
     z-index: 10;
+}
+
+
+/*鼠标右键弹出框*/
+
+#mousedown_right {
+    display: inline-block;
+    position: absolute;
+    border: 1px solid #ccc;
+    background: rgb(242, 242, 242);
+    width: 100px;
+    display: none;
+    box-shadow: 3px 3px 3px #c0c0c0;
+    z-index: 10;
+}
+
+#mousedown_right p {
+    font-size: 12px;
+    padding: 3px 0px 3px 10px;
+    cursor: default;
+}
+
+#mousedown_right p:hover {
+    background: #ddd;
 }
 
 

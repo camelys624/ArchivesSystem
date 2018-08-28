@@ -1,0 +1,62 @@
+.clear {
+    clear: both;
+}
+
+#returnfile_top div {
+    display: inline-block;
+    float: left;
+}
+
+#returnfile_top1 {
+    width: 40%;
+    text-align: right;
+    margin-right: 3%;
+}
+
+#returnfile_top1 p:first-child {
+    height: 30px;
+    line-height: 30px;
+    margin-top: 20px;
+}
+
+#returnfile_top1 label {
+    margin-right: 1em;
+}
+
+#bar_code {
+    width: 70%;
+}
+
+#returnfile_top2 {
+    padding: 15px 0px;
+    width: 22%;
+    margin: 0px 3%;
+}
+
+#returnfile_top3 {
+    margin: 0px 2%;
+    text-align: right;
+    width: 25%;
+    float: right;
+}
+
+#returnfile_top3 p {
+    height: 35px;
+    line-height: 35px;
+}
+
+#return_btn {
+    margin-left: 30px;
+}
+
+#returnfile_top {
+    height: 70px;
+}
+
+#returnfile_table {
+    border: 1px solid #ccc;
+}
+
+#returnfile_table th {
+    text-align: center;
+}

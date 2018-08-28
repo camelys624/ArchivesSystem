@@ -7,19 +7,6 @@ body {
     background-color: white;
 }
 
-aside {
-    margin: 10px 10px;
-    width: 14%;
-    min-width: 238px;
-    height: 750px;
-    float: left;
-}
-
-.main{
-    float: left;
-    width: 83%;
-    height: 800px;
-}
 
 .title {
     width: 100%;
@@ -45,19 +32,72 @@ aside {
     float: right;
 }
 
-ul.domtree, ul.domtree ul {
-    margin: 0;
-    padding: 0 0 0 2em;
+.btn-group{
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
-ul.domtree {
-    border: #4E5465 solid 1px;
-    height: 100%;
-    font-size: 16px;
+.layui-btn-dropdown{
+    margin-left:10px;
+}
+#upload{
+    margin-left: 10px;
+}
+/*ul.domtree, ul.domtree ul {*/
+    /*margin: 0;*/
+    /*padding: 0 0 0 2em;*/
+/*}*/
+
+/*ul.domtree {*/
+    /*border: #4E5465 solid 1px;*/
+    /*height: 100%;*/
+    /*font-size: 16px;*/
+/*}*/
+
+.menu_right{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 180px;
+    margin: 2px 0 0;
+    padding: 5px 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    /*border: 1px solid #ccc;*/
+    border: 1px solid rgba(0, 0, 0, .15);
+    -webkit-box-shadow: 2px 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 2px 6px 12px rgba(0, 0, 0, .175);
+
 }
 
+.menu_right > li{
+    height: 30px;
+    width: 200px;
+    line-height: 2;
+    padding-left: 10px;
+}
+.menu_right > li:hover{
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
 
 .form-dis{
     margin-top: 15px;
     display: none;
+}
+.layui-elem-quote{
+    border-style: none;
+}
+.layui-elem-quote > p{
+    display: inline-block;
+}
+.rgba{
+    background-color: rgba(0,0,0,0);
 }

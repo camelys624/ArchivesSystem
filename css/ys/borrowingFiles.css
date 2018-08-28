@@ -31,3 +31,37 @@
     margin-top: 15px;
     display: none;
 }
+
+.menu_right{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 180px;
+    margin: 2px 0 0;
+    padding: 5px 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    /*border: 1px solid #ccc;*/
+    border: 1px solid rgba(0, 0, 0, .15);
+    -webkit-box-shadow: 2px 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 2px 6px 12px rgba(0, 0, 0, .175);
+
+}
+
+.menu_right > li{
+    height: 30px;
+    width: 200px;
+    line-height: 2;
+    padding-left: 10px;
+}
+.menu_right > li:hover{
+    background-color: #e6e6e6;
+    cursor: pointer;
+}

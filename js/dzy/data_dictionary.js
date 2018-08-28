@@ -1,5 +1,6 @@
-let url = "http://192.168.2.128:8081";
+let url = "http://192.168.2.130:8081";
 let form;
+var data_dic = new Object;
 $(function () {
     layui.use(['form', 'upload', 'tree', 'table', 'layer'], function () {
         form = layui.form; //获取form模块
@@ -83,9 +84,50 @@ $(function () {
                 console.log(res);
             }
         });
-        //layer.close();
+
+    });
+
+
+    //取消默认鼠标右键事件
+    $(document).bind('contextmenu', function (e) {
+        e.preventDefault();
+        return false;
+    });
+
+    //鼠标右键功能
+    $("#updete").click(function () {
+        $("#edit_form input[name='id']").val(data_dic.id);
+        $("#edit_form input[name='code']").val(data_dic.code);
+        $("#edit_form input[name='svalue']").val(data_dic.svalue);
+        $("#edit_form input[name='fkTypeCode']").val(data_dic.fkTypeCode);
+        layer.open({
+            type: 1,
+            title: '字典修改',
+            skin: 'add-class',
+            content: $("#edit"),
+            area: ['450px', '420px']
+        });
+    });
+    $("#del").click(function () {
+        layer.confirm('确定删除id为  ' + data_dic.id + '  的数据项吗', function (index) {
+            $.ajax({
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                url: url + '/admin/basicsModule/sysDictCode/del',
+                data: "id[]=" + data.id,
+                success: function (res) {
+                    console.log(res.msg);
+                }
+            });
+            layer.close(index);
+        });
     });
 });
+
+
+
 //请求左边导航部分
 function form_select() {
     $.ajax({
@@ -101,6 +143,7 @@ function form_select() {
                 side_ul.append(li);
             }
             form.render();
+            $("#side_ul li:eq(0)").addClass('side_list_act');
         }
     });
 
@@ -118,59 +161,75 @@ function getdata_table(parentId) {
                     layer = layui.layer;
                 table.render({
                     elem: '#data_table',
-                    height: 580,
-                    page: true, //开启分页
+                    height: 'full-65',
+
                     cols: [[ //表头
                         {
                             field: 'id',
                             title: '字典编号',
-                            width: 180,
                             sort: true
                         },
                         {
                             field: 'fkTypeCode',
                             title: '字典类型',
-                            width: 100
                         },
                         {
                             field: 'parentId',
                             title: '字典父编号',
-                            width: 100
                         },
                         {
                             field: 'code',
                             title: '字典值',
-                            width: 100
                         },
                         {
                             field: 'svalue',
                             title: '字典名称',
-                            width: 120
                         },
                         {
                             field: 'diabled',
                             title: '禁用状态',
-                            width: 100
                         },
                         {
                             field: 'createTime',
                             title: '创建时间',
-                            width: 177
                         },
                         {
                             field: 'updateTime',
                             title: '更新时间',
-                            width: 177
                         },
                         {
                             fixed: 'right',
                             title: "操作",
-                            width: 120,
                             align: 'center',
                             toolbar: '#barDemo'
                         }
                     ]],
-                    data: data
+                    data: data,
+                    page: true, //开启分页
+                    done: function (res, curr, count) {
+                        var data = res.data;
+                        $('.layui-table-body tr').each(function (e) {
+                            //表单鼠标右键操作
+                            $(this).mousedown(function (e) {
+                                var index = $(this).attr('data-index');
+                                var width = $(".layui-side").css("width").replace("px", "");
+                                if (e.which == 3) {
+                                    $("#mousedown_right").show();
+                                    var x = (e.originalEvent.x - width - 3) + 'px';
+                                    var y = e.originalEvent.y + 'px';
+                                    $("#mousedown_right").css({
+                                        top: y,
+                                        left: x
+                                    });
+                                    data_dic.trdata = data[index];
+                                }
+                                if (e.which == 1) {
+                                    $("#mousedown_right").hide();
+                                }
+                            });
+
+                        })
+                    }
                 });
                 //监听工具条
                 table.on('tool(test)', function (obj) {

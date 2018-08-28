@@ -12,28 +12,19 @@
 </head>
 
 <body>
-    <div class="layui-tab layui-tab-card">
-        <ul class="layui-tab-title">
-            <li class="layui-this">借阅记录</li>
-            <li>远程控制</li>
-            <li>库房环境</li>
-        </ul>
-        <div class="layui-tab-content" style="height: 100px;">
-            <div class="layui-tab-item layui-show">
-                <div id="action">
-                    <input type="button" value="查询" id="search">
-                    <select name="excel" id="excel">
-                        <option>Excel操作</option>
-                        <option value="currentPageData">&nbsp;&nbsp;&nbsp;&nbsp;导出当前页</option>
-                        <option value="searchData">&nbsp;&nbsp;&nbsp;&nbsp;导出查询数据</option>
-                    </select>
-                </div>
-                <table id="loan-records-table" lay-filter="test"></table>
-            </div>
-            <div class="layui-tab-item">2</div>
-            <div class="layui-tab-item">3</div>
+    <!-- 页面打开时显示的数据 -->
+    <div class="layui-tab-item layui-show">
+        <div id="action">
+            <button id="search">查&nbsp;&nbsp;询</button>
+            <select name="excel" id="excel">
+                <option>Excel操作</option>
+                <option value="currentPageData">&nbsp;&nbsp;&nbsp;&nbsp;导出当前页</option>
+                <option value="searchData">&nbsp;&nbsp;&nbsp;&nbsp;导出查询数据</option>
+            </select>
         </div>
+        <table id="loan-records-table" lay-filter="test"></table>
     </div>
+    <!-- 点击查询按钮后的弹出层的内容 -->
     <div id="searchDiv">
         <select id="fileLog">
             <option>档案名称</option>
@@ -48,18 +39,11 @@
         <br>
         <br>
         <input type="text" placeholder="请输入档案名称或条形码" id="inputInfo">
-        <br>
-        <br>
     </div>
     <script src="../../js/YQ/loanrecords.js"></script>
-    <!-- <script src="../js/loanrecords.js"></script> -->
-    <!-- 加序号 -->
+    <!-- 添加序号 -->
     <script type="text/html" id="tourPlayerId">
         { {d.LAY_TABLE_INDEX+1} }
     </script>
-    <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>
 </body>
-
 </html>

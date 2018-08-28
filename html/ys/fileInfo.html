@@ -7,20 +7,24 @@
     <link rel="stylesheet" href="../../css/ys/style.css">
     <link rel="stylesheet" href="../../css/ys/fileIInfo.css">
     <script type="text/javascript" src="../../layui/dist/layui.js"></script>
+    <script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../js/ys/jQuery.print.js"></script>
+    <!--<script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>-->
 </head>
 <body>
-<aside class="site-inline">
-    <div class="title">
-        <h2>档案库</h2>
-    </div>
+<aside class="layui-side layui-bg-gray">
+    <blockquote class="layui-elem-quote layui-bg-black sideblock">
+        <p>
+            档案信息
+        </p>
+    </blockquote>
     <ul class="domtree" id="tree">
 
     </ul>
 </aside>
-<main class="main">
-    <div class="layui-btn-group">
-        <button class="layui-btn" id="entry" disabled="disabled">录入
-        </button>
+<main class="layui-body">
+    <div class="btn-group">
+        <button class="layui-btn" id="entry" disabled="disabled">添加</button>
         <button class="layui-btn" id="search">查询</button>
         <button class="layui-btn" id="box">档案盒</button>
         <div class="layui-btn-dropdown">
@@ -42,7 +46,7 @@
         </div>
         <button class="layui-btn" id="upload">附件</button>
     </div>
-    <table id="table" lay-filter="table"></table>
+    <table id="table" class="layui-table" lay-filter="table"></table>
     <script type="text/html" id="toolbar">
         <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="edit">修改</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
@@ -131,7 +135,7 @@
     </div>
 </form>
 
-<form class="layui-form form-dis" id="borrowForm">
+<form class="layui-form form-dis" id="borrowForm" lay-filter="borrowForm">
     <div class="layui-form-item" style="width: 900px">
         <label class="layui-form-label">流水号</label>
         <div class="layui-input-block">
@@ -195,8 +199,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">借阅天数：</label>
             <div class="layui-input-inline">
-                <input type="text" name="borrowDay" autocomplete="off" class="layui-input" id="borrowDay"
-                       placeholder="yyyy-MM-dd">
+                <input type="text" name="borrowDay" autocomplete="off" class="layui-input" id="borrowDay">
             </div>
         </div>
         <div class="layui-form-inline">
@@ -224,15 +227,28 @@
         <div style="float: right;margin-right: 20px">
             <button id="RFID" class="layui-btn layui-btn-primary" lay-submit="" lay-filter="print">打印条码</button>
             <button id="borrowBtn" class="layui-btn" lay-submit="" lay-filter="borrow">借阅</button>
-            <button id="cancel" class="layui-btn layui-btn-danger">取消</button>
+            <button type="reset" id="cancel" class="layui-btn layui-btn-danger">重置</button>
         </div>
     </div>
 </form>
-<table id="box-table" lay-filter="table"></table>
+<div class="form-dis" id="table-box">
+    <table id="box-table" lay-filter="table"></table>
+</div>
 <script type="text/html" id="group-box">
-    <button class="layui-btn layui-btn-sm" lay-event="group"><i class="layui-icon">&#xe857;</i>确认组盒
+    <button class="layui-btn layui-btn-sm" lay-event="group">确认组盒
     </button>
 </script>
+<ul class="menu_right" id="mousedown_right">
+    <li id="add_right">添加</li>
+    <li id="edit_right">修改</li>
+    <li id="del_right">删除</li>
+    <li id="borrow_right">借阅</li>
+    <li id="setStation_right">更改位置</li>
+    <li id="oppenShel">打开架体</li>
+
+</ul>
+<iframe class="img-box" id="myIframe">
+</iframe>
 </body>
 <script type="text/javascript" src="../../js/ys/global.js"></script>
 <script type="text/javascript" src="../../js/ys/fileInfo.js"></script>

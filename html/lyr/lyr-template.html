@@ -6,19 +6,25 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<title>模版管理</title>
 		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
-		<script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../css/LYR/lyr-template.css"/>
 	</head>
 
 	<body>
 		<button class="layui-btn" onclick="create()"><i class="layui-icon">&#xe608;</i> 添加</button>
-		<table class="layui-hide" id="LAY_table_template" lay-filter="template"></table>
+		<div id="tableul">
+			<table class="layui-hide" id="LAY_table_template" lay-filter="template"></table>
+		</div>
+		<script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
 		<script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/url.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../js/LYR/lyr-template.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/html" id="barDemo">
-			<a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+			<a class="layui-btn layui-btn-sm" lay-event="edit">修改</a>
 			<a class="layui-btn  layui-btn-sm layui-btn-danger" lay-event="del">删除</a>
-		</script>
+		</script>	
 	</body>
-
+     <ul id='myContextMenu'>
+        <li id="modMenu">修改</li>
+        <li id="deleteMenu">删除</li>
+     </ul>
 </html>

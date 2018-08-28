@@ -1,8 +1,10 @@
- #action input {
+ #action button {
         width: 100px;
         height: 30px;
-        font-size: 15px;
-        background-color: #FFFFFF;
+        font-size: 16px;
+        color: white;
+        background-color: #009789;
+        border: 1px solid #009789;
     }
 
     #action select {
@@ -18,12 +20,23 @@
     }
 
     #searchDiv select {
+        font-size: 14px;
+        margin-left: 20px;
         width: 115px;
         height: 30px;
     }
 
     #searchDiv input {
         box-sizing: content-box;
-        width: 250px;
+        font-size: 14px;
+        width: 270px;
         height: 30px;
+        margin-left: 20px;
+    }
+    /*修改弹出层上按钮的样式*/
+    .my-skin .layui-layer-btn a{
+        background-color: #009789;
+        border: 1px solid #009789;
+        margin-left: 20px;
+        color: white;
     }

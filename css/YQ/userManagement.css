@@ -1,48 +1,13 @@
-.left p {
-    background-color: pink;
-    font-size: 16px;
-    color: white;
-    text-align: center;
-    height: 50px;
-    padding-top: 20px;
-}
-
-#userManagement,
-#accessTemplate {
-    display: none;
-}
 
 #editUser {
-    display: none;
+   
     line-height: 25px;
     margin-left: 15px;
     margin-top: 10px;
 }
 
-.editInput {
-    width: 300px;
-    line-height: 25px;
-    float: left;
-    margin-top: 25px;
-    margin-right: 50px;
-}
-
-.labelName {
-    width: 120px;
-    text-align: right;
-    margin-left: 5px;
-    font-size: 16px;
-    line-height: 25px;
-    float: left;
-}
-
-.labelName label {
-    display: inline-block;
-    margin-top: 27px;
-}
-
 .submitButton {
-    margin: 20px 0 0 240px;
+    margin: 0 0 0 150px;
 }
 
 .edit {
@@ -50,3 +15,29 @@
     width: 0px;
     overflow: hidden;
 }
+#changePassword{
+	margin-top: 20px;
+}
+#changePassword div{
+	margin-top: 3px;
+}
+ul{
+	display: none;
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	background-color: #f2f2f2;
+	border: 1px solid #f5f5f5;
+}
+ul li{
+	font-size: 15px;
+	list-style-type: none;
+	margin: 5px 0 0 7px;
+	cursor: default;
+	/*color: #f2f2f2;*/
+	
+}
+form #token{
+	margin-bottom: 5px;
+}
+

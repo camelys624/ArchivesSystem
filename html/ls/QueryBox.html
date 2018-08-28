@@ -6,11 +6,12 @@
     <title>档案盒查询详情界面</title>
 
     <script src="../../layui/layui.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
+    <script src="../../layui/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../js/url.js"></script>
     <script src="../../js/ls/queryBox.js"></script>
     <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
     <link rel="stylesheet" href="../../css/ls/querybox.css">
+
 </head>
 
 <body class="body_info">
@@ -48,14 +49,14 @@
                         <span id="position"> </span>
                         <!--  <input type="text" autocomplete="off" /> -->
                     </div>
-                    <div class=""  id="right">
-                        <button class="shu_txt" lay-submit lay-filter="search">打开架体</button>
+                    <div   id="right">
+                        <button class="shu_txt" lay-submit lay-filter="open_frame">打开架体</button>
                     </div>
                 </div>
             </fieldset>
         </form>
 
-        <fieldset class="filed2">
+        <fieldset class="filed2"  action="">
             <legend>盒内档案</legend>
             <table class="layui-table" id="list" lay-filter="table_list" ></table>
             <!--<table>-->
@@ -98,11 +99,9 @@
     <div class="div4">
         <fieldset class="filed4">
             <legend>档案信息</legend>
+        <form id="fileInfo">
 
-            <ul class="ui_list2">
-                <li>Coffee</li>
-                <li>Milk</li>
-            </ul>
+        </form>
         </fieldset>
     </div>
 </div>

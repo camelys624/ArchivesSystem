@@ -13,13 +13,58 @@ $(function() {
 			typedata = data;
 			$("#archivaltype").val(data.tempName);
 		});
+		//监听提交-档案类型
+		form.on('submit(addifysave)', function(data) {
+			var urls, data;
+			if (modid) {
+				urls = url + '/admin/areamodule/fileArchivesType/update';
+				data = {
+					id: nowid,
+					typeName: $("#filetypename").val(),
+					//			parentId: fid,
+					typeDesc: 0
+				};
+			} else {
+				urls = url + '/admin/areamodule/fileArchivesType/add';
+				data = {
+					typeName: $("#filetypename").val(),
+					parentId: nowid,
+					typeDesc: 0
+				};
+			}
+			postclick(urls, data);
+		});
+		//监听提交-档案库
+		form.on('submit(saveselect)', function(data) {
+			var urls, data;
+			if (modid) {
+				if (typedata) {
+					modtypedata = typedata;
+				}
+				urls = url + '/admin/areamodule/fileArchivesTemplate/update';
+				data = {
+					id: nowid,
+					templateName: $("#archivalname").val(),
+					templateDefinition: modtypedata,
+					fkTypeId: fid,
+					templateDesc: modtypedata.id,
+					disabled: 0
+				};
+			} else {
+				urls = url + '/admin/areamodule/fileArchivesTemplate/add';
+				data = {
+					templateName: $("#archivalname").val(),
+					templateDefinition: typedata,
+					fkTypeId: nowid,
+					templateDesc: typedata.id,
+				};
+			}
+			postclick(urls, data);
+		});
 	})
 	sidescroll(-1);
 	sessionStorage.clear();
-	var frm = document.getElementById('menuframe');
-	$(frm).load(function() { //  等iframe加载完毕  
-		iframedis();
-	});
+
 })
 
 function iframedis() {
@@ -46,7 +91,7 @@ function sidescroll(id) {
 		},
 		callback: {
 			onClick: zTreeOnClick, //单击事件
-			onRightClick: zTreeOnRightClick //右键事件
+			onRightClick: zTreeOnRightClick, //右键事件
 		}
 	};
 	childclick(id)
@@ -62,12 +107,13 @@ function childclick(id) {
 		async: false,
 		data: {
 			id: id,
-			disabled:0
+			disabled: 0
 		},
 		cache: false,
 		dataType: 'json',
 		success: function(res) {
 			//			console.log(res)
+			jsons = [];
 			if (res.list.length != 0) {
 				for (var i = 0; i < res.list.length; i++) {
 					jsons[i] = {
@@ -84,13 +130,43 @@ function childclick(id) {
 		}
 	});
 }
+var modalname;
+var modtypedata;
+
+function modalclick(fkTypeId) {
+	$.ajax({
+		type: 'get',
+		url: url + '/admin/areaModule/FileArchivesTemplate?map[id]=' + fkTypeId,
+		async: false,
+		cache: false,
+		dataType: 'json',
+		success: function(res) {
+			if (res.code == 1) {
+				modalname = res.rows[0].templateName;
+				modtypedata = JSON.parse(res.rows[0].templateDefinition);
+				sessionStorage.setItem('temp', JSON.stringify(res.rows[0]));
+			} else {
+				layer.msg(res.error)
+			}
+
+		}
+	});
+}
 //单击事件
 function zTreeOnClick(event, treeId, treeNode) {
 	childclick(treeNode.id);
 	if (treeNode.type == 1) {
-		console.log(event);
-		console.log(treeId);
-		console.log(treeNode);
+		//		console.log(event);
+		//		console.log(treeId);
+		//		console.log(treeNode);
+		modalclick(treeNode.id);
+		nowid = treeNode.id;
+		fname = treeNode.name;
+		var frm = document.getElementById('menuframe');
+		frm.src = "lyr-createtem.html";
+		$(frm).load(function() { //  等iframe加载完毕  
+			iframedis();
+		});
 		return false;
 	} else {
 		var treeObj = $.fn.zTree.getZTreeObj(treeId);
@@ -102,11 +178,10 @@ function zTreeOnClick(event, treeId, treeNode) {
 	}
 }
 //右键事件
-var forRight, forRight1, forRight2;
-var fid,nowid, fname, ftype;
+var forRight, fid, nowid, fname, ftype,fNode;
 
 function zTreeOnRightClick(event, treeId, treeNode) {
-	console.log(treeNode)
+	//	console.log(treeNode)
 	if (forRight != null) {
 		forRight.style.display = "none";
 	}
@@ -115,11 +190,13 @@ function zTreeOnRightClick(event, treeId, treeNode) {
 		//获取我们自定义的右键菜单
 		forRight = document.getElementById("right-one");
 	} else {
-		nowid= treeNode.id;
+		fNode=treeNode;
+		nowid = treeNode.id;
 		fid = treeNode.pId;
 		fname = treeNode.name;
 		ftype = treeNode.type;
 		if (ftype != 0) {
+			modalclick(nowid);
 			forRight = document.getElementById("right-last");
 		} else if (ftype == "0") {
 			forRight = document.getElementById("right-menu");
@@ -141,12 +218,9 @@ window.onclick = function(e) {
 	$(".right-menu").css("display", "none");
 }
 
-//树增删改
 var modid = "";
-
+//档案类型
 function addify(value) {
-	console.log(value);
-	//	modid = null;
 	layer.open({
 		type: 1,
 		title: '档案类型',
@@ -155,7 +229,7 @@ function addify(value) {
 		content: $('#filetype'),
 		success: function(layero, index) {
 			if (value) {
-				modid = fid;
+				modid = nowid;
 				$("#filetypename").val(fname);
 			}
 		},
@@ -165,25 +239,35 @@ function addify(value) {
 	});
 }
 //禁用
-function deletify() {
+function deletify(value) {
 	var data = {
-		id: fid,
+		id: nowid,
 		disabled: 1
 	};
-	var urls = url + '/admin/areamodule/fileArchivesType/disabled';
+	var urls;
+	if (value) {
+		urls = url + '/admin/areamodule/fileArchivesTemplate/disabled';
+	} else {
+		urls = url + '/admin/areamodule/fileArchivesType/disabled';
+	}
+
 	postclick(urls, data);
 }
-
-function addfy() {
-	modid = null;
+//档案库
+function addfy(value) {
 	layer.open({
 		type: 1,
-		title: '档案类型',
+		title: '档案库',
 		btn: false,
 		area: ['460px', '605px'],
 		shade: 0, //不显示遮罩
 		content: $('#archival'),
 		success: function(index, layero) {
+			if (value) {
+				modid = nowid;
+				$("#archivalname").val(fname);
+				$("#archivaltype").val(modtypedata.tempName);
+			}
 			$.ajax({
 				type: 'get',
 				url: url + '/admin/areamodule/fileTemplate/select',
@@ -224,38 +308,6 @@ function addfy() {
 	});
 }
 
-function addifysave() {
-	var urls, data;
-	if (modid) {
-		urls = url + '/admin/areamodule/fileArchivesType/update';
-		data = {
-			id:nowid,
-			typeName: $("#filetypename").val(),
-//			parentId: fid,
-			typeDesc: 0
-		};
-	} else {
-		urls = url + '/admin/areamodule/fileArchivesType/add';
-		data = {
-			typeName: $("#filetypename").val(),
-			parentId: fid,
-			typeDesc: 0
-		};
-	}
-	postclick(urls, data);
-}
-
-function saveselect() {
-	var data = {
-		templateName: $("#archivalname").val(),
-		templateDefinition: typedata.tempContent,
-		fkTypeId: fid,
-		templateDesc: 1,
-	};
-	var urls = url + '/admin/areamodule/fileArchivesTemplate/add';
-	postclick(urls, data);
-}
-
 function postclick(urls, data) {
 	$.ajax({
 		contentType: 'application/json;charset=utf-8',
@@ -266,6 +318,9 @@ function postclick(urls, data) {
 			layer.msg(data.msg);
 			if (data.code == "0") {
 				cance();
+//				var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+//var newNode = {name:$("#filetypename").val()};
+//newNode = treeObj.addNodes(fNode, newNode);
 				window.location.reload();
 				return true;
 			} else {

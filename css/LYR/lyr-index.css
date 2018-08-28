@@ -1,4 +1,9 @@
-
+body{
+	-webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
 .layui-layout-admin .layui-logo{
 	font-size:22px;
 }

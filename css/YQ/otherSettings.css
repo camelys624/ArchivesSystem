@@ -1,0 +1,31 @@
+.formstyle {
+        border: 1px solid white;
+    }
+	input[type="radio"]{
+		margin-left: 90px;
+	}
+    .inputstyle {
+        width: 300px;
+    }
+
+    #switch-open{
+    	margin-left: 145px;
+    }
+
+    #tip {
+        display: inline-block;
+        margin-left: 20px;
+        padding-top: 10px;
+    }
+    .filediv{
+        margin-left: 90px;
+    }
+    #pathLabel{
+        margin-left: 120px;
+        cursor: pointer;
+    }
+    #filePath{
+        /*position: absolute;*/
+        display: none;
+    }
+   

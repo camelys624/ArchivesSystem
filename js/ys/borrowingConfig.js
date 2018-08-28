@@ -5,11 +5,11 @@ let returnFilesUrl = base + 'admin/areamodule/fileBorrow/listBack',
     delFileUrl = base + 'admin/areamodule/fileBorrow/delete?';
 
 let borrowingCols = [
-    {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
+    {field: 'xuhao', title: '序号', type: 'numbers',width: 80,sort:true, fixed: 'left'},
     {type: 'checkbox'},
-    {field: 'fkArchivesId ', title: '档案ID'},
-    {field: 'filetype', title: '文档类型'},
-    {field: 'fkTemplateId', title: '模板编号'},
+    {field: 'fkArchivesId ', title: '档案ID',width:120},
+    {field: 'filetype', title: '文档类型',width:120},
+    {field: 'fkTemplateId', title: '模板编号',width:180},
     {field: 'company', title: '公司'},
     {field: 'userName', title: '借阅人'},
     {field: 'depart', title: '借阅部门'},
@@ -24,5 +24,15 @@ let borrowingCols = [
     {field: 'creater', title: '办理人'},
     {field: 'filestatus', title: '状态(中文标识)'},
     {field: 'borrowing_days', title: '借阅天数'},
-    {field: 'right', title: '操作', align: 'center', toolbar: '#toolbar', fixed: 'right'}
+];
+let testCOls = [
+    {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+    ,{field: 'username', title: '用户名', width:80}
+    ,{field: 'sex', title: '性别', width:80, sort: true}
+    ,{field: 'city', title: '城市', width:80}
+    ,{field: 'sign', title: '签名', width: 177}
+    ,{field: 'experience', title: '积分', width: 80, sort: true}
+    ,{field: 'score', title: '评分', width: 80, sort: true}
+    ,{field: 'classify', title: '职业', width: 80}
+    ,{field: 'wealth', title: '财富', width: 135, sort: true}
 ];

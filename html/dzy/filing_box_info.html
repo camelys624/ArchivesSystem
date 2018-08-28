@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>档案盒信息</title>
+
+    <link href="../../layui/css/layui.css" rel="stylesheet">
+    <link href="../../css/public.css" rel="stylesheet">
+    <link href="../../css/dzy/data_dic.css" rel="stylesheet">
     <script src="../../layui/jquery-1.11.1.min.js"></script>
     <script src="../../layui/layui.all.js"></script>
     <script src="../../js/dzy/filing_box_info.js"></script>
     <script src="../../js/dzy/model.js"></script>
-    <script src="../../js/dzy/proTree.js"></script>
-    <link href="../../layui/css/layui.css" rel="stylesheet">
-    <link href="../../css/public.css" rel="stylesheet">
-    <link href="../../css/dzy/data_dic.css" rel="stylesheet">
 </head>
 
 <body>
@@ -26,6 +26,15 @@
         <div class="filing_con">
             <table id="filing_info_table" lay-filter="filing_info"></table>
         </div>
+    </div>
+    <!--鼠标右键弹出层-->
+    <div id="mousedown_right">
+        <p id="modify_info_m">修改</p>
+        <p id="filebox_del_m">删除</p>
+        <p id="Borrowing_m">借阅</p>
+        <p id="chenge_location_m">更改位置</p>
+        <p id="">打开架体</p>
+        <p id="filebox_file_m">盒内档案</p>
     </div>
     <div class="operation_model">
         <script type="text/html" id="filebox_operation">
@@ -214,6 +223,9 @@
             </div>
         </div>
     </div>
+    <script type="text/html" id="titleTpl">
+        {{# if(d.status == 1){ }} 未在架 {{# } }} {{# if(d.status == 2){ }} 在架 {{# } }} {{# if(d.status == 3){ }} 已借出 {{# } }}{{# if(d.deleted == 0){ }} 可删除 {{# } }}{{# if(d.deleted == 1){ }} 不可删除 {{# } }}
+    </script>
 </body>
 
 </html>

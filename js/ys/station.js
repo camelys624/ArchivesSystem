@@ -45,7 +45,6 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                     url: base + 'admin/areamodule/araeStoreInfo/getStoreAndRegion',
                     type: 'GET',
                     success: function (result) {
-                        console.log(JSON.stringify(result));
                         let store = [],
                             cols = [],
                             qu = {},
@@ -53,13 +52,13 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                         let storeData = result.list;
                         for (let i = 0; i < storeData.length; i++) {
                             region = storeData[i].region;
-
                             for (let q = 0; q < region.length; q++) {
                                 for (let j = 0; j < region[q].cols; j++) {
                                     let colsName = region[q].qu_num+'区' + j + '列';
                                     let child = {
                                         name: colsName,
                                         id: j,
+                                        storeId:region.storeId,
                                         divs: region[q].divs,
                                         lays: region[q].lays,
                                         children: [
@@ -67,6 +66,7 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                                                 name: '左边',
                                                 parentName: colsName,
                                                 typeId: 1,
+                                                storeId:region.storeId,
                                                 parentLays: region[q].lays,
                                                 parentDivs: region[q].divs
                                             },
@@ -74,6 +74,7 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                                                 name: '右边',
                                                 parentName: colsName,
                                                 typeId: 2,
+                                                storeId:region.storeId,
                                                 parentLays: region[q].lays,
                                                 parentDivs: region[q].divs
                                             }
@@ -83,6 +84,7 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                                 }
                                 region[q].name = region[q].qu_num;
                                 region[q].children = cols;
+                                region[q].storeId = storeData[i].id;
                                 cols = [];
 
                             }
@@ -102,6 +104,7 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                             click: function (node) {
                                 console.log(node);
                                 $('#station').empty();
+                                storeId = node.storeId;
                                 createStation(node);
                             }
                         });
@@ -121,8 +124,6 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
         $(this).css('background-color', 'gray');
         $(this).css('color', 'white');
         station = $(this).html();
-
-
     });
 })
 ;

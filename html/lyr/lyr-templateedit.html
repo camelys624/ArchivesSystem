@@ -15,13 +15,13 @@
 		<div class="layui-side layui-bg-gray">
 			<blockquote class="layui-elem-quote layui-bg-black sideblock">
 				<p>档案库编辑
-					<i class="layui-icon layui-layout-right layui-icon-refresh" onclick="refresh()"></i>
+					<!--<i class="layui-icon layui-layout-right layui-icon-refresh" onclick="refresh()"></i>-->
 				</p>
 			</blockquote>
 			<ul id="treeDemo" class="ztree"></ul>
 		</div>
 		<div class="layui-body">
-			<iframe id="menuframe" name="menuframe" src="lyr-createtem.html" frameborder="no"></iframe>
+			<iframe id="menuframe" name="menuframe" src="" frameborder="no"></iframe>
 		</div>
 		<!--<script src="../js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>-->
 		<script src="../../js/LYR/ztree/jquery-1.4.4.min.js" type="text/javascript" charset="utf-8"></script>
@@ -40,20 +40,20 @@
 		<li onclick="deletify()">禁用档案类型</li>
 	</div>
 	<div class="right-menu" id="right-last">
-		<li onclick="modfy()">修改档案库</li>
-		<li onclick="deletfy()">禁用档案库</li>
+		<li onclick="addfy(1)">修改档案库</li>
+		<li onclick="deletify(1)">禁用档案库</li>
 	</div>
 	<!-- 树增删改弹出框-->
 	<div class="layui-form" id="filetype">
 		<div class="layui-form-item">
 			<label class="layui-form-label">档案类型名称：</label>
 			<div class="layui-input-inline">
-				<input type="text" id="filetypename" name="filetypename" placeholder="文本名称" autocomplete="off" class="layui-input">
+				<input type="text" id="filetypename" name="filetypename" required lay-verify="required" placeholder="文本名称" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button class="layui-btn" onclick="addifysave()">确定</button>
+				<button class="layui-btn" lay-submit lay-filter="addifysave">确定</button>
 				<button class="layui-btn" onclick="cance()">取消</button>
 			</div>
 		</div>
@@ -63,15 +63,15 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label archivallable">档案库名称：</label>
 			<div class="layui-input-inline" id="archivaldiv">
-				<input type="text" id="archivalname" name="archivalname" lay-verify="required" placeholder="文本名称" autocomplete="off" class="layui-input">
+				<input type="text" id="archivalname" name="archivalname" required lay-verify="required" placeholder="文本名称" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label archivallable">档案库模版：</label>
 			<div class="layui-input-inline" id="archivaldiv1">
-				<input type="text" id="archivaltype" name="archivaltype" lay-verify="required" placeholder="模版名称" autocomplete="off" class="layui-input"disabled>
+				<input type="text" id="archivaltype" name="archivaltype" required lay-verify="required" placeholder="模版名称" autocomplete="off" class="layui-input" disabled>
 				<!--<select lay-verify="required" id="archivaltype" lay-filter="changeoption"disabled >-->
-            <!--</select>-->
+				<!--</select>-->
 			</div>
 		</div>
 		<fieldset class="layui-elem-field">
@@ -80,9 +80,9 @@
 				<table class="layui-hide" id="LAY_table_template" lay-filter="template"></table>
 			</div>
 		</fieldset>
-		<div class="layui-form-item" >
+		<div class="layui-form-item">
 			<div class="layui-input-block archivalbutton">
-				<button class="layui-btn" onclick="saveselect()">保存</button>
+				<button class="layui-btn" lay-submit lay-filter="saveselect">确定</button>
 				<button class="layui-btn" onclick="cance()">取消</button>
 			</div>
 		</div>

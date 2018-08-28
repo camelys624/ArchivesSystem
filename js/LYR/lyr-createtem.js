@@ -5,29 +5,49 @@ $(function() {
 		var layer = layui.layer;
 		table = layui.table;
 		var userJsontemp = sessionStorage.getItem('temp');
+		//		console.log(userJsontemp)
 		var tempEntity;
 		if (userJsontemp != null) {
 			//重新转换为对象
 			tempEntity = JSON.parse(userJsontemp);
-			for (var i = 0; i < tempEntity.tempContent.length; i++) {
-				var jsondata = new Object();
-				if (tempEntity.tempContent[i].ATI_TypeId == 2) {
-					jsondata.selectname = tempEntity.tempContent[i].ATI_Name;
-					jsondata.selecttype = tempEntity.tempContent[i].ATI_ID;
-				} else if (tempEntity.tempContent[i].ATI_TypeId == 1) {
-					jsondata.labelname = tempEntity.tempContent[i].ATI_Name;
-				} else if (tempEntity.tempContent[i].ATI_TypeId == 3) {
-					jsondata.datename = tempEntity.tempContent[i].ATI_Name;
-				}
-				creatediv(jsondata, tempEntity.tempContent[i], i);
+			var tempcontent;
+			if (tempEntity.tempContent) {
+				tempcontent = JSON.parse(tempEntity.tempContent);
+			} else {
+				tempcontent = JSON.parse(tempEntity.templateDefinition).tempContent;
 			}
-		}else{
-			var tempContent=[];
-			tempContent[0]={
-				ATI_TypeId: 1,ATI_Name: "题名",ATI_Height: 38,ATI_Width: 200,ATI_X: "0px",ATI_Y: "0px",ATI_ID: "",
+
+			for (var i = 0; i < tempcontent.length; i++) {
+				var jsondata = new Object();
+				if (tempcontent[i].ATI_TypeId == 2) {
+					jsondata.selectname = tempcontent[i].ATI_Name;
+					jsondata.selecttype = tempcontent[i].ATI_ID;
+				} else if (tempcontent[i].ATI_TypeId == 1) {
+					jsondata.labelname = tempcontent[i].ATI_Name;
+				} else if (tempcontent[i].ATI_TypeId == 3) {
+					jsondata.datename = tempcontent[i].ATI_Name;
+				}
+				creatediv(jsondata, tempcontent[i], i);
+			}
+		} else {
+			var tempContent = [];
+			tempContent[0] = {
+				ATI_TypeId: 1,
+				ATI_Name: "题名",
+				ATI_Height: "38px",
+				ATI_Width: "200px",
+				ATI_X: "0px",
+				ATI_Y: "0px",
+				ATI_ID: "",
 			};
-			tempContent[1]={
-				ATI_TypeId: 1,ATI_Name: "档号",ATI_Height: 38,ATI_Width: 200,ATI_X: "220px",ATI_Y: "0px",ATI_ID: "",
+			tempContent[1] = {
+				ATI_TypeId: 1,
+				ATI_Name: "档号",
+				ATI_Height: "38px",
+				ATI_Width: "200px",
+				ATI_X: "220px",
+				ATI_Y: "0px",
+				ATI_ID: "",
 			}
 			for (var i = 0; i < tempContent.length; i++) {
 				var jsondata = new Object();
@@ -63,8 +83,8 @@ $(function() {
 				fromarr[i] = {
 					ATI_TypeId: fromcontent[i].attributes[4].textContent,
 					ATI_Name: jsona,
-					ATI_Height: fromcontent[i].children[1].children[0].offsetHeight,
-					ATI_Width: fromcontent[i].children[1].children[0].offsetWidth,
+					ATI_Height: fromcontent[i].children[1].children[0].style.height,
+					ATI_Width: fromcontent[i].children[1].children[0].style.width,
 					ATI_X: fromcontent[i].style.left,
 					ATI_Y: fromcontent[i].style.top,
 					ATI_ID: selectdata,
@@ -120,8 +140,35 @@ function appendText(type, layertype) {
 		content: $('#layer' + type),
 		success: function(layero, index) {
 			if (layertype) {
-				var data = JSON.parse($('#' + modid).attr("jsondata"));
-				$("#labelname").val(data.labelname);
+				var data;
+				if (type == 1) {
+					type = "label";
+					data = $('#' + modid).attr("jsondata");
+					$("#labelname").val(data);
+				} else if (type == 2) {
+					type = "select";
+					$.ajax({
+						type: 'get',
+						url: url + '/admin/basicsModule/sysDictCode/selectByParentId?parentId=0',
+						dataType: 'json',
+						success: function(res) {
+							$("#selecttype").html('');
+							for (var i = 0; i < res.length; i++) {
+								$("#selecttype").append("<option value='" + res[i].id + "'>" + res[i].svalue + "</option>");
+							}
+							selecttable(res[0].id)
+							form.render();
+						}
+					});
+				} else if (type == 3) {
+					type = "date";
+					$("#datename").val("caption");
+				}
+				//				if(type==2){
+				//					data = JSON.parse($('#' + modid).attr("jsondata"));
+				//					$("#labelname").val(data.labelname);
+				//				}				
+
 			} else {
 				modid = "";
 				if (type == "label") {
@@ -143,9 +190,10 @@ function appendText(type, layertype) {
 				} else if (type == "date") {
 					$("#datename").val("caption");
 				}
-				form.render();
-
 			}
+			return true;
+			form.render();
+
 		}
 	});
 
@@ -192,30 +240,30 @@ function creatediv(data, jsontype, jsoni) {
 		}
 		cdiv.setAttribute('oncontextmenu', 'contextmenu()'); //div右击事件
 		divinput.setAttribute('class', 'layui-input-inline');
-//		clabel.style="margin-top:7px";
-		divinput.style = "position:absolute";//;margin-top:-7px
+		//		clabel.style="margin-top:7px";
+		divinput.style = "position:absolute"; //;margin-top:-7px
 		cinput.style = "width:200px";
-//		if (data.labelname) {
-//			cdiv.setAttribute('textstyle', '1');
-//			clabel.innerHTML = data.labelname + "："; // 通过 DOM 来创建文本
-//			cinput.setAttribute('class', 'layui-input resizable');
-//		} else if (data.selectname) {
-//			cdiv.setAttribute('textstyle', '2');
-//			clabel.innerHTML = data.selectname + "："; // 通过 DOM 来创建文本
-//			cinput.setAttribute('class', 'layui-input layui-unselect  optiondiv' + i);
-//			selecttable(data.selecttype, 'optiondiv' + i);
-//		} else if (data.datename) {
-//			cdiv.setAttribute('textstyle', '3');
-//			clabel.innerHTML = data.datename + "："; // 通过 DOM 来创建文本
-//			cinput.setAttribute('class', 'layui-input  datediv' + i);
-//		}
+		//		if (data.labelname) {
+		//			cdiv.setAttribute('textstyle', '1');
+		//			clabel.innerHTML = data.labelname + "："; // 通过 DOM 来创建文本
+		//			cinput.setAttribute('class', 'layui-input resizable');
+		//		} else if (data.selectname) {
+		//			cdiv.setAttribute('textstyle', '2');
+		//			clabel.innerHTML = data.selectname + "："; // 通过 DOM 来创建文本
+		//			cinput.setAttribute('class', 'layui-input layui-unselect  optiondiv' + i);
+		//			selecttable(data.selecttype, 'optiondiv' + i);
+		//		} else if (data.datename) {
+		//			cdiv.setAttribute('textstyle', '3');
+		//			clabel.innerHTML = data.datename + "："; // 通过 DOM 来创建文本
+		//			cinput.setAttribute('class', 'layui-input  datediv' + i);
+		//		}
 		cmain.appendChild(cdiv);
 		cdiv.appendChild(clabel);
 		cdiv.appendChild(divinput);
 		divinput.appendChild(cinput);
 		if (jsontype) {
 			cdiv.style = "left:" + jsontype.ATI_X + ";top:" + jsontype.ATI_Y + "";
-			cinput.style = "width:" + jsontype.ATI_Width + "px;height:" + jsontype.ATI_Height + "px";
+			cinput.style = "width:" + jsontype.ATI_Width + ";height:" + jsontype.ATI_Height + "";
 		}
 		if (data.labelname) {
 			cdiv.setAttribute('textstyle', '1');
@@ -260,16 +308,22 @@ document.oncontextmenu = function() {
 }
 
 function contextmenu(event) {
-	//获取我们自定义的右键菜单
-	var forRight = document.getElementById("right-menu");
-	//显示菜单
-	forRight.style.display = "block";
 	var event = event || window.event;
 	eventdata = event.srcElement || event.target;
-	//根据事件对象中鼠标点击的位置，进行定位
-	forRight.style.left = event.clientX + 'px';
-	forRight.style.top = event.clientY + 'px';
-	forRight.style.width = 60 + 'px';
+	if (eventdata.id == "div0") {
+		layer.msg("题名不能修改删除！")
+	} else if (eventdata.id == "div1") {
+		layer.msg("档号不能修改删除！")
+	} else {
+		//获取我们自定义的右键菜单
+		var forRight = document.getElementById("right-menu");
+		//显示菜单
+		forRight.style.display = "block";
+		//根据事件对象中鼠标点击的位置，进行定位
+		forRight.style.left = event.clientX + 'px';
+		forRight.style.top = event.clientY + 'px';
+		forRight.style.width = 60 + 'px';
+	}
 	return false;
 }
 //关闭右键菜单，很简单
@@ -280,6 +334,7 @@ window.onclick = function(e) {
 var modid;
 
 function modify() {
+	$("#right-menu").css("display", "none");
 	modid = eventdata.id;
 	var textstyle = $('#' + modid).attr("textstyle");
 	appendText(textstyle, "modify");
@@ -289,7 +344,7 @@ function delet() {
 	var del = eventdata.id;
 	$("#" + del).remove();
 }
-
+//档案库编辑
 function childMethod(iframeheight) {
 	$("#editform").css("display", "none");
 	$("#fromcontent").css("height", iframeheight + "px");
@@ -313,4 +368,11 @@ function postclick(urls, data) {
 			}
 		}
 	});
+}
+
+function cance() {
+	layer.closeAll();
+	$("#layerlabel").css("display", "none");
+	$("#layerselect").css("display", "none");
+	$("#layerdate").css("display", "none");
 }

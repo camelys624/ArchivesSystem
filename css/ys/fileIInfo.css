@@ -5,6 +5,10 @@
 *
 **/
 
+.layui-body{
+    background-color: white;
+}
+
 .layui-btn-group {
     margin-top: 10px;
 }
@@ -116,4 +120,14 @@
     min-height: 200px;
     border-radius: 6px;
     display: none;
+}
+.img-box{
+    position: absolute;
+    width: 430px;
+    height: 140px;
+    z-index: -1;
+}
+.img-box > img{
+    height: 100%;
+    width: 100%;
 }

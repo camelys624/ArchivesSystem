@@ -212,3 +212,28 @@ span{
   min-width: 6em;
   border-bottom: 1px solid #d2d2d2;
 }
+#fileInfo{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+#fileInfo div{
+    position: absolute;
+    display: inline-block;
+}
+#fileInfo div input{
+    background: white;
+    text-indent: 5px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+#fileInfo div select{
+    background: white;
+    text-indent: 5px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+#fileInfo div i{
+    position: relative;
+    left: -20px;
+}
