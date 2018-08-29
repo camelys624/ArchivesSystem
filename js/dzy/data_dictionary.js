@@ -1,4 +1,4 @@
-let url = "http://192.168.2.130:8081";
+let url = "http://192.168.2.128:8081";
 let form;
 var data_dic = new Object;
 $(function () {

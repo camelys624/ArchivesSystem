@@ -1,4 +1,4 @@
-var url = "http://192.168.2.130:8081";
+var url = "http://192.168.2.128:8081";
 var fileboxOperation = new Object; //定义更多操作对象
 var location;
 $(function () {

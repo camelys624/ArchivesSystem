@@ -1,4 +1,4 @@
-var url = "http://192.168.2.130:8081";
+var url = "http://192.168.2.128:8081";
 var StorageRoom_list = [];
 var xNum;
 $(function () {

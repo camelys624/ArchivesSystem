@@ -35,8 +35,10 @@ layui.use(['element', 'table'], function () {
             elem: '#table',
             url: url,
             page: true,
-            height:'full-105',
+            height:'full-110',
             cols: [cols],
+            limit:20,
+            limits:[20,30,40,50],
             request: {
                 pageName: 'currentPage',
                 limitName: 'pageSize'
@@ -73,9 +75,6 @@ layui.use(['element', 'table'], function () {
                         if (e.which == 1) {
                             $("#mousedown_right").hide();
                         }
-
-                        console.log(data[index]);
-
                     });
 
                 });

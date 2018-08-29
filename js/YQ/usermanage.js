@@ -1,4 +1,4 @@
-var url = 'http://192.168.2.130:8081';
+var url = 'http://192.168.2.128:8081';
 //定义一个对象存储右键点击item的数据（json格式，所以定义对象，可以将其.出来）
 var rightData = new Object;
 //表头

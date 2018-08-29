@@ -1,6 +1,13 @@
 * {
     margin: 0;
     padding: 0;
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select:none;
+    -khtml-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 
 body {
@@ -32,9 +39,10 @@ body {
     float: right;
 }
 
-.btn-group{
+.btn-group-div{
     margin-top: 10px;
     margin-left: 10px;
+    display: none;
 }
 
 .layui-btn-dropdown{

@@ -5,7 +5,7 @@
  *
  **/
 
-layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
+layui.use(['tree', 'layer', 'table', 'form', 'layedit', 'element'], function () {
     let tree = layui.tree,
         layer = layui.layer,
         table = layui.table,
@@ -13,7 +13,90 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
         layedit = layui.layedit,
         $ = layui.$;
 
+    let tableE = null;
+    /**
+     *
+     * 先创建table，方便后面调用
+     *
+     **/
+    let showTable = function (id) {
+        let href = base + 'admin/areamodule/araeRegion?map[fkStoreId]=' + id;
+        console.log(href);
+        tableE = table.render({
+            elem: '#table',
+            url: href,
+            height: 'full-20',
+            page: true,
+            cols: [[
+                {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
+                {field: 'rdStoreName', title: '所属库房'},
+                {field: 'name', title: '区名称'},
+                {
+                    field: 'quNum', title: '区号', templet: function (d) {
+                        if (d.quNumLeft === undefined) {
+                            return d.quNumRigth;
+                        } else if (d.quNumRigth === undefined) {
+                            return d.quNumLeft;
+                        } else {
+                            return d.quNumLeft;
+                        }
+                    }
+                },
+                {field: 'cols', title: '列数'},
+                {field: 'divs', title: '节数'},
+                {field: 'lays', title: '层数'},
+                {field: 'staticCol', title: '固定列号'},
+                {field: 'gdlType', title: '固定列位置'},
+                {field: 'width', title: '密集架宽度'},
+                {field: 'speed', title: '运行速度'},
+                {field: 'ventgaps', title: '通风间隔'},
+                {field: 'ip', title: '主机名', width: 200},
+                {field: 'right', title: '操作', width: 180, align: 'center', toolbar: '#barDemo', fixed: 'right'}
+            ]],
+            request: {
+                pageName: 'currentPage',
+                limitName: 'pageSize'
+            },
+            response: {
+                statusCode: 1,
+                countName: 'total',
+                dataName: 'rows'
+            },
+            done: function (res, curr, count) {
+                console.log(res);
+                $(document).bind('contextmenu', function (e) {
+                    e.preventDefault();
+                    return false;
+                });
+                let data = res.rows;
+                $('.layui-table-body tr').each(function (e) {
+                    //表单鼠标右键操作
+                    let drindex = null;
+                    $(this).mousedown(function (e) {
+                        let index = $(this).attr('data-index');
+                        if (e.which == 3) {
+                            $("#mousedown_right").show();
+                            let x = e.originalEvent.x + 'px';
+                            let y = e.originalEvent.y + 'px';
+                            $("#mousedown_right").css({
+                                top: y,
+                                left: x
+                            });
 
+                            tableData = data[index];
+                            drindex = index;
+                        }
+                        if (e.which == 1) {
+                            $("#mousedown_right").hide();
+                        }
+                    });
+
+                });
+            }
+
+        });
+
+    };
     let createTree = function () {
         $.ajax({
             url: base + 'admin/areamodule/araeStoreInfo/getStoreAndRegion',
@@ -61,97 +144,43 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
 
     createTree();
 
-    /**
-     *
-     * 先创建table，方便后面调用
-     *
-     **/
-    let showTable = function (id) {
-        let value = '';
-        value = 'map[fkStoreId]=' + id;
-        $.ajax({
-            url: base + '/admin/areamodule/araeRegion',
-            data: value,
-            dataType: 'json',
-            type: 'GET',
-            success: function (result) {
-                table.render({
-                    elem: '#table',
-                    height: 'full-20',
-                    page: true,
-                    cols: [[
-                        {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
-                        {field: 'rdStoreName', title: '所属库房'},
-                        {field: 'name', title: '区名称'},
-                        {field: 'quNumLeft', title: '区号'},
-                        {field: 'cols', title: '列数'},
-                        {field: 'divs', title: '节数'},
-                        {field: 'lays', title: '层数'},
-                        {field: 'staticCol', title: '固定列号'},
-                        {field: 'gdlType', title: '固定列位置'},
-                        {field: 'width', title: '密集架宽度'},
-                        {field: 'speed', title: '运行速度'},
-                        {field: 'ventgaps', title: '通风间隔'},
-                        {field: 'ip', title: '主机名', width: 200},
-                        {field: 'right', title: '操作', width: 180, align: 'center', toolbar: '#barDemo', fixed: 'right'}
-                    ]],
-                    data: result.rows,
-                    done: function (res, curr, count) {
-                        $(document).bind('contextmenu', function (e) {
-                            e.preventDefault();
-                            return false;
-                        });
-                        let data = res.data;
-                        $('.layui-table-body tr').each(function (e) {
-                            //表单鼠标右键操作
-                            let drindex = null;
-                            $(this).mousedown(function (e) {
-                                let index = $(this).attr('data-index');
-                                if (e.which == 3) {
-                                    $("#mousedown_right").show();
-                                    let x = e.originalEvent.x + 'px';
-                                    let y = e.originalEvent.y + 'px';
-                                    $("#mousedown_right").css({
-                                        top: y,
-                                        left: x
-                                    });
-
-                                    tableData = data[index];
-                                    drindex = index;
-                                }
-                                if (e.which == 1) {
-                                    $("#mousedown_right").hide();
-                                }
-
-                                console.log(data[index]);
-                            });
-
-                        });
-                    }
-
-                });
-            }
-        });
-
-    };
-
-
     //添加仓库面板，点击触发相应函数
 
-    let createOptions = function () {
-      let cols='',staticCol='',ventgaps='',
-          quNum='',divs='',quNumRigth='',
-          lays='',capacity='',width='',speed='';
-      for(let c=0;c<100;c++){
-          cols+='<option>'+c+'</option>';
-      }
-      for(let s=0;s<100;s++){
-          staticCol += '<option>'+s+'</option>';
-      }
-      for(let v=1;v<=30;v++){
-          ventgaps += '<option>'+ v+'</option>';
-      }
-    };
+    +function () {
+        let cols = '', staticCol = '', ventgaps = '',
+            quNum = '', divs = '', quNumRigth = '',
+            lays = '', capacity = '', width = '', speed = '';
+        for (let i = 0; i < 100; i++) {
+            staticCol += '<option>' + i + '</option>';
+        }
+        for (let j = 1; j < 100; j++) {
+            cols += '<option>' + j + '</option>';
+        }
+        quNum = staticCol;
+        quNumRigth = staticCol;
+        capacity = staticCol;
+        divs = cols;
+        lays = cols;
+        for (let v = 1; v <= 30; v++) {
+            ventgaps += '<option>' + v + '</option>';
+        }
+        for (let w = 20; w < 200; w++) {
+            width += '<option>' + w + '</option>';
+        }
+        for (let s = 10; s < 200; s++) {
+            speed += '<option>' + s + '</option>';
+        }
+        $('#cols').append(cols);
+        $('#g-setting').append(staticCol);
+        $('#quNum').append(quNum);
+        $('#quNumR').append(quNumRigth);
+        $('#divs').append(divs);
+        $('#lays').append(lays);
+        $('#capacity').append(capacity);
+        $('#width').append(width);
+        $('#ventgaps').append(ventgaps);
+        $('#speed').append(speed);
+    }();
 
     let status = null;
     $('#add').click(function () {
@@ -256,10 +285,10 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
         return false;
     });
 
-    //添加区信息
+//添加区信息
     $('#shelfAdd').click(function () {
         let data = {rdStoreName: store_name, fkStoreId: store_id};
-        shelf = layer.open({
+        shelfA = layer.open({
             type: 1,
             title: '添加密集架信息',
             area: '800px',
@@ -275,7 +304,7 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
         createShelf(data);
     });
 
-    //监听工具条
+//监听工具条
     let tool = table.on('tool(table)', function (obj) {
         let data = obj.data,
             layEvent = obj.event;
@@ -310,16 +339,6 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                 "httpPort": data.httpPort
             });
             url = base + '/admin/areamodule/araeRegion/update';
-
-            form.on('select(gPosition)', function (options) {
-                if (options.value == 3) {
-                    $('#g-setting').removeAttr("disabled");
-                    $('#col-r').removeAttr("disabled");
-                } else {
-                    $('#g-setting').attr('disabled', true);
-                    $('#col-r').attr('disabled', true);
-                }
-            });
 
             form.on('submit(save2)', function (value) {
                 let dataList = value.field;
@@ -374,21 +393,6 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                 obj.del();
                 layer.close(index);
             });
-        } else if (layEvent === 'add') {
-            shelf = layer.open({
-                type: 1,
-                title: '添加密集架信息',
-                area: '800px',
-                content: $('#shelfEdit')
-            });
-            $('#save2').hide();
-            $('#save').show();
-            form.val('shelfEdit', {
-                "rdStoreName": data.rdStoreName
-            });
-
-            url = base + 'admin/areamodule/araeRegion/add';
-            createShelf(data);
         }
 
 
@@ -398,72 +402,78 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
      *
      * 密集架相应面板点击事件函数
      *
-     **/
+     */
 
-        //判断固定列位置
-        //首先监听select的值
+//判断固定列位置
+//首先监听select的值
+    form.on('select(gPosition)', function (options) {
+        if (options.value == 3) {
+            $('#g-setting').removeAttr('disabled');
+            $('#quNumR').removeAttr('disabled');
+            layui.form.render();
+            layui.element.init();
+        } else {
+            $('#g-setting').attr('disabled', true);
+            $('#quNumR').attr('disabled', true);
+            layui.form.render();
+            layui.element.init();
+        }
+    });
     let createShelf = function (shelf) {
-            form.val('shelfEdit', {
-                "name": "",
-                "gdlType": "",
-                "cols": "",
-                "staticCol": "",
-                "col": "",
-                "divs": "",
-                "quNumRigth": "",
-                "lays": "",
-                "capacity": "",
-                "width": "",
-                "ventgaps": "",
-                "speed": "",
-                "tempture": "",
-                "ip": "",
-                "tcpPort": "",
-                "httpPort": ""
-            });
-
-            form.on('select(gPosition)', function (options) {
-                if (options.value == 3) {
-                    $('#g-setting').removeAttr("disabled");
-                    $('#col-r').removeAttr("disabled");
-                } else {
-                    $('#g-setting').attr('disabled', true);
-                    $('#col-r').attr('disabled', true);
-                }
-            });
-
-            form.on('submit(save)', function (data) {
-                let dataList = data.field;
-                dataList.fkStoreId = shelf.fkStoreId;
-                if (dataList.gdlType == 1) {
-                    dataList.quNumRigth = dataList.quNum;
-                    delete dataList.quNumLeft;
-                } else if (dataList.gdlType == 2) {
-                    dataList.quNumLeft = dataList.quNum;
-                    delete dataList.quNumRigth;
-                } else {
-                    dataList.quNumLeft = dataList.quNum;
-                }
-                dataList.videoIps = {ip: Math.round(10 * Math.random()), name: data.field.videoIps};
-                console.log(JSON.stringify(dataList));
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: JSON.stringify(dataList),
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    success: function (result) {
-                        layer.msg(result.msg);
+        form.val('shelfEdit', {
+            "name": "",
+            "gdlType": "",
+            "cols": "",
+            "staticCol": "",
+            "col": "",
+            "divs": "",
+            "quNumRigth": "",
+            "lays": "",
+            "capacity": "",
+            "width": "",
+            "ventgaps": "",
+            "speed": "",
+            "tempture": "",
+            "ip": "",
+            "tcpPort": "",
+            "httpPort": ""
+        });
+        form.on('submit(save)', function (data) {
+            let dataList = data.field;
+            dataList.fkStoreId = shelf.fkStoreId;
+            if (dataList.gdlType == 1) {
+                dataList.quNumRigth = dataList.quNum;
+                dataList.staticCol = 0;
+                delete dataList.quNumLeft;
+            } else if (dataList.gdlType == 2) {
+                dataList.quNumLeft = dataList.quNum;
+                dataList.staticCol = dataList.cols;
+                delete dataList.quNumRigth;
+            } else {
+                dataList.quNumLeft = dataList.quNum;
+            }
+            dataList.videoIps = {ip: Math.round(10 * Math.random()), name: data.field.videoIps};
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: JSON.stringify(dataList),
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (result) {
+                    layer.msg(result.msg);
+                    if (result.state === true) {
                         showTable(store_id);
-                        layer.close(index);
-                    },
-                    error: function () {
-                        console.log("error")
+                        layer.close(shelfA);
                     }
-                });
-            })
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+            return false;
+        })
 
-        };
+    };
 
     $('#add_right').click(function () {
         shelf = layer.open({
@@ -573,4 +583,5 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
             layer.close(index);
         });
     });
-});
+})
+;

@@ -39,7 +39,7 @@ layui.use(['table', 'layer', 'form', 'laydate'], function () {
                     table.render({
                         elem: '#table',
                         page: true,
-                        height: 'full-70',
+                        height: 'full-10',
                         cols: [borrowingCols],
                         data: result.rows,
                         done: function (res, curr, count) {

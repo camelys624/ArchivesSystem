@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>档案信息</title>
-    <link rel="stylesheet" href="../../layui/dist/css/layui.css">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
     <link rel="stylesheet" href="../../css/ys/style.css">
     <link rel="stylesheet" href="../../css/ys/fileIInfo.css">
-    <script type="text/javascript" src="../../layui/dist/layui.js"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
     <script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
     <script src="../../js/ys/jQuery.print.js"></script>
     <!--<script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>-->
@@ -23,23 +23,23 @@
     </ul>
 </aside>
 <main class="layui-body">
-    <div class="btn-group">
+    <div class="btn-group-div">
         <button class="layui-btn" id="entry" disabled="disabled">添加</button>
         <button class="layui-btn" id="search">查询</button>
         <button class="layui-btn" id="box">档案盒</button>
-        <div class="layui-btn-dropdown">
+        <div class="btn-group">
             <button class="layui-btn" id="borrow" data-toggle="dropdown">档案借阅<i
                     class="layui-icon">&#xe625;</i></button>
-            <ul class="layui-dropdown-menu menu" id="borrow-menu">
-                <li id="directBorrow" data-type="getCheckData"><a>直接借阅</a></li>
+            <ul class="menu" id="borrow-menu">
+                <li id="directBorrow" data-type="getCheckData">直接借阅</li>
             </ul>
         </div>
-        <div class="layui-btn-dropdown">
+        <div class="btn-group">
             <button class="layui-btn" id="operating" data-toggle="dropdown">Excel操作<i
                     class="layui-icon">&#xe625;</i></button>
-            <ul class="layui-dropdown-menu menu" id="Excel-menu">
-                <li id="import"><a href="#">从Excel导入</a></li>
-                <li id="export"><a href="#">导出当前页到Excel</a></li>
+            <ul class="menu" id="Excel-menu">
+                <li id="import">从Excel导入</li>
+                <li id="export">导出当前页到Excel</li>
                 <li><a href="http://192.168.2.128:8081/admin/areamodule/fileBoxInfo/selectFuzzy">导出查询的所有数据到Excel</a>
                 </li>
             </ul>
@@ -62,7 +62,7 @@
 </main>
 
 <div class="station-box form-dis" id="stationBox" lay-filter="stationBox">
-    <div class="" style="width: 200px;float: left">
+    <div class="" style="width: 200px;height:100%;float: left;overflow-y: auto">
         <blockquote class="layui-elem-quote layui-bg-black sideblock">
             <p>
                 位置选择
@@ -72,7 +72,7 @@
 
         </ul>
     </div>
-    <div style="float: left;width:390px;margin-left: 10px">
+    <div style="float: left;width:380px;height:100%;margin-left: 10px;border: #4E5465 1px solid;overflow-y: auto">
         <div class="station" id="station">
 
         </div>
@@ -85,7 +85,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">查询条件：</label>
             <div class="layui-input-inline">
-                <select name="factor">
+                <select name="factor" lay-filter="factor">
                     <option value="0">题名</option>
                     <option value="1">档号</option>
                     <option value="2">档案条码</option>
@@ -139,7 +139,7 @@
     <div class="layui-form-item" style="width: 900px">
         <label class="layui-form-label">流水号</label>
         <div class="layui-input-block">
-            <input type="text" name="idCode" autocomplete="off" class="layui-input" disabled>
+            <input type="text" name="idCode" autocomplete="off" class="layui-input layui-disabled" disabled>
         </div>
     </div>
     <div class="layui-form-item">
@@ -205,7 +205,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">经办人：</label>
             <div class="layui-input-inline">
-                <input type="text" name="creater" autocomplete="off" class="layui-input" disabled>
+                <input type="text" name="creater" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>

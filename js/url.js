@@ -1,4 +1,4 @@
-let url="http://192.168.2.130:8081";
+let url="http://192.168.2.128:8081";
 //根据档案盒条形码查询档案盒
 let boxBarcode ="/admin/areaModule/FileBoxInfo/query";
 //根据档案盒id查询档案盒内档案

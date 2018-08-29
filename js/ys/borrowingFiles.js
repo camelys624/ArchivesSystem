@@ -11,7 +11,7 @@ layui.use(['table', 'layer', 'form', 'laydate'], function () {
             elem: '#table',
             url: url,
             page: true,
-            height: 'full-70',
+            height: 'full-50',
             cols: [borrowingCols],
             request: {
                 pageName: 'currentPage',
@@ -80,6 +80,7 @@ layui.use(['table', 'layer', 'form', 'laydate'], function () {
         table.render({
             elem: '#table',
             url: url,
+            height:'full-50',
             page: true,
             cols: [borrowingCols],
             request: {

@@ -52,6 +52,7 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                         let storeData = result.list;
                         for (let i = 0; i < storeData.length; i++) {
                             region = storeData[i].region;
+                            region.storeId = storeData[i].id;
                             for (let q = 0; q < region.length; q++) {
                                 for (let j = 0; j < region[q].cols; j++) {
                                     let colsName = region[q].qu_num+'区' + j + '列';
@@ -84,7 +85,6 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                                 }
                                 region[q].name = region[q].qu_num;
                                 region[q].children = cols;
-                                region[q].storeId = storeData[i].id;
                                 cols = [];
 
                             }

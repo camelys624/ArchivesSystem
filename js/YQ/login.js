@@ -36,7 +36,7 @@
                 var userInfo = JSON.stringify(data.field);
                 alert(userInfo);
                 $.ajax({
-                    url: 'http://192.168.2.130:8081/admin/authModule/authUser/login',
+                    url: 'http://192.168.2.128:8081/admin/authModule/authUser/login',
                     headers: { 'Content-Type': 'application/json' },
                     type: 'post',
                     data: userInfo,

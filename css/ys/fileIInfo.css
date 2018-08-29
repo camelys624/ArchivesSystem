@@ -21,8 +21,9 @@
     position: relative;
     display: inline-block;
     vertical-align: middle;
+    margin-left: 8px;
+    height: 38px;
 }
-
 .menu {
     position: absolute;
     top: 100%;
@@ -31,7 +32,6 @@
     display: none;
     float: left;
     min-width: 180px;
-    margin: 2px 0 0;
     padding: 5px 0;
     font-size: 14px;
     text-align: left;
@@ -49,21 +49,25 @@
 .menu > li {
     height: 30px;
     width: 200px;
+    padding-left: 15px;
+    cursor: pointer;
     line-height: 2;
 }
 
-.input-group {
-
+.menu > li:hover{
+    color: #FBFBFB;
+    background-color: #D0D0D0;
 }
 
+
 .station-box {
-    height: 500px;
+    height: 360px;
     width: 600px;
     float: left;
 }
 
 .station {
-    font-size: 24px;
+    font-size: 16px;
 }
 
 .station p {
