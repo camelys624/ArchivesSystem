@@ -25,7 +25,9 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit', 'element'], function () 
         tableE = table.render({
             elem: '#table',
             url: href,
-            height: 'full-20',
+            height: 'full-70',
+            limit:20,
+            limits:[20,30,40,50],
             page: true,
             cols: [[
                 {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},

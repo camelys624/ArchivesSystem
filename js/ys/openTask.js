@@ -53,8 +53,9 @@ layui.use(['element', 'table'], function () {
                     e.preventDefault();
                     return false;
                 });
+                console.log('原始数据',res);
                 let data = res.rows;
-                console.log(data);
+                console.log('信息',data);
                 $('.layui-table-body tr').each(function (e) {
                     //表单鼠标右键操作
                     let drindex = null;

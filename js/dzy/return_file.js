@@ -26,7 +26,7 @@ $(function () {
     ReturnFile.getDate(); //获取
 });
 
-var url = "http://192.168.2.130:8081";
+var url = "http://192.168.2.128:8081";
 var ReturnFile = {
     onShelfFile: [],
     checked_arry: [],

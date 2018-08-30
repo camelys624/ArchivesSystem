@@ -6,11 +6,9 @@
     <title>借阅统计</title>
     <script src="../../layui/jquery-1.11.1.min.js"></script>
     <script src="../../layui/layui.all.js"></script>
+    <script src="../../layui/layui.js"></script>
     <script src="../../js/LDQ/DataTime.js"></script>
     <script src="../../js/LDQ/jquery.base64.js"></script>
-    <script src="../../js/LDQ/tableExport.js"></script>
-    <script src="../../js/LDQ/xlsx.js"></script>
-    <script src="../../js/LDQ/FileSaver.js"></script>
     <link href="../../layui/css/layui.css" rel="stylesheet" />
     <link href="../../css/LDQ/BorrowCount.css" rel="stylesheet" />
 </head>
@@ -40,13 +38,19 @@
         </div>
         <!--统计 导出 按钮-->
         <button class="count-btn">统计</button>
-        <button class="export-btn" type="button" onclick="downloadExl(students)">导出</button>
+        <a class="export-btn" href="#">Excel导出</a>
         <!--将统计出来的数据显示在表中-->
         <div class="max-frame">
             <table id="countNum" lay-filter="test"></table>
         </div>
     </div>
-</div>
 
+    <!--弹出页 详情-->
+    <div id="select-detail">
+        <a class="export-btn exportExcel" href="#">Excel导出</a>
+        <table class="layui-hide" id="detail_table"></table>
+    </div>
+
+</div>
 </body>
 </html>

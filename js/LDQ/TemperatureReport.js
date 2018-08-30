@@ -2,24 +2,24 @@ var url = "http://192.168.2.128:8081";
 var StorageRoom_list = [];
 var xNum;
 $(function () {
-
     // 获取库房信息
     $.ajax({
         method: "GET",   //请求方式
         url: url + "/admin/areamodule/areaEnvironmentLog/selectRegionList",
         success: function (data) {    //返回结果
-            // console.log(data);
             StorageRoom_list = data.row;
-            // console.log(JSON.stringify(StorageRoom_list));
             if (StorageRoom_list.length > 0) {
                 var selectList = $("#mjj-select");
                 var selectList1 = $("#mjj-select1");  // 详情页的库房选择
                 for (var i = 0; i < StorageRoom_list.length; i++) {
+                    var names = StorageRoom_list[i].name;
+                    if(names === undefined){
+                        continue;
+                    }
                     var option = '<option class="options" value="' + StorageRoom_list[i].storeid + '">' + StorageRoom_list[i].name + '</option>';
                     selectList.append(option);
                     selectList1.append(option);
                 }
-
             }
         }
     });
@@ -42,11 +42,9 @@ $(function () {
         return week_count;
     };
 
-    // 对单选按钮选中状态的判断
-    // var RadioType = $('input:radio:checked').val();
+    // 控制单选按钮的显示
     $(':radio').click(function () {
         var RadioType = $(this).val();  //获取选中的radio的值
-        // console.log(RadioType);
         if (RadioType === "m" || RadioType === "d") {
             $("#select-week").css("display", "none");
             $(".week-num").css("display", "none");
@@ -57,42 +55,40 @@ $(function () {
         }
     });
 
-
     // 查找数据
-
-    $(".btn-search").bind("click", function () {
+    var table_title; // 图标的标题
+    var startDate;
+    var mon, nian, X_text;
+    // 查找数据
+    $(".btn-search").on("click", function () {
+        // $('#ChartView').empty();
         // 温度数据
         var data_wd = [];
-
         // 湿度数据
         var data_sd = [];
-
         // x轴的数据
         var data_x = [];
-
-
         var RoomId = $("#mjj-select  option:selected").val();
         var RoomName = $("#mjj-select  option:selected").text();
         for (var i = 0; i < StorageRoom_list.length; i++) {
-            if (RoomName == StorageRoom_list[i].name) {
+            if (RoomName === StorageRoom_list[i].name) {
                 var regionid = StorageRoom_list[i].regionid;
             }
         }
         var RadioType = $('input:radio:checked').val();
+        startDate = $('#startTime1').val();
+        mon = startDate.split("-")[1];
+        nian = startDate.substring(0, 4);
 
-        var startDate = $('#startTime1').val();
         var weekNum = $('#select-week').val();
         if (RadioType === "m" || RadioType === "d") {
             weekNum = '';
         }
-        // var RadioText = $('input:checked').val();
         var RadioText = $("input:radio:checked").next("label").text();
-        console.log(RadioText);
         // 计算x轴显示的数字
         if (RadioText === "月") {
-            var mon = startDate.split("-")[1];
-            var nian = startDate.substring(0, 4);
-            console.log(mon);
+            X_text = "日";
+            table_title = nian + '年' + mon + "月";
             if (mon === '01' || mon === '03' || mon === '05' || mon === '07' || mon === '08' || mon === '10' || mon === '12') {
                 xNum = 31;
             }
@@ -105,10 +101,13 @@ $(function () {
             } else {
                 xNum = 30;
             }
-
         } else if (RadioText === "周") {
+            X_text = "周";
+            table_title = nian + '年' + mon + "月的第" + weekNum + "周";
             xNum = 7;
         } else {
+            X_text = "时";
+            table_title = startDate;
             xNum = 24;
         }
         $.ajax({
@@ -116,9 +115,10 @@ $(function () {
             url: url + "/admin/areamodule/areaEnvironmentLog/selectLineChartData?",
             data: "map[type]=" + RadioType + "&map[storeId]=" + RoomId + "&map[regionId]=" + regionid + "&map[startTime]=" + startDate + "&map[week]=" + weekNum,
             success: function (data) {
-                console.log(JSON.stringify(data.row));
                 var datas = data.row;
                 if (datas !== null) {
+                    $("#data_none").hide();
+                    $("#ChartView").show();
                     var list_num = [];
                     for (var i = 1; i < xNum + 1; i++) {
                         list_num.push({sd: 0, num: i, wd: 0});
@@ -126,8 +126,6 @@ $(function () {
                     for (var j = 0; j < datas.length; j++) {
                         list_num[datas[j].num - 1] = datas[j];
                     }
-
-                    console.log(list_num);
                     for (var k = 0; k < list_num.length; k++) {
                         data_x.push(list_num[k].num);
                         data_wd.push(list_num[k].wd);
@@ -138,54 +136,56 @@ $(function () {
                     var myChart = echarts.init(document.getElementById('ChartView'));
                     var option = {
                         title: {
-                            text: '温湿度报表',
-                            // subtext: '纯属虚构',
+                            text: table_title + "  " + '温湿度报表',
                             left: 'center'
                         },
                         // 切换图的类型，折线，柱状
                         toolbox: {
-                            show: true,
+                            show: true, // 加载工具条
                             feature: {
                                 dataZoom: {
                                     yAxisIndex: 'none'
                                 },
-                                dataView: {readOnly: false},
+                                dataView: {readOnly: false},  //数据预览
                                 magicType: {type: ['line', 'bar']},
-                                restore: {},
-                                saveAsImage: {}
+                                restore: {},  // 复原
+                                saveAsImage: {}  // 保存图片
                             }
                         },
                         legend: {
                             data: ['温度（°C）', '湿度（%RH）'],
-                            left: 'left'
+                            left: 'left',
+                            orient: 'vertical' // 竖着排
+                        },
+                        grid: {
+                            left: '10%',
+                            right: '10%',
+                            top: '15%'
                         },
                         tooltip: {
                             trigger: 'axis'
                         },
-                        // tooltip: {
-                        //     trigger: 'none',
-                        //     axisPointer: {
-                        //         type: 'cross'
-                        //     }
-                        // },
                         xAxis: {
+                            name: "/" + X_text,
                             type: 'category',
                             data: data_x,
-                            // 对准坐标点
-                            // axisTick: {
-                            //     alignWithLabel: true
-                            // },
+                            nameGap: 20,
                             axisLabel: {
-                                // name: '月'
-                                // 宽度自适应
                                 interval: 0
-                                // formatter: '月'
+                            },
+                            nameTextStyle: {
+                                fontSize: 18
                             }
                         },
                         yAxis: {
                             type: 'value',
+                            name: "指数",
+                            nameGap: 15,
                             axisLabel: {
                                 formatter: '{value}'
+                            },
+                            nameTextStyle: {
+                                fontSize: 18
                             }
                         },
                         series: [{
@@ -224,22 +224,79 @@ $(function () {
                     };
                     // 使用刚指定的配置项和数据显示图表。
                     myChart.setOption(option);
-
-
                 } else {
-                    $('#ChartView').append("暂无数据！")
+                    $("#ChartView").hide();
+                    $("#data_none").show();
                 }
-
             }
         });
     });
 
-    // 详情页数据
+    // 详情弹出框
+    $(".btn-detail").on("click", function () {
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            layer.open({
+                type: 1,
+                title: ["详情", 'font-size:18px; background-color: #009688; color: white'],
+                content: $("#details"), //这里content是一个普通的String
+                area: ['1300px', '750px']
+            });
+            //  详情里的查找
+            $(".btn-find").on("click", function () {
+                var RoomIds = $("#mjj-select1  option:selected").val();
+                var RoomNames = $("#mjj-select1  option:selected").text();
+                for (var i = 0; i < StorageRoom_list.length; i++) {
+                    if (RoomNames === StorageRoom_list[i].name) {
+                        var regionids = StorageRoom_list[i].regionid;
+                    }
+                }
+                var report_startDate = $('#startTime').val() + " 00:00:00";
+                var report_endDate = $('#endTime').val() + " 23:59:59";
+                layui.use('table', function () {
+                    var table = layui.table;
+                    table.render({
+                        method: "GET",
+                        url: url + "/admin/areamodule/areaEnvironmentLog/select?map[storeId]=" + RoomIds + "&map[regionId]=" + regionids + "&map[createTime-gte]=" + report_startDate + "&map[createTime-lte]=" + report_endDate,
+                        request: {
+                            pageName: 'currentPage', //页码的参数名称，默认：page
+                            limitName: 'pageSize' //每页数据量的参数名，默认：limit
+                        },
+                        response: {
+                            statusName: 'code', //数据状态的字段名称，默认：code
+                            statusCode: 1, //成功的状态码，默认：0
+                            msgName: 'msg', //状态信息的字段名称，默认：msg
+                            countName: 'total', //数据总数的字段名称，默认：count
+                            dataName: 'rows' //数据列表的字段名称，默认：data
+                        },
+                        elem: '#wd-sd',
+                        height: "full-160",
+                        cols: [[
+                            {field: 'tourPlayerId', title: '序号', type: 'numbers', fixed: 'left', align: "center"},
+                            {field: 'wd', title: '温度 °C', sort: true, align: "center"},
+                            {field: 'sd', title: '湿度 %RH', sort: true, align: "center"},
+                            {field: 'createTime', title: '创建时间', sort: true, align: "center"}
+                        ]],
+                        page: true,
+                        done: function (res, curr, count) {
+                        }
+                    });
+                });
+            });
+        });
+    });
 
+    // 详情页数据
     var myDate = new Date();
     var year = myDate.getFullYear();
     var month = myDate.getMonth() + 1;
     var date = myDate.getDate();
+    if (month.toString().length < 2){
+        month = "0" + month;
+    }
+    if(date.toString().length < 2){
+        date = "0" + date;
+    }
     // 拼接成想要的时间格式
     var NowDate = year + "-" + month + "-" + date;
 
@@ -253,10 +310,8 @@ $(function () {
         selectWeek.append(optionW);
     }
     layui.use('laydate', function () {
-
         // 弹出层的日期
         // 开始日期
-
         var laydate = layui.laydate;
         laydate.render({
             elem: '#startTime',
@@ -271,7 +326,6 @@ $(function () {
 
         // 页面上的日期选择
         // 开始日期
-
         var laydate2 = layui.laydate;
         laydate2.render({
             elem: '#startTime1',
@@ -279,7 +333,6 @@ $(function () {
             done: function (value) {
                 $("#select-week").empty();
                 $('#startTime1').change();  // 一定要加上这句！！！不然没有回调！！！
-                // console.log(value); //得到日期生成的值，如：2017-08-18
                 var years = value.substring(0, 4);
                 var months = value.split("-")[1];
                 if (months.split("")[0] === '0') {
@@ -295,66 +348,4 @@ $(function () {
         });
     });
 
-
-    // 详情弹出框
-    $(".btn-detail").bind("click", function () {
-        layui.use('layer', function () {
-            var layer = layui.layer;
-            layer.open({
-                type: 1,
-                title: "详情",
-                content: $("#details"), //这里content是一个普通的String
-                area: ['1300px', '800px']
-
-            });
-            //  详情里的查找
-            $(".btn-find").bind("click", function () {
-                var RoomIds = $("#mjj-select1  option:selected").val();
-                var RoomNames = $("#mjj-select1  option:selected").text();
-                for (var i = 0; i < StorageRoom_list.length; i++) {
-                    if (RoomNames === StorageRoom_list[i].name) {
-                        var regionids = StorageRoom_list[i].regionid;
-                    }
-                }
-                var report_startDate = $('#startTime').val() + " 00:00:00";
-                var report_endDate = $('#endTime').val() + " 23:59:59";
-                $.ajax({
-                    method: "GET",
-                    url: url + "/admin/areamodule/areaEnvironmentLog/select?",
-                    data: "map[storeId]=" + RoomIds + "&map[regionId]=" + regionids + "&map[createTime-gte]=" + report_startDate + "&map[createTime-lte]=" + report_endDate,
-                    success: function (data) {
-                        var report_data = data.rows;
-                        for (var s = 0; s < report_data.length; s++) {
-                            var wds = report_data[s].datas;
-                            console.log(wds)
-
-                        }
-                        layui.use('table', function () {
-                            var table = layui.table;
-                            table.render({
-                                elem: '#wd-sd',
-                                page: true,
-                                data: report_data,
-                                cols: [[
-                                    {field: 'tourPlayerId', width: 100, title: '序号', type: 'numbers', fixed: 'left'},
-                                    {field: 'datas', width: 180, title: '温度', sort: true},
-                                    {field: 'datas', width: 180, title: '湿度', sort: true},
-                                    {field: 'createTime', width: 300, title: '创建时间', sort: true}
-                                ]]
-
-                            });
-                        });
-                    }
-                });
-            });
-
-        });
-
-    });
-
 });
-
-
-
-
-

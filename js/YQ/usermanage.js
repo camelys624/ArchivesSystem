@@ -19,7 +19,7 @@ var tableHead = [
                 return d.isLock ? '已冻结' : '未冻结';
             }
         },
-        { field: 'right', title: '操作', width: 680, align: 'center', toolbar: '#barDemo', style: 'cursor: pointer;' }
+        { field: 'right', title: '操作' , align: 'center', toolbar: '#barDemo', style: 'cursor: pointer;' }
 
     ]
 ];

@@ -42,13 +42,19 @@
     border-style: none;
     background-color: #009688;
 }
+.btn-search:hover{
+    background-color: #01c1af;
+}
 .btn-printing{
-    background-color: #FF5722;
+    background-color: #1E9FFF;
     margin-left: 20px;
 }
 .btn-detail{
-    background-color: #1E9FFF;
+    background-color: #FF5722;
     margin-left: 20px;
+}
+.btn-detail:hover{
+    background-color: #ff8862;
 }
 
 /*详情页内容*/
@@ -75,6 +81,9 @@
     font-size: 15px;
     text-align: center;
     margin-left: 40px;
+}
+.btn-find:hover{
+    background-color: #01c1af;
 }
 #details{
     display: none;
@@ -107,9 +116,18 @@
 #ChartView{
     width: 70%;
     height: 600px;
-    font-size: 24px;
+    font-size: 18px;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
+    line-height: 600px;
+}
+#data_none{
+    height:600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 24px;
+    letter-spacing: 3px;
     text-align: center;
     line-height: 600px;
 }

@@ -32,9 +32,7 @@
             var form = layui.form;
             //监听提交
             form.on('submit(formDemo)', function(data) {
-                // alert("登录成功");
                 var userInfo = JSON.stringify(data.field);
-                alert(userInfo);
                 $.ajax({
                     url: 'http://192.168.2.128:8081/admin/authModule/authUser/login',
                     headers: { 'Content-Type': 'application/json' },

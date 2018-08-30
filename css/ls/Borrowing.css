@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.name_k{
+    width: 150px;
+    display: inline-block;
+}
+
+
+.onediv{
+    text-align: center;
+}
+.layui-input{
+    display: inline-block;
+    font-size: 16px;
+}
+.name_text{
+    margin-right:10px;
+    font-size: 18px;
+    width: 100px;
+}
+
+#div2{
+    text-align: center;
+    display: inline-block;
+    width: 80%;
+    height: 720px;
+}
+#get_form{
+    display:none;
+    margin-top: 20px;
+}
+#get_form button{
+    margin-right: 100px;
+}

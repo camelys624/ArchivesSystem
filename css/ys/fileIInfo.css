@@ -61,11 +61,24 @@
 
 
 .station-box {
-    height: 360px;
+    height: 460px;
     width: 600px;
     float: left;
 }
-
+.station-side{
+    width: 200px;
+    height:100%;
+    float: left;
+    overflow-y: auto
+}
+.station-main{
+    float: left;
+    width:380px;
+    height:100%;
+    margin-left: 10px;
+    border: #4E5465 1px solid;
+    overflow-y: auto
+}
 .station {
     font-size: 16px;
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>TemperatureReport</title>
     <script src="../../layui/jquery-1.11.1.min.js"></script>
     <script src="../../layui/layui.all.js"></script>
@@ -14,32 +15,40 @@
 </head>
 <body>
 <div class="mjj-top">
-    <span class="mjj-text">密集架：</span>
-    <select id="mjj-select">
-
-    </select>
-
-    <!--报表类型-->
-    <label class="ReportType">报表类型：</label>
-    <div class="btn-Single">
-        <input class="radios" type="radio" name="radio" value="m" title="月" checked="checked"><label
-            class="radioText">月</label>
-        <input class="radios" type="radio" name="radio" value="w" title="周"><label class="radioText">周</label>
-        <input class="radios" type="radio" name="radio" value="d" title="日"><label class="radioText">日</label>
+    <div class="topText">
+        <span class="mjj-text">密集架：</span>
+        <select id="mjj-select"></select>
+        <!--报表类型-->
+        <label class="ReportType">报表类型：</label>
+        <div class="btn-Single">
+            <input class="radios" type="radio" name="radio" value="m" title="月" checked="checked"><label
+                class="radioText">月</label>
+            <input class="radios" type="radio" name="radio" value="w" title="周"><label class="radioText">周</label>
+            <input class="radios" type="radio" name="radio" value="d" title="日"><label class="radioText">日</label>
+        </div>
+        <!--查找 详情 打印按钮-->
+        <button class="btn-search">查找</button>
+        <button class="btn-detail">详情</button>
+        <!--<input class="btn-printing" type="button" value="打印" onclick="print()">-->
+        <!--报表日期-->
+        <div class="reportDate">
+            <span class="dateText">报表日期：</span>
+            <input type="text" class="layui-input1" id="startTime1" placeholder="yyyy-MM-dd">
+            <span class="week-num">周数：</span>
+            <select id="select-week"></select>
+        </div>
     </div>
-
-    <!--查找 详情 打印按钮-->
-    <button class="btn-search">查找</button>
-    <button class="btn-detail">详情</button>
-    <button class="btn-printing">打印</button>
+    <!--图表渲染-->
+    <div id="printArea">
+        <div id="ChartView"></div>
+        <div id="data_none" style="display: none">暂无数据！</div>
+    </div>
 
     <!--详情弹出页-->
     <div id="details">
         <div class="details-choose">
             <span class="mjj-text">密集架：</span>
-            <select id="mjj-select1">
-
-            </select>
+            <select id="mjj-select1"></select>
             <div class="layui-inline">
                 <label class="layui-form-label">时间：</label>
                 <input type="text" class="layui-input" id="startTime" placeholder="yyyy-MM-dd">
@@ -50,22 +59,6 @@
             <table class="layui-hide" id="wd-sd"></table>
         </div>
     </div>
-
-    <!--报表日期-->
-    <div class="reportDate">
-        <span class="dateText">报表日期：</span>
-        <input type="text" class="layui-input1" id="startTime1" placeholder="yyyy-MM-dd">
-        <span class="week-num">周数：</span>
-        <select id="select-week">
-
-        </select>
-    </div>
-
-    <div id="ChartView">
-
-    </div>
-
-
 </div>
 </body>
 </html>

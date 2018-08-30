@@ -9,7 +9,8 @@
     <script type="text/javascript" src="../../layui/layui.js"></script>
     <script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
     <script src="../../js/ys/jQuery.print.js"></script>
-    <!--<script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>-->
+    <script type="text/javascript" src="../../js/ys/xlsx/dist/jszip.js"></script>
+    <script type="text/javascript" src="../../js/ys/xlsx/dist/xlsx.js"></script>
 </head>
 <body>
 <aside class="layui-side layui-bg-gray">
@@ -42,6 +43,7 @@
                 <li id="export">导出当前页到Excel</li>
                 <li><a href="http://192.168.2.128:8081/admin/areamodule/fileBoxInfo/selectFuzzy">导出查询的所有数据到Excel</a>
                 </li>
+                <a href="" download="数据.xlsx" id="data"></a>
             </ul>
         </div>
         <button class="layui-btn" id="upload">附件</button>
@@ -62,7 +64,7 @@
 </main>
 
 <div class="station-box form-dis" id="stationBox" lay-filter="stationBox">
-    <div class="" style="width: 200px;height:100%;float: left;overflow-y: auto">
+    <div class="station-side">
         <blockquote class="layui-elem-quote layui-bg-black sideblock">
             <p>
                 位置选择
@@ -72,7 +74,7 @@
 
         </ul>
     </div>
-    <div style="float: left;width:380px;height:100%;margin-left: 10px;border: #4E5465 1px solid;overflow-y: auto">
+    <div  class="station-main">
         <div class="station" id="station">
 
         </div>
@@ -82,56 +84,43 @@
 
 <form class="layui-form form-dis" id="search-box">
     <div class="layui-form-item">
-        <div class="layui-form-inline">
-            <label class="layui-form-label">查询条件：</label>
-            <div class="layui-input-inline">
-                <select name="factor" lay-filter="factor">
-                    <option value="0">题名</option>
-                    <option value="1">档号</option>
-                    <option value="2">档案条码</option>
-                    <option value="3">存放位置</option>
-                    <option value="4">档案盒条码</option>
-                    <option value="5">著录人</option>
-                    <option value="6">著录时间</option>
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-inline">
-            <label class="layui-form-label">查询方式：</label>
-            <diV class="layui-input-inline">
-                <select name="styles">
-                    <option value="0">精确查找</option>
-                    <option value="1">模糊查找</option>
-                </select>
-            </div>
+        <label class="layui-form-label">查询条件：</label>
+        <div class="layui-input-inline">
+            <select name="factor" lay-filter="factor">
+                <option value="0">题名</option>
+                <option value="1">档号</option>
+                <option value="2">档案条码</option>
+                <option value="3">存放位置</option>
+                <option value="4">档案盒条码</option>
+                <option value="5">著录人</option>
+                <option value="6">著录时间</option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">
-        <div class="layui-form-inline">
-            <label class="layui-form-label">起：</label>
-            <div class="layui-input-inline">
-                <input type="text" class="layui-input" name="startTime" id="startTime" placeholder="yyyy-MM-dd"
-                       autocomplete="off" disabled="disabled">
-            </div>
-        </div>
-        <div class="layui-form-inline">
-            <label class="layui-form-label">止：</label>
-            <div class="layui-input-inline">
-                <input type="text" class="layui-input" name="endTime" id="endTime" autocomplete="off"
-                       placeholder="yyyy-MM-dd">
-            </div>
+        <label class="layui-form-label">查询方式：</label>
+        <diV class="layui-input-inline">
+            <select name="styles">
+                <option value="0">精确查找</option>
+                <option value="1">模糊查找</option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">
-        <div class="layui-form-inline">
-            <label class="layui-form-label">输入信息</label>
-            <div class="layui-input-inline">
-                <input type="text" name="info" class="layui-input">
-            </div>
+        <label class="layui-form-label">起止日期：</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input layui-disabled" name="date" id="date" placeholder="-"
+                   autocomplete="off" disabled>
         </div>
-        <div class="layui-form-inline">
-            <button class="layui-btn" lay-submit="" lay-filter="search">查询</button>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">查询内容</label>
+        <div class="layui-input-inline">
+            <input type="text" name="info" class="layui-input">
         </div>
+    </div>
+    <div style="float: right;margin: 25px 25px 0 0">
+        <button class="layui-btn" lay-submit="" lay-filter="search">查询</button>
     </div>
 </form>
 
@@ -193,7 +182,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">借阅日期：</label>
             <div class="layui-input-inline">
-                <input type="text" name="time" class="layui-input" id="borrowTime" placeholder="yyyy-MM-dd">
+                <input type="text" name="time" class="layui-input" id="borrowTime" autocomplete="off" placeholder="yyyy-MM-dd">
             </div>
         </div>
         <div class="layui-form-inline">
