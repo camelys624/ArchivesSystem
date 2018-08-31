@@ -48,71 +48,12 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 dataName: 'rows'
             },
             done: function (res, curr, count) {
+                excelData = res.rows;
+                let data = res.rows;
                 $(document).bind('contextmenu', function (e) {
                     e.preventDefault();
                     return false;
                 });
-                $('#export').click(function () {
-                    let col = [];
-                    col.push({
-                        "rdTypeName": "档案类型",
-                        "arcName": "档案名称",
-                        "fkLocationId": "位置编号",
-                        "rdLocationAddr": "存放位置",
-                        "araeRegion": {
-                            "id": 0,
-                            "quNumLeft": 1,
-                            "name": null,
-                            "capacity": null,
-                            "speed": 100,
-                            "width": 45,
-                            "ip": "192.168.1.1",
-                            "httpPort": 8081,
-                            "tcpPort": 0,
-                            "videoIp": null,
-                            "tempture": null,
-                            "humi": null,
-                            "createTime": "2018-08-20 10:36:39",
-                            "updateTime": "2018-08-28 00:00:00",
-                            "fkStoreId": 0,
-                            "rdStoreName": null,
-                            "quNumRigth": 0,
-                            "gdlType": 2,
-                            "cols": 7,
-                            "divs": 5,
-                            "lays": 7,
-                            "staticCol": 7,
-                            "ventgaps": null
-                        },
-                        "fkBoxId": "归属档案盒id",
-                        "updateTime": "更新时间",
-                        "archivesBarcode": "档案条形码",
-                        "araeLocation": {
-                            "id": 0,
-                            "fkRegionId": 0,
-                            "col": 0,
-                            "lay": 0,
-                            "div": 0,
-                            "rfid": "456",
-                            "localtion": 0,
-                            "fkStoreId": 0,
-                            "rdRegionNum": 0
-                        },
-                        "fkTemplateId": "模板id",
-                        "deleted": "删除标志",
-                        "archivesNumber": "档案编号",
-                        "createTime": "档案创建时间",
-                        "details": "{\"3\": \"2018年8月20日\", \"57852\": \"456\", \"档号\": \"456\", \"题名\": \"4156\"}",
-                        "rfid": "RFID",
-                        "id": "档案编号",
-                        "fkTypeId": "档案类型编号",
-                        "status": "状态(1.上架，2.未上架，3.在借)",
-                        "LAY_TABLE_INDEX": 0
-                    });
-                    let newExcel = col.concat(res.rows);
-                    downloadExcel(newExcel);
-                });
-                let data = res.rows;
                 $('.layui-table-body tr').each(function (e) {
                     //表单鼠标右键操作
                     let drindex = null;
@@ -136,7 +77,6 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                     });
 
                 });
-
             }
         });
     };
@@ -178,6 +118,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                         if (node.type === 1) {
                             fkTemplateId = node.id;
                             url = base + 'admin/areaModule/FileArchivesInfo?map[fkTemplateId]=' + node.id;
+                            excelUrl = url;
                             showTable(cols);
                             $('#entry').removeAttr('disabled');
                         } else {
@@ -206,7 +147,8 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             if (data[i].ATI_TypeId === 1) {
                 items += '<div style="position:relative;display:inline-block;top:' + data[i].ATI_Y + 'px;left:' + data[i].ATI_X + 'px">' +
                     '<label>' + data[i].ATI_Name + ':</label>' +
-                    '<input type="text" name="' + data[i].ATI_Name + '" style="width: ' + data[i].ATI_Width + 'px;height: ' + data[i].ATI_Height + 'px" autocomplete="off">' +
+                    '<input type="text" name="' + data[i].ATI_Name + '" style="width: ' + data[i].ATI_Width + 'px;height: ' +
+                    data[i].ATI_Height + 'px" autocomplete="off">' +
                     '</div>'
             } else if (data[i].ATI_TypeId === 2) {
                 // for(let j = 0;j<details.length;j++){
@@ -240,11 +182,11 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
              <div class="layui-form-item">
                 <label class="layui-form-label">档案条码</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="archivesBarcode" class="layui-input" autocomplete="off">
+                    <input type="text" name="archivesBarcode" class="layui-input" lay-verify="required|number" autocomplete="off">
                 </div>
                 <label class="layui-form-label">rfid</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="rfid" class="layui-input" autocomplete="off">
+                    <input type="text" name="rfid" class="layui-input" lay-verify="required|number" autocomplete="off">
                 </div>
                 <a id="archivesBarcode" class="layui-btn layui-btn-primary">打印条码</a>
                 <button class="layui-btn" lay-submit="" lay-filter="fileBtn">确定</button>
@@ -253,6 +195,8 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
              </div>
              </div>` + '</form>';
         $('body').append(formBox);
+        $('input[name="题名"]').attr('lay-verify','required');
+        $('input[name="档号"]').attr('lay-verify','required');
     };
 
 
@@ -334,7 +278,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                             zIndex: layer.zIndex,
                         });
                     });
-
+                //打印条码
                 $('#archivesBarcode').click(function () {
                     let href = 'http://192.168.2.128:8081/admin/areamodule/brcode/img?code=' + $('input[name="archivesBarcode"]').val();
                     $('#myIframe').attr('src', href);
@@ -363,7 +307,6 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         // $('#reset').trigger('click');
         editFile(data);
     });
-
 
     $('#add_right').click(function () {
         $('#entry').trigger('click');
@@ -406,7 +349,6 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 } else {
                     value.localtion = 1;
                 }
-                console.log(JSON.stringify(value));
                 $.ajax({
                     url: base + 'admin/areamodule/fileArchivesInfo/update',
                     type: 'POST',
@@ -479,51 +421,66 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         if (searchData.styles == 0) {
             switch (parseInt(searchData.factor)) {
                 case 0:
-                    url = base + '/admin/areamodule/fileArchivesInfo?map[arcName]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileArchivesInfo?map[arcName]=' + searchData.info;
+                    excelUrl =url;
                     break;
                 case 1:
-                    url = base + '/admin/areamodule/fileArchivesInfo?map[archivesNumber]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileArchivesInfo?map[archivesNumber]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 2:
-                    url = base + '/admin/areamodule/fileArchivesInfo?map[archivesBarcode]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileArchivesInfo?map[archivesBarcode]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 3:
-                    url = base + '/admin/areamodule/fileArchivesInfo?map[rdLocationAddr]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileArchivesInfo?map[rdLocationAddr]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 4:
-                    url = base + '/admin/areamodule/fileBoxInfo?map[boxBarcode]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileBoxInfo?map[boxBarcode]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 5:
-                    url = base + '/admin/areaModule/fileArchivesInfo?pageSize=1&currentPage=2';
+                    url = base + 'admin/areaModule/fileArchivesInfo?pageSize=1&currentPage=2';
+                    excelUrl = url;
                     break;
                 case 6:
-                    url = base + 'admin/areamodule/fileArchivesInfo/selectTime?date=' + searchData.date+'&page=1&pageSize=1';
+                    url = base + 'admin/areamodule/fileArchivesInfo/selectTime?date=' + searchData.date + '&page=1&pageSize=1';
+                    excelUrl = url;
                     break;
                 default:
                     break;
             }
+
         } else if (searchData.styles == 1) {
             switch (parseInt(searchData.factor)) {
                 case 0:
-                    url = base + '/admin/areamodule/fileArchivesInfo?map[arcName-like]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileArchivesInfo?map[arcName-like]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 1:
-                    url = base + '/admin/areamodule/fileArchivesInfo?map[archivesNumber-like]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileArchivesInfo?map[archivesNumber-like]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 2:
-                    url = base + '/admin/areamodule/fileArchivesInfo?map[archivesBarcode-like]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileArchivesInfo?map[archivesBarcode-like]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 3:
-                    url = base + '/admin/areamodule/fileArchivesInfo?map[rdLocationAddr-like]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileArchivesInfo?map[rdLocationAddr-like]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 4:
-                    url = base + '/admin/areamodule/fileBoxInfo?map[boxBarcode-like]=' + searchData.info;
+                    url = base + 'admin/areamodule/fileBoxInfo?map[boxBarcode-like]=' + searchData.info;
+                    excelUrl = url;
                     break;
                 case 5:
-                    url = base + '/admin/areaModule/fileArchivesInfo?pageSize=1&currentPage=2';
+                    url = base + 'admin/areaModule/fileArchivesInfo?pageSize=1&currentPage=2';
+                    excelUrl = url;
                     break;
                 case 6:
                     url = base + 'admin/areamodule/fileArchivesInfo/selectTime?date=' + searchData.date;
+                    excelUrl = url;
                     break;
                 default:
                     break;
@@ -564,8 +521,8 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             {field: 'details', title: '档案详情', width: 200},
         ];
         showTable(colsSearch);
-
         layer.close(search);
+
         return false;
     });
 
@@ -587,43 +544,44 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 content: $('#table-box')
             });
             url = base + '/admin/areamodule/fileBoxInfo?map[deleted]=0';
-            $.ajax({
+            boxTable.render({
+                elem: '#box-table',
                 url: url,
-                success: function (result) {
-                    console.log(JSON.stringify(result.rows));
-                    boxTable.render({
-                        elem: '#box-table',
-                        page: true,
-                        cols: [[
-                            {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
-                            {field: 'storeName', title: '仓库名', width: 80},
-                            {field: 'boxName', title: "档案盒名称", width: 180},
-                            {field: 'boxNum', title: '档案盒编号', width: 180},
-                            {field: 'fkTypeId', title: '档案盒类型id', width: 120},
-                            {field: 'rdLocationAddr', title: '存放位置', width: 180},
-                            {field: 'createFounder', title: '创建者', width: 100},
-                            {field: 'updateTime', title: '著录时间', width: 180},
-                            {field: 'duration', title: '保管期限', width: 100},
-                            {field: 'boxBarcode', title: '条形码', width: 120},
-                            {field: 'endTime', title: '保管截止时间', width: 180},
-                            {field: 'statu', title: '状态'},
-                            {field: 'security', title: '密级'},
-                            {
-                                field: 'right',
-                                title: '操作',
-                                width: 120,
-                                align: 'center',
-                                toolbar: '#group-box',
-                                fixed: 'right'
-                            }
-                        ]],
-                        data: result.rows
-
-                    });
-
-
+                page: true,
+                cols: [[
+                    {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
+                    {field: 'storeName', title: '仓库名', width: 80},
+                    {field: 'boxName', title: "档案盒名称", width: 180},
+                    {field: 'boxNum', title: '档案盒编号', width: 180},
+                    {field: 'fkTypeId', title: '档案盒类型id', width: 120},
+                    {field: 'rdLocationAddr', title: '存放位置', width: 180},
+                    {field: 'createFounder', title: '创建者', width: 100},
+                    {field: 'updateTime', title: '著录时间', width: 180},
+                    {field: 'duration', title: '保管期限', width: 100},
+                    {field: 'boxBarcode', title: '条形码', width: 120},
+                    {field: 'endTime', title: '保管截止时间', width: 180},
+                    {field: 'statu', title: '状态'},
+                    {field: 'security', title: '密级'},
+                    {
+                        field: 'right',
+                        title: '操作',
+                        width: 120,
+                        align: 'center',
+                        toolbar: '#group-box',
+                        fixed: 'right'
+                    }
+                ]],
+                request: {
+                    pageName: 'currentPage',
+                    limitName: 'pageSize'
+                },
+                response: {
+                    statusCode: 1,
+                    countName: 'total',
+                    dataName: 'rows'
                 }
             });
+
 
             for (let i = 0; i < fileData.length; i++) {
                 fileID.push(fileData[i].id);
@@ -742,6 +700,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             content: $('#borrowForm')
         });
         borrowFileInfo(tableData);
+        tableData = null;
     });
 
     let borrowFile = table.on('tool(table)', function (obj) {
@@ -813,9 +772,6 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
 
     });
 
-    $('#import').click(function () {
-        $('#Excel-menu').hide();
-    });
     uploadExcel = upload.render({
         elem: '#import',
         url: base + '/admin/areamodule/fileBoxInfo/execlImport',
@@ -837,6 +793,63 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         }
     });
 
-    //鼠标右键点击
+    //excel导出
+    let exportExcel = function (jsonData){
+        let col = [], data = jsonData;
+        col.push({
+            "xuhao": "序号",
+            "rdTypeName": "档案类型",
+            "arcName": "档案名称",
+            "docName": "题名",
+            "docNum": "档号",
+            "fkLocationId": "位置编号",
+            "rdLocationAddr": "存放位置",
+            "fkBoxId": "归属档案盒id",
+            "updateTime": "更新时间",
+            "archivesBarcode": "档案条形码",
+            "fkTemplateId": "模板id",
+            "deleted": "删除标志",
+            "archivesNumber": "档案编号",
+            "createTime": "档案创建时间",
+            "details": "详情",
+            "rfid": "RFID",
+            "id": "档案编号",
+            "fkTypeId": "档案类型编号",
+            "status": "状态",
+        });
+        for (let index = 0; index !== data.length; ++index) {
+            data[index].xuhao = index + 1;
+            data[index].docName = data[index].arcName;
+            data[index].docNum = data[index].archivesNumber;
+            if (data[index].status === 1) {
+                data[index].status = '上架';
+            } else if (data[index].status === 2) {
+                data[index].status = '未上架';
+            } else if (data[index].status === 3) {
+                data[index].status = '在借';
+            }
+            delete data[index].araeRegion;
+            delete data[index].araeLocation;
+            delete data[index].LAY_TABLE_INDEX;
+        }
+        let newExcel = col.concat(data);
+        downloadExcel(newExcel);
+    };
 
+    $('#export').click(function () {
+        exportExcel(excelData);
+    });
+    $('#exportAll').click(function () {
+        $.ajax({
+            type:'GET',
+            url:excelUrl+'&pageSize=1000',
+            success: function (result) {
+                if(result.state === true){
+                    exportExcel(result.rows);
+                }else {
+                    layer.msg('服务器异常，请稍后再试');
+                }
+            }
+        })
+    });
 });

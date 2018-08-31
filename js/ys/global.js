@@ -10,12 +10,13 @@ let store_id = null,
     store_name = null,
     barcode;
 let nodes = [];
-let getCheckedData;
-let fileData;
-let station = null;
-let tableData = null;
-let storeId = null;
-
+let getCheckedData;  //获取table行数据函数
+let fileData;  //存放获取到的table行数据信息
+let station = null;  //存放档案物理位置信息
+let tableData = null;  //鼠标右键点击行数据
+let storeId = null;  //库房id
+let excelData = null; //存放excel数据，方便导出
+let excelUrl = null;  //存放导出所有查询到的excel数据的接口
 //定义文档信息表头
 let cols = [];
 cols.push({field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: 'left'},
@@ -90,13 +91,13 @@ cols.push({field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: '
         field: 'status', title: '状态', width: 100,
         templet: function (d) {
             let status = '';
-            if (d.status == 1) {
+            if (d.status === 1) {
                 status = '未上架';
                 return status;
-            } else if (d.status == 2) {
+            } else if (d.status === 2) {
                 status = '在架';
                 return status;
-            } else if (d.status == 3) {
+            } else if (d.status === 3) {
                 status = '在借';
                 return status;
             }
@@ -131,10 +132,20 @@ let downloadExcel = function (json,type) {
         v:v.v
     });
     let outputPos = Object.keys(tmpdata);//设置区域
+    let cols = [];
+    for(let i = 0;i !== keyMap.length;++i){
+        if(i<5){
+            cols.push({wpx:80});
+        }else{
+            cols.push({wpx:160})
+        }
+        tmpdata[outputPos[i]].s = {font:{sz:14,bold:true}};
+
+    }
     let tmpWB = {
         SheetNames: ['mySheet'], //保存的表标题
         Sheets: {
-            'mySheet':Object.assign({},
+            'mySheet':Object.assign({'!cols':cols},
                 tmpdata,//内容
                 {
                     '!ref':outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
@@ -153,9 +164,7 @@ let downloadExcel = function (json,type) {
     let href = URL.createObjectURL(tmpDown); //创建对象超链接
     document.getElementById("data").href = href; //绑定a标签
     document.getElementById("data").click(); //模拟点击事件
-    setTimeout(function () { //延时释放
-        URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个obeject URL
-    },100);
+    URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个obeject URL
 };
 function s2ab(s) { //字符串转字符流
     let buf = new ArrayBuffer(s.length);

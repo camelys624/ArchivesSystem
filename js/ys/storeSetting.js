@@ -26,8 +26,8 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit', 'element'], function () 
             elem: '#table',
             url: href,
             height: 'full-70',
-            limit:20,
-            limits:[20,30,40,50],
+            limit: 20,
+            limits: [20, 30, 40, 50],
             page: true,
             cols: [[
                 {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
@@ -238,9 +238,18 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit', 'element'], function () 
             }
         });
     });
+
+    // 定义仓库验证规则
+    form.verify({
+        barcode: function (value) {
+            if(value.length !== 2){
+                return '仓库标识必须为2位';
+            }
+        }
+    });
+
     form.on('submit(yes)', function (data) {
         let editData = data.field;
-        let reg = /^[0-9a-zA-Z]+$/;
         editData.img = "E:\\image.pig";
         editData.quantuty = 1024;
         editData.capacity = 10240;
@@ -251,39 +260,30 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit', 'element'], function () 
             editData.storeNum = 100;
         } else {
             editData.id = store_id;
-            editData.name = data.name + '修改';
+            editData.name = editData.name + '修改';
         }
-        if (editData.barcode === '') {
-            document.getElementById('warnMsg').innerHTML = '请输入ID！！';
-        } else {
-            if (!reg.test(barcode)) {
-                document.getElementById('warnMsg').innerHTML = '只能输入数字和字母！！';
-            } else {
-                document.getElementById('warnMsg').innerHTML = '';
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: JSON.stringify(editData),
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    success: function (result) {
-                        console.log(result);
-                        if (result.state === true) {
-                            $('#tree').find('li').remove();
-                            layer.msg(result.msg);
-                            createTree();
-                            layer.close(index);
-                        } else {
-                            layer.msg(result.msg);
-                        }
-                    },
-                    error: function () {
-                        console.log("错误");
-                    }
-                });
 
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(editData),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+                if (result.state === true) {
+                    $('#tree').find('li').remove();
+                    layer.msg(result.msg);
+                    createTree();
+                    layer.close(index);
+                } else {
+                    layer.msg(result.msg);
+                }
+            },
+            error: function () {
+                console.log("错误");
             }
-        }
+        });
         return false;
     });
 

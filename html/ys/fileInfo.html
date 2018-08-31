@@ -9,8 +9,7 @@
     <script type="text/javascript" src="../../layui/layui.js"></script>
     <script type="text/javascript" src="../../js/jquery-1.11.1.min.js"></script>
     <script src="../../js/ys/jQuery.print.js"></script>
-    <script type="text/javascript" src="../../js/ys/xlsx/dist/jszip.js"></script>
-    <script type="text/javascript" src="../../js/ys/xlsx/dist/xlsx.js"></script>
+    <script type="text/javascript" src="../../node_modules/xlsx-style/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <aside class="layui-side layui-bg-gray">
@@ -41,8 +40,7 @@
             <ul class="menu" id="Excel-menu">
                 <li id="import">从Excel导入</li>
                 <li id="export">导出当前页到Excel</li>
-                <li><a href="http://192.168.2.128:8081/admin/areamodule/fileBoxInfo/selectFuzzy">导出查询的所有数据到Excel</a>
-                </li>
+                <li id="exportAll">导出查询的所有数据到Excel</li>
                 <a href="" download="数据.xlsx" id="data"></a>
             </ul>
         </div>
@@ -116,7 +114,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">查询内容</label>
         <div class="layui-input-inline">
-            <input type="text" name="info" class="layui-input">
+            <input type="text" name="info" class="layui-input" autocomplete="off">
         </div>
     </div>
     <div style="float: right;margin: 25px 25px 0 0">
@@ -135,13 +133,13 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">借阅人:</label>
             <div class="layui-input-inline">
-                <input type="text" name="userName" autocomplete="off" class="layui-input">
+                <input type="text" name="userName" autocomplete="off" lay-verify="required" class="layui-input">
             </div>
         </div>
         <div class="layui-form-inline">
             <label class="layui-form-label">借阅部门：</label>
             <div class="layui-input-inline">
-                <input type="text" name="depart" autocomplete="off" class="layui-input">
+                <input type="text" name="depart" autocomplete="off" lay-verify="required" class="layui-input">
             </div>
         </div>
         <div class="layui-form-inline">
@@ -162,19 +160,19 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">手机号：</label>
             <div class="layui-input-inline">
-                <input type="text" name="userPhone" autocomplete="off" class="layui-input">
+                <input type="text" name="userPhone" autocomplete="off" lay-verify="required|phone|number" class="layui-input">
             </div>
         </div>
         <div class="layui-form-inline">
             <label class="layui-form-label">固定电话：</label>
             <div class="layui-input-inline">
-                <input type="text" name="userTel" autocomplete="off" class="layui-input">
+                <input type="text" name="userTel" autocomplete="off" lay-verify="number" class="layui-input">
             </div>
         </div>
         <div class="layui-form-inline">
             <label class="layui-form-label">E-mail：</label>
             <div class="layui-input-inline">
-                <input type="text" name="userEmail" autocomplete="off" class="layui-input">
+                <input type="text" name="userEmail" autocomplete="off" lay-verify="email" class="layui-input">
             </div>
         </div>
     </div>
@@ -188,13 +186,13 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">借阅天数：</label>
             <div class="layui-input-inline">
-                <input type="text" name="borrowDay" autocomplete="off" class="layui-input" id="borrowDay">
+                <input type="text" name="borrowDay" autocomplete="off" lay-verify="number" class="layui-input" id="borrowDay">
             </div>
         </div>
         <div class="layui-form-inline">
             <label class="layui-form-label">经办人：</label>
             <div class="layui-input-inline">
-                <input type="text" name="creater" autocomplete="off" class="layui-input">
+                <input type="text" name="creater" autocomplete="off" lay-verify="required" class="layui-input">
             </div>
         </div>
     </div>
@@ -234,7 +232,6 @@
     <li id="borrow_right">借阅</li>
     <li id="setStation_right">更改位置</li>
     <li id="oppenShel">打开架体</li>
-
 </ul>
 <iframe class="img-box" id="myIframe">
 </iframe>

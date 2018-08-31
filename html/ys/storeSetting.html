@@ -45,9 +45,8 @@
     <div class="layui-form-item">
         <label for="s-id" class="layui-form-label">仓库代码</label>
         <div class="layui-input-inline">
-            <input type="text" id="s-id" name="barcode" autocomplete="off" required="required" class="layui-input">
+            <input type="text" id="s-id" name="barcode" autocomplete="off" lay-verify="required|number|barcode" class="layui-input">
         </div>
-        <p id="warnMsg"></p>
     </div>
     <div class="layui-form-item">
         <label for="s-name" class="layui-form-label">仓库名称</label>
@@ -73,13 +72,13 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">所属库房</label>
             <div class="layui-input-inline">
-                <input type="text" name="rdStoreName" id="store" class="layui-input">
+                <input type="text" name="rdStoreName" lay-verify="required" id="store" class="layui-input">
             </div>
         </div>
         <div class="layui-form-inline">
             <label class="layui-form-label">区名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="name" id="q-name" class="layui-input">
+                <input type="text" name="name" id="q-name" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -206,7 +205,7 @@
         <div class="layui-form-inline">
             <label class="layui-form-label">温度</label>
             <div class="layui-input-inline">
-                <input type="text" name="tempture" autocomplete="off" class="layui-input">
+                <input type="text" name="tempture" autocomplete="off" lay-verify="required|number" class="layui-input">
             </div>
         </div>
     </div>
