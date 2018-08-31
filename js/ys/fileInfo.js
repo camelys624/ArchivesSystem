@@ -117,12 +117,12 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                         $('.btn-group-div').show();
                         if (node.type === 1) {
                             fkTemplateId = node.id;
-                            url = base + 'admin/areaModule/FileArchivesInfo?map[fkTemplateId]=' + node.id;
+                            url = base + 'admin/areaModule/FileArchivesInfo?map[fkTemplateId]=' + node.id + '&map[deleted]=0';
                             excelUrl = url;
                             showTable(cols);
                             $('#entry').removeAttr('disabled');
                         } else {
-                            url = base + 'admin/areaModule/FileArchivesInfo?map[fkTemplateId]=' + node.id;
+                            url = base + 'admin/areaModule/FileArchivesInfo?map[fkTemplateId]=' + node.id + '&map[deleted]=0';
                             showTable(cols);
                             $('#entry').attr('disabled', 'disabled');
                         }
@@ -243,6 +243,8 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         });
         return false;
     });
+
+    //档案信息添加、修改
     let editFile = function (data) {
         url = base + 'admin/areaModule/FileArchivesTemplate?map[id]=' + fkTemplateId;
         $.ajax({
@@ -547,10 +549,11 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             boxTable.render({
                 elem: '#box-table',
                 url: url,
+                height:'full-273',
                 page: true,
                 cols: [[
                     {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
-                    {field: 'storeName', title: '仓库名', width: 80},
+                    {field: 'storeName', title: '仓库名', width: 100},
                     {field: 'boxName', title: "档案盒名称", width: 180},
                     {field: 'boxNum', title: '档案盒编号', width: 180},
                     {field: 'fkTypeId', title: '档案盒类型id', width: 120},
@@ -560,7 +563,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                     {field: 'duration', title: '保管期限', width: 100},
                     {field: 'boxBarcode', title: '条形码', width: 120},
                     {field: 'endTime', title: '保管截止时间', width: 180},
-                    {field: 'statu', title: '状态'},
+                    {field: 'statu', title: '状态',width:80},
                     {field: 'security', title: '密级'},
                     {
                         field: 'right',
@@ -708,7 +711,6 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             layEvent = obj.event;
         if (layEvent === 'edit') {
             editFile(data);
-
         } else if (layEvent === 'del') {
             layer.confirm('真的删除该档案信息吗？', function (index) {
                 let fileID = {id: obj.data.id};

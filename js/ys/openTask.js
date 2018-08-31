@@ -7,38 +7,49 @@ layui.use(['element', 'table'], function () {
     cols = [
         {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
         {type: 'checkbox'},
-        {field: 'fileName', title: '名称'},
-        {field: 'createTime', title: '创建时间'},
-        {field: 'creater', title: '创建人'},
-        {field: 'rfid', title: 'rfid'},
-        {field: 'borrowId', title: '借阅ID'},
-        {field: 'id', title: '任务id'},
-        {field: 'barcode', title: '条码'},
-        {field: 'fileType', title: '文档类型'},
-        {field: 'fileId', title: '档案或档案盒id'},
-        {field: 'local', title: '存放位置'},
-        {field: 'ip', title: 'ip'},
+        {field: 'fileName', title: '名称', width: 120},
+        {field: 'createTime', title: '创建时间', width: 180},
+        {field: 'creater', title: '创建人', width: 80},
+        {field: 'rfid', title: 'rfid', width: 180},
+        {field: 'borrowId', title: '借阅ID', width: 180},
+        {field: 'id', title: '任务id', width: 180},
+        {field: 'barcode', title: '条码', width: 140},
+        {field: 'fileType', title: '文档类型', width: 100},
+        {field: 'fileId', title: '档案或档案盒id', width: 180},
+        {
+            field: 'local', title: '存放位置', width: 180, templet: function (d) {
+                let loca = d.location[0];
+                if (loca.localtion === 1) {
+                    return loca.rd_region_num + '区' + loca.col + '列' + loca.div + '节' + loca.lay + '层左'
+                } else if (loca.localtion === 2) {
+                    return loca.rd_region_num + '区' + loca.col + '列' + loca.div + '节' + loca.lay + '层右'
+                }
+            }
+        },
+        {field: 'ip', title: 'ip', width: 180,templet:function (d) {
+                let loca = d.location[0];
+                return loca.ip;
+            }},
         {field: 'right', title: '操作', width: 80, align: 'center', toolbar: '#toolbar', fixed: 'right'}
     ];
-    let data;
     $('#upTask').click(function () {
-       href = base + 'admin/areamodule/fileOptionFrame?map[status]=2';
+        href = base + 'admin/areamodule/fileOptionFrame?map[status]=2';
         showTable(href);
     });
     $('#doTask').click(function () {
-       href = base + 'admin/areamodule/fileOptionFrame?map[status]=1';
-       showTable(href);
+        href = base + 'admin/areamodule/fileOptionFrame?map[status]=1';
+        showTable(href);
     });
     let showTable = function (url) {
-        url === undefined ? url = base+'admin/areamodule/fileOptionFrame?map[status]=2' :url;
+        url === undefined ? url = base + 'admin/areamodule/fileOptionFrame?map[status]=2' : url;
         let table1 = table.render({
             elem: '#table',
             url: url,
             page: true,
-            height:'full-110',
+            height: 'full-110',
             cols: [cols],
-            limit:20,
-            limits:[20,30,40,50],
+            limit: 20,
+            limits: [20, 30, 40, 50],
             request: {
                 pageName: 'currentPage',
                 limitName: 'pageSize'
@@ -53,9 +64,9 @@ layui.use(['element', 'table'], function () {
                     e.preventDefault();
                     return false;
                 });
-                console.log('原始数据',res);
+                console.log('原始数据', res);
                 let data = res.rows;
-                console.log('信息',data);
+                console.log('信息', data);
                 $('.layui-table-body tr').each(function (e) {
                     //表单鼠标右键操作
                     let drindex = null;
@@ -85,43 +96,43 @@ layui.use(['element', 'table'], function () {
     };
     showTable();
 
-    let openTask = function (data){
+    let openTask = function (data) {
         let local = data.location[0];
-        if(data.fileType === 0){
+        if (data.fileType === 0) {
             data.fileType = '档案';
-        }else if(table.fileType === 1){
+        } else if (table.fileType === 1) {
             data.fileType = '档案盒'
         }
-        if(local.localtion === 1){
+        if (local.localtion === 1) {
             data.localtion = '左';
-        }else if(local.localtion === 2){
+        } else if (local.localtion === 2) {
             data.localtion = '右';
         }
-        let str = '<?xml version="1.0" encoding="utf-8"?>'+
-            '<root type="opentask">'+
-            '<Content>'+
-            '<Type>'+data.fileType+'</Type>'+
-            '<BoxName>'+data.fileName+'</BoxName> '+
-            '<QuNo>'+local.rd_region_num+'</QuNo>'+
-            '<ColNo>'+local.col+'</ColNo>'+
-            '<Le>'+local.lay+'</Le>'+
-            '<Div>'+local.div+'</Div>'+
-            '<LR>'+data.localtion+'</LR>'+
-            ' </Content>'+
+        let str = '<?xml version="1.0" encoding="utf-8"?>' +
+            '<root type="opentask">' +
+            '<Content>' +
+            '<Type>' + data.fileType + '</Type>' +
+            '<BoxName>' + data.fileName + '</BoxName> ' +
+            '<QuNo>' + local.rd_region_num + '</QuNo>' +
+            '<ColNo>' + local.col + '</ColNo>' +
+            '<Le>' + local.lay + '</Le>' +
+            '<Div>' + local.div + '</Div>' +
+            '<LR>' + data.localtion + '</LR>' +
+            ' </Content>' +
             '</root>';
         let b = new Base64();
         let xml = b.encode(str);
 
         $.ajax({
-            url:local.ip+':8081/GDL',
-            type:'POST',
-            contentType:'application/xml',
-            data:xml,
-            dataType:'text',
-            success:function (result) {
+            url: local.ip + ':8081/GDL',
+            type: 'POST',
+            contentType: 'application/xml',
+            data: xml,
+            dataType: 'text',
+            success: function (result) {
                 console.log(result);
             },
-            error:function (result) {
+            error: function (result) {
                 console.log('oops!!');
             }
         });
@@ -130,12 +141,12 @@ layui.use(['element', 'table'], function () {
     $('#sendTask').click(function () {
         let checkStatus = table.checkStatus('table1');
         let fileData = checkStatus.data;
-        let ids = [],ips=[];
+        let ids = [], ips = [];
         for (let i = 0; i < fileData.length; i++) {
             ids.push(fileData[i].id);
-            for(let j = i+1;j<fileData.length;j++){
-                if(fileData[i].ip===fileData[j].ip){
-                    ips.push(fileData[i],fileData[j]);
+            for (let j = i + 1; j < fileData.length; j++) {
+                if (fileData[i].ip === fileData[j].ip) {
+                    ips.push(fileData[i], fileData[j]);
                 }
             }
         }
