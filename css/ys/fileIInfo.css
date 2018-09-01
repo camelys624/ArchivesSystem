@@ -114,3 +114,12 @@
     height: 100%;
     width: 100%;
 }
+
+.content-table{
+    width: 900px;
+    margin: 0 auto
+}
+
+.border{
+    border:solid 1px #9F9F9F;
+}

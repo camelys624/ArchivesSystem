@@ -173,31 +173,31 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             items +
             '<div style="position: absolute;bottom: 0;width: 100%">' +
             '<hr/>' +
-            '<div class="layui-form-item">'+
-                '<label class="layui-form-label">存放位置</label>'+
-                '<div class="layui-input-inline">'+
-                    '<input type="text" id="stationInput" name="station" class="layui-input layui-disabled" disabled>'+
-                '</div>'+
-                '<a id="setStation" class="layui-btn layui-btn-primary">选择</a>'+
-             '</div>'+
-             '<div class="layui-form-item">'+
-                '<label class="layui-form-label">档案条码</label>'+
-                '<div class="layui-input-inline">'+
-                    '<input type="text" name="archivesBarcode" class="layui-input" lay-verify="required|number" autocomplete="off">'+
-                '</div>'+
-                '<label class="layui-form-label">rfid</label>'+
-                '<div class="layui-input-inline">'+
-                    '<input type="text" name="rfid" class="layui-input" lay-verify="required|number" autocomplete="off">'+
-                '</div>'+
-                '<a id="archivesBarcode" class="layui-btn layui-btn-primary">打印条码</a>'+
-                '<button class="layui-btn" lay-submit="" lay-filter="fileBtn">确定</button>'+
-                '<button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>'+
-             '</div>'+
-             '</div>'+
-             '</div>' + '</form>';
+            '<div class="layui-form-item">' +
+            '<label class="layui-form-label">存放位置</label>' +
+            '<div class="layui-input-inline">' +
+            '<input type="text" id="stationInput" name="station" class="layui-input layui-disabled" disabled>' +
+            '</div>' +
+            '<a id="setStation" class="layui-btn layui-btn-primary">选择</a>' +
+            '</div>' +
+            '<div class="layui-form-item">' +
+            '<label class="layui-form-label">档案条码</label>' +
+            '<div class="layui-input-inline">' +
+            '<input type="text" name="archivesBarcode" class="layui-input" lay-verify="required|number" autocomplete="off">' +
+            '</div>' +
+            '<label class="layui-form-label">rfid</label>' +
+            '<div class="layui-input-inline">' +
+            '<input type="text" name="rfid" class="layui-input" lay-verify="required|number" autocomplete="off">' +
+            '</div>' +
+            '<a id="archivesBarcode" class="layui-btn layui-btn-primary">打印条码</a>' +
+            '<button class="layui-btn" lay-submit="" lay-filter="fileBtn">确定</button>' +
+            '<button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>' + '</form>';
         $('body').append(formBox);
-        $('input[name="题名"]').attr('lay-verify','required');
-        $('input[name="档号"]').attr('lay-verify','required');
+        $('input[name="题名"]').attr('lay-verify', 'required');
+        $('input[name="档号"]').attr('lay-verify', 'required');
     };
 
 
@@ -425,7 +425,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             switch (parseInt(searchData.factor)) {
                 case 0:
                     url = base + 'admin/areamodule/fileArchivesInfo?map[arcName]=' + searchData.info;
-                    excelUrl =url;
+                    excelUrl = url;
                     break;
                 case 1:
                     url = base + 'admin/areamodule/fileArchivesInfo?map[archivesNumber]=' + searchData.info;
@@ -550,7 +550,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             boxTable.render({
                 elem: '#box-table',
                 url: url,
-                height:'full-273',
+                height: 'full-273',
                 page: true,
                 cols: [[
                     {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
@@ -564,7 +564,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                     {field: 'duration', title: '保管期限', width: 100},
                     {field: 'boxBarcode', title: '条形码', width: 120},
                     {field: 'endTime', title: '保管截止时间', width: 180},
-                    {field: 'statu', title: '状态',width:80},
+                    {field: 'statu', title: '状态', width: 80},
                     {field: 'security', title: '密级'},
                     {
                         field: 'right',
@@ -788,16 +788,46 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             console.log("error");
         }
     });
-    uploadInst = upload.render({
-        elem: '#upload',
-        url: base + 'admin/areamodule/fileOition/uploadArchivesinfo',
-        done: function (result) {
-            layer.msg(result.msg);
+    $('#upload').click(function () {
+        getCheckedData();
+        if (fileData.length !== 0) {
+            if(fileData.length !== 1){
+                layer.msg("对不起，一次只能选择一份档案上传文件");
+            }else{
+                $('input[name="arcName"]').val(fileData[0].arcName);
+                $('input[name="arcNum"]').val(fileData[0].archivesNumber);
+                layer.open({
+                    type:1,
+                    title:'上传附件',
+                    area:['1000px','600px'],
+                    content:$('#uploadContent')
+                });
+                uploadInst = upload.render({
+                    elem: '#uploadFile',
+                    url: base + 'admin/areamodule/fileOition/uploadMoreArchinfo',
+                    data:{id:fileData[0].id},
+                    accept: 'file',
+                    multiple: true,
+                    done: function (result) {
+                        console.log(fileData[0].id,'返回结果',result);
+                        layer.msg(result.msg);
+                    }
+                });
+            }
+
+        }else {
+            layer.msg("未选择档案，请选择档案后上传");
         }
     });
 
+    $('#downloadFile').click(function () {
+        getCheckedData();
+        window.location.href = base + 'admin/areamodule/fileOition/getFile'+'?map[packagename]='+
+            'archivesinfo'+'&filename='+'1610397959299530753.png'+'&detailname='+'Excel.png';
+    });
+
     //excel导出
-    let exportExcel = function (jsonData){
+    let exportExcel = function (jsonData) {
         let col = [], data = jsonData;
         col.push({
             "xuhao": "序号",
@@ -844,12 +874,12 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
     });
     $('#exportAll').click(function () {
         $.ajax({
-            type:'GET',
-            url:excelUrl+'&pageSize=1000',
+            type: 'GET',
+            url: excelUrl + '&pageSize=1000',
             success: function (result) {
-                if(result.state === true){
+                if (result.state === true) {
                     exportExcel(result.rows);
-                }else {
+                } else {
                     layer.msg('服务器异常，请稍后再试');
                 }
             }

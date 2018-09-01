@@ -14,13 +14,9 @@
 <body>
 <aside class="layui-side layui-bg-gray">
     <blockquote class="layui-elem-quote layui-bg-black sideblock">
-        <p>
-            档案信息
-        </p>
+        <p>档案信息</p>
     </blockquote>
-    <ul class="domtree" id="tree">
-
-    </ul>
+    <ul class="domtree" id="tree"></ul>
 </aside>
 <main class="layui-body">
     <div class="btn-group-div">
@@ -206,7 +202,7 @@
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
             <legend>表单集合演示</legend>
         </fieldset>
-        <div style="width: 900px;margin: 0 auto">
+        <div class="content-table">
             <table id="borrowFile" lay-filter="table"></table>
         </div>
     </div>
@@ -235,6 +231,36 @@
 </ul>
 <iframe class="img-box" id="myIframe">
 </iframe>
+<form id="uploadContent" class="layui-form form-dis">
+    <div class="layui-form-item" style="margin-left: 20px">
+        <div class="layui-inline">
+            <a id="uploadFile" name="files" class="layui-btn">上传</a>
+            <a id="downloadFile" class="layui-btn">下载</a>
+            <a id="deleteFile" class="layui-btn layui-btn-danger">删除</a>
+            <a id="refresh" class="layui-btn">刷新</a>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">题名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="arcName" class="layui-input layui-disabled" disabled>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">档号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="arcNum" class="layui-input layui-disabled" disabled>
+            </div>
+        </div>
+    </div>
+    <div style="width: 950px;margin: 0 auto" class="border"></div>
+    <table class="layui-table" lay-data="{height:315, url:'http://192.168.2.128:8081/admin/areamodule/fileOition/uploadMoreArchinfo', page:true, id:'annexTable'}" lay-filter="table">
+        <tr>
+            <th lay-data="{field:'filepackage'}">文件保存位置</th>
+            <th lay-data="{field:'filename'}">文件真实名称</th>
+            <th lay-data="{field:'detailname'}">文件原名</th>
+        </tr>
+    </table>
+</form>
 </body>
 <script type="text/javascript" src="../../js/ys/global.js"></script>
 <script type="text/javascript" src="../../js/ys/fileInfo.js"></script>

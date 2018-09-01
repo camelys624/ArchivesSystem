@@ -4,22 +4,26 @@ var rightData = new Object;
 //表头
 var tableHead = [
     [
-        { field: 'tourPlayerId', title: 'ID', width: 120, align: 'center', type: 'numbers' },
-        { field: 'identity', title: '登录名', align: 'center', width: 265 },
-        { field: 'position', title: '职位', align: 'center', width: 230 },
-        { field: 'visitTime', title: '记录时间', align: 'center', width: 300 },
+        { field: 'tourPlayerId', title: 'ID', width: 50, align: 'center', type: 'numbers' },
+        { field: 'identity', title: '登录名', align: 'center', width: 150 },
+        { field: 'username', title: '用户名', align: 'center', width: 150 },
+        { field: 'position', title: '职位', align: 'center', width: 150 },
+        { field: 'visitTime', title: '登录时间', align: 'center', width: 180 },
+        { field: 'createTime', title: '创建时间', align: 'center', width: 200 },
+        { field: 'phone', title: '手机号码', align: 'center', width: 190 },
+        { field: 'email', title: '联系邮箱', align: 'center', width: 210 },
         {
             field: 'isLock',
             title: '是否冻结',
             align: 'center',
-            width: 300,
+            width: 160,
             //只是表格中显示为已冻结和未冻结，下面获取的数据还是1和0
             templet: function(d) {
                 // console.log(d.isLock);
                 return d.isLock ? '已冻结' : '未冻结';
             }
         },
-        { field: 'right', title: '操作' , align: 'center', toolbar: '#barDemo', style: 'cursor: pointer;' }
+        { field: 'right', title: '操作', width: 250, align: 'center', toolbar: '#barDemo', style: 'cursor: pointer;' }
 
     ]
 ];
@@ -68,7 +72,8 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
             height: 'full-52', //高度
             page: true, //开启分页
             cols: tableHead, //表头
-            // data: dataList, //表格中的数据
+            limit: 20,
+            limits: [20, 30, 40, 50, 60, 70, 80, 90],
             url: url + "/admin/authModule/authUser",
             method: 'get',
             request: {
@@ -84,11 +89,14 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
             },
             done: function(res, curr, count) { //表格数据渲染完的回调
                 var data = res.rows;
-                console.log(data);
+                // console.log(data);                  
                 // 给表格的每行绑定右键菜单事件
                 $('.layui-table-body tr').each(function(e) {
+                    // $(this).children('td:eq(9)').css("background-color", "hotpink");
+                    $(this).children('td:eq(9)').append('<div id="action"><span class="layui-btn layui-btn-primary layui-btn-xs" id="change">修改</span><span class="layui-btn layui-btn-xs" id="lock">冻结|解冻</span><span class="layui-btn layui-btn-danger layui-btn-xs" id="del">删除</span><span class="layui-btn layui-btn-warm layui-btn-xs" id="changePwd">改密</span></div>');
                     //表单鼠标右键操作
                     $(this).mousedown(function(e) {
+                        // console.log($(this));
                         var index = $(this).attr('data-index');
                         if (e.which == 3) {
                             $("#menu").show();
@@ -120,11 +128,44 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
             }
         });
     }
-
+    // 表格验证
+    // form.verify({
+    //     username: function(value) {
+    //         if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+    //             return '用户名不能有特殊字符';
+    //         }
+    //         if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+    //             return '用户名首尾不能出现下划线\'_\'';
+    //         }
+    //         if (!/^[\S]{6,12}$/.test(value)) {
+    //             return '用户名必须6到12位，且不能出现空格';
+    //         }
+    //         // if (/^\d+\d+\d$/.test(value)) {
+    //         //     return '用户名不能全为数字';
+    //         // }
+    //     },
+    //     //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
+    //     password: function(value) {
+    //         if (!/^[\S]{6,12}$/.test(value)) {
+    //             return '密码必须6到12位，且不能出现空格';
+    //         }
+    //         if (/^\d+\d+\d$/.test(value)) {
+    //             return '密码不能全为数字';
+    //         }
+    //     }
+    // });
+    /* TIPS:（1）邮箱验证：lay-verify="email"
+             (2) 手机验证：lay-verify="required|phone"
+    */
+    var index, moreActions, actions;
     // 监听工具条进行修改、冻结|解冻、删除操作
     table.on('tool(showUsers)', function(obj) {
         // 获取对象的数据
         data = obj.data;
+        // console.log(obj);
+        index = obj.tr.selector;
+        index = parseInt(index.replace(/[^0-9]/ig, "")) + 1; //在字符串中截取被点击行的下标
+        // console.log(index);
         //存储冻结标志（0 or 1）
         var lockValue = data.isLock;
         //0解锁1锁定
@@ -138,11 +179,45 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
             isLock: lockValue,
             id: data.id
         };
-        tableAction(obj.event);
+        moreActions = $("tr").eq(index).children('td:eq(9)').children().eq(0); //更多操作
+        actions = $("tr").eq(index).children('td:eq(9)').children().eq(1); //删除，编辑等操作所在的div
+        // console.log(actions);
+        if (obj.event == 'moreAction') {
+            // jQuery.fx.off = true;
+            moreActions.toggle();
+            actions.toggle();
+            //点击工具条所在的地方，隐藏
+            $("tr").eq(index).children('td:eq(9)').click(function() {
+                moreActions.toggle();
+                actions.toggle();
+            });
+        }
+        // tableAction(obj.event);
     });
+
     //禁用浏览器鼠标右键菜单
     $(document).contextmenu(function() {
         return false;
+    });
+    //由于是使用append方法加进来的元素，事件与标签绑定不上，所以使用事件委托
+    //事件委托：绑定在祖先元素上的事件处理函数可以对在后代上触发的事件作出回应
+    $("tbody").on('click','div span',function(event){
+        var event1 = event.target.id;
+        console.log("1111");
+        switch(event1){
+            case 'change':
+                tableAction('change');
+                break;
+            case 'lock':
+                tableAction('lock');
+                break;
+            case 'del':
+                tableAction('del');
+                break;
+            case 'changePwd':
+                tableAction('changePwd');
+                break;
+        }
     });
     // 对表格数据的操作
     function tableAction(value) {
@@ -193,6 +268,7 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
                 });
                 flag = $('.layui-layer-title').text();
                 // $('#Userform')[0].reset();
+                $("a").eq(0).css("display", "block");
                 console.log(flag);
                 break;
             case 'lock':
@@ -207,6 +283,7 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
                         window.location.reload();
                     }
                 });
+                $("a").eq(0).css("display", "block");
                 break;
             case 'del':
                 layer.confirm('确定要删除该账号吗？', function() {
@@ -219,10 +296,12 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
                         success: function(data) {
                             // alert(data.msg);
                             layer.closeAll();
-                            window.location.reload();
+                            // window.location.reload();
+                            onLoadTable();
                         }
                     });
                 });
+                $("a").eq(0).css("display", "block");
                 break;
             case 'changePwd':
                 layer.open({
@@ -258,9 +337,10 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
                     cancel: function(index, layero) {
                         $('#changePassword').hide();
                         layer.close(index);
+                        $("a").eq(0).css("display", "block");
                     }
                 });
-
+                $("a").eq(0).css("display", "block");
                 $('#oldPwd').val("");
                 $('#newPwd').val("");
         }
@@ -304,5 +384,4 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
             $("#menu").hide();
         });
     }
-
 });
