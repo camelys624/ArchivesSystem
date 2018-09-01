@@ -1,5 +1,5 @@
 //接口地址
-let base = 'http://192.168.2.128:8081/';
+var base = 'http://192.168.2.128:8081/';
 let url = null;
 
 
@@ -19,17 +19,19 @@ let excelData = null; //存放excel数据，方便导出
 let excelUrl = null;  //存放导出所有查询到的excel数据的接口
 //定义文档信息表头
 let cols = [];
+// 这里的表头是写死了的，或许以后会先调用接口，然后动态生成表头
 cols.push({field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: 'left'},
     {type: 'checkbox'},
     {field: 'rdTypeName', title: '文档类型', width: 120},
     {field: 'arcName', title: '档案名称', width: 100},
-    {field: 'fileNum', title: '档号', width: 120,
+    {
+        field: 'fileNum', title: '档号', width: 120,
         templet: function (d) {
             let details = JSON.parse(d.details);
-            if(details.档号 === undefined){
+            if (details.档号 === undefined) {
                 details = JSON.parse(details);
                 return details.档号
-            }else {
+            } else {
                 return details.档号;
             }
             // return details.档号;
@@ -39,10 +41,10 @@ cols.push({field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: '
         field: 'docName', title: '题名', width: 120,
         templet: function (d) {
             let details = JSON.parse(d.details);
-            if(details.题名 === undefined){
+            if (details.题名 === undefined) {
                 details = JSON.parse(details);
                 return details.题名
-            }else {
+            } else {
                 return details.题名;
             }
         }
@@ -83,7 +85,7 @@ cols.push({field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: '
         }
     },
     {field: 'fkBoxId', title: '归属档案盒id', width: 200},
-    {field: 'archivesBarcode', title: '档案条形码',width:120},
+    {field: 'archivesBarcode', title: '档案条形码', width: 120},
     {field: 'rfid', title: 'RFID', width: 200},
     {field: 'rdLocationAddr', title: '存放位置', width: 180},
     {field: 'createTime', title: '著录时间', width: 180},
@@ -118,69 +120,96 @@ layui.use('table', function () {
 });
 
 //导出Excel文件
-let downloadExcel = function (json,type) {
+let downloadExcel = function (json, type) {
     let tmpDown;
     let keyMap = [];//获取key值
-    for(let k in json[0]){
+    for (let k in json[0]) {
         keyMap.push(k);
     }
     let tmpdata = [];//用来保存转换好的json
-    json.map((v,i) => keyMap.map((k,j) => Object.assign({},{
-        v:v[k],
-        position: (j > 25 ? getCharCol(j):String.fromCharCode(65 + j)) + (i + 1)
-    }))).reduce((prev,next) => prev.concat(next)).forEach((v,j) => tmpdata[v.position] = {
-        v:v.v
+    // json.map((v,i) => keyMap.map((k,j) => Object.assign({},{
+    //     v:v[k],
+    //     position: (j > 25 ? getCharCol(j):String.fromCharCode(65 + j)) + (i + 1)
+    // }))).reduce((prev,next) => prev.concat(next)).forEach((v,j) => tmpdata[v.position] = {
+    //     v:v.v
+    // });
+    json.map(function (v, i) {  //运用ES5内容
+        return keyMap.map(function (k, j) {
+            return Object.assign({}, {
+                v: v[k],
+                position: (j > 25 ? getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
+            });
+        });
+    }).reduce(function (prev, next) {
+        return prev.concat(next);
+    }).forEach(function (v, i) {
+        tmpdata[v.position] = {
+            v: v.v
+        }
     });
     let outputPos = Object.keys(tmpdata);//设置区域
     let cols = [];
-    for(let i = 0;i !== keyMap.length;++i){
-        if(i<5){
-            cols.push({wpx:80});
-        }else{
-            cols.push({wpx:160})
+    for (let i = 0; i !== keyMap.length; ++i) {
+        if (i < 5) {
+            cols.push({wpx: 80});
+        } else {
+            cols.push({wpx: 160})
         }
-        tmpdata[outputPos[i]].s = {font:{sz:14,bold:true}};
+        tmpdata[outputPos[i]].s = {font: {sz: 14, bold: true}};
 
     }
     let tmpWB = {
         SheetNames: ['mySheet'], //保存的表标题
         Sheets: {
-            'mySheet':Object.assign({'!cols':cols},
+            'mySheet': Object.assign({'!cols': cols},
                 tmpdata,//内容
                 {
-                    '!ref':outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
+                    '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] //设置填充区域
                 }
             )
         }
     };
-    tmpDown = new Blob([s2ab(XLSX.write(tmpWB,{
-        bookType:(type == undefined ? 'xlsx' : type),
-        bookSST : false,
-        type: 'binary'
-    } //这里的数据是用来定义导出的格式类型
-    ))],{
-        type:""
+    // var blobObject = new Blob([tmpWB]);
+
+    tmpDown = new Blob([s2ab(XLSX.write(tmpWB, {
+            bookType: (type == undefined ? 'xlsx' : type),
+            bookSST: false,
+            type: 'binary'
+        } //这里的数据是用来定义导出的格式类型
+    ))], {
+        type: ""
     }); //创建二进制对象写入转换好的字节流
-    let href = URL.createObjectURL(tmpDown); //创建对象超链接
-    document.getElementById("data").href = href; //绑定a标签
-    document.getElementById("data").click(); //模拟点击事件
-    URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个obeject URL
+    if(window.navigator.msSaveOrOpenBlob){
+        // 兼容ie11
+        try{
+            window.navigator.msSaveOrOpenBlob(tmpDown, "档案信息.xlsx");
+        }catch (e) {
+            console.log(e);
+        }
+    }else {
+        let href = URL.createObjectURL(tmpDown); //创建对象超链接
+        document.getElementById("data").href = href; //绑定a标签
+        document.getElementById("data").click(); //模拟点击事件
+        URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个obeject URL
+    }
 };
+
 function s2ab(s) { //字符串转字符流
     let buf = new ArrayBuffer(s.length);
     let view = new Uint8Array(buf);
-    for(let i = 0;i != s.length;++i){
+    for (let i = 0; i != s.length; ++i) {
         view[i] = s.charCodeAt(i) & 0xFF;
     }
     return buf;
 }
+
 // 将制定的自然数转换为26进制表示。映射关系:[0-25] -> [A-Z]。
 function getCharCol(n) {
     let temCol = '',
-        s='',
+        s = '',
         m = '';
-    while(n > 0){
-        m = n%26 + 1;
+    while (n > 0) {
+        m = n % 26 + 1;
         s = String.fromCharCode((m + 64) + s);
         n = (n - m) / 26;
     }

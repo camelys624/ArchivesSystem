@@ -1,3 +1,4 @@
+var base = 'http://192.168.2.128:8081/';
 layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
     let tree = layui.tree,
         layer = layui.layer,

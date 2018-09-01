@@ -33,15 +33,15 @@ layui.use(['element', 'table'], function () {
         {field: 'right', title: '操作', width: 80, align: 'center', toolbar: '#toolbar', fixed: 'right'}
     ];
     $('#upTask').click(function () {
-        href = base + 'admin/areamodule/fileOptionFrame?map[status]=2';
+        href = base + 'admin/areamodule/fileOptionFrame?map[status]=2&map[type]=1';
         showTable(href);
     });
     $('#doTask').click(function () {
-        href = base + 'admin/areamodule/fileOptionFrame?map[status]=1';
+        href = base + 'admin/areamodule/fileOptionFrame?map[status]=1&map[type]=1';
         showTable(href);
     });
     let showTable = function (url) {
-        url === undefined ? url = base + 'admin/areamodule/fileOptionFrame?map[status]=2' : url;
+        url === undefined ? url = base + 'admin/areamodule/fileOptionFrame?map[status]=2&map[type]=1' : url;
         let table1 = table.render({
             elem: '#table',
             url: url,
@@ -151,7 +151,6 @@ layui.use(['element', 'table'], function () {
             }
         }
         let data = {ids: ids.join()};
-        console.log(data);
         $.ajax({
             url: base + 'admin/areamodule/fileOptionFrame/update',
             type: 'POST',
@@ -168,18 +167,18 @@ layui.use(['element', 'table'], function () {
     $('#sendTaskR').click(function () {
         let value = {ids: tableData.id};
 
-        // $.ajax({
-        //     url: base + 'admin/areamodule/fileOptionFrame/update',
-        //     type: 'POST',
-        //     contentType: 'application/json',
-        //     data: JSON.stringify(value),
-        //     success: function (result) {
-        //         if (result.state === true) {
-        //             layer.msg(result.msg);
-        //             showTable(href);
-        //         }
-        //     }
-        // });
+        $.ajax({
+            url: base + 'admin/areamodule/fileOptionFrame/update',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(value),
+            success: function (result) {
+                if (result.state === true) {
+                    layer.msg(result.msg);
+                    showTable(href);
+                }
+            }
+        });
 
     });
     table.on('tool(table)', function (obj) {
@@ -193,8 +192,10 @@ layui.use(['element', 'table'], function () {
                 contentType: 'application/json',
                 data: JSON.stringify(value),
                 success: function (result) {
-                    layer.msg(result.msg);
-                    showTable(href);
+                    if (result.state === true) {
+                        layer.msg(result.msg);
+                        showTable(href);
+                    }
                 }
             });
         }

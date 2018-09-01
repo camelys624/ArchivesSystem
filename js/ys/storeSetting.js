@@ -133,9 +133,11 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit', 'element'], function () 
                             store_name = node.name;
                             $('#edit').removeAttr('disabled');
                             $('#delete').removeAttr('disabled');
-                        } else {
+                        } else if(node.parentFkStoreId != null){
                             store_id = node.parentFkStoreId;
                             store_name = node.parentName;
+                            $('#edit').removeAttr('disabled');
+                            $('#delete').removeAttr('disabled');
                             showTable(node.parentFkStoreId);
                         }
                     }

@@ -40,3 +40,21 @@
         margin-left: 20px;
         color: white;
     }
+ .downloadTable {
+     cursor: default;
+     background-color: #009789;
+     padding-top: 5px;
+     padding-bottom: 5px;
+     padding-left: 12px;
+     padding-right: 12px;
+ }
+
+ a.downloadTable:link {
+     color: white;
+     text-decoration: none;
+ }
+
+ a.downloadTable:visited {
+     color: white;
+     text-decoration: none;
+ }

@@ -3,7 +3,7 @@ var url = 'http://192.168.2.128:8081';
 var tableHead = [
     [
         //表头
-        { field: 'tourPlayerId', title: '序号', width: 120, align: 'center', fixed: 'left', type: 'numbers' },
+        { field: 'tourPlayerId', title: '序号', align: 'center', fixed: 'left', type: 'numbers', width: 50 },
         { field: 'name', title: '档案（盒）名称', align: 'center', width: 250 },
         {
             field: 'status',
@@ -11,7 +11,6 @@ var tableHead = [
             align: 'center',
             width: 150,
             templet: function(d) {
-                // console.log(d);
                 return d.status ? '已借出' : '已归还';
             }
         },
@@ -21,18 +20,18 @@ var tableHead = [
             align: 'center',
             width: 150,
             templet: function(d) {
-                // console.log(d);
                 return d.type ? '档案' : '档案盒';
             }
         },
-        { field: 'borrowid', title: '档案ID', align: 'center', width: 300 },
-        { field: 'creater', title: '操作者', align: 'center', width: 168 },
+        { field: 'borrowid', title: '档案ID', align: 'center', width: 250 },
+        { field: 'creater', title: '操作者', align: 'center', width: 150 },
         { field: 'userName', title: '借阅人', align: 'center', width: 150 },
         { field: 'userPhone', title: '联系方式', align: 'center', width: 200 },
-        { field: 'id', title: '借阅记录ID', align: 'center', width: 300 },
-        { field: 'renewals', title: '续借次数', align: 'center', width: 120 }
+        { field: 'id', title: '借阅记录ID', align: 'center', width: 250 },
+        { field: 'renewals', title: '续借次数', align: 'center' }
     ]
 ];
+
 
 
 layui.use(['table', 'layer', 'laypage', 'form'], function() {
@@ -48,6 +47,8 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
         height: 'full-45',
         page: true, //开启分页
         cols: tableHead,
+        limit: 20,
+        limits: ['20', '30', '40', '50', '60', '70', '80', '90'],
         method: 'get',
         url: url + '/admin/areamodule/fileHistory',
         request: {
@@ -60,15 +61,16 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
             msgName: 'msg', //状态信息的字段名称，默认：msg
             countName: 'total', //数据总数的字段名称，默认：count
             dataName: 'rows', //数据列表的字段名称，默认：data
+        },
+        done: function(res) {
+            DownloadTable(res.rows);
         }
     });
-
 
     //表格初始化到此结束------------------------------------------------------------------------------------------------
 
     // 查询借阅记录由此开始--------------------------------------------------------------------------------------------------
     $('#search').on('click', function() {
-        //弹出层
         layer.open({
             type: 1, //层的类型为页面层
             btnAlign: 'l', //按钮的位置居左
@@ -99,58 +101,59 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
                     ['findType', findType],
                     ['inputInfo', inputInfo]
                 ];
-                var info = '=' + inputInfo;
                 // 模糊查找与精确查找
                 if (findType == "模糊查找") {
                     switch (fileLog) {
                         case '档案名称':
-                            info = 'map[name-like]' + info;
+                            info = { 'map[name-like]': inputInfo };
                             break;
                         case '条形码':
-                            info = 'map[barcode-like]' + info;
+                            info = { 'map[barcode-like]': inputInfo };
                             break;
                         case 'RFID码':
-                            info = 'map[rfid-like]' + info;
+                            info = { 'map[rfid-like]': inputInfo };
                             break;
                     }
                 } else {
                     switch (fileLog) {
                         case '档案名称':
-                            info = 'map[name]' + info;
+                            info = { 'map[name]': inputInfo };
                             break;
                         case '条形码':
-                            info = 'map[barcode]' + info;
+                            info = { 'map[barcode]': inputInfo };
                             break;
                         case 'RFID码':
-                            info = 'map[rfid]' + info;
+                            info = { 'map[rfid]': inputInfo };
                             break;
                     }
                 }
-                console.log(info);
-                // 根据查询界面选择和输入的值，将查询的数据请求下来并显示到表格中
-                $.ajax({
+                // console.log(info);
+                //查询结果渲染
+                table.render({
+                    elem: '#loan-records-table', //绑定html中的表格
+                    height: 700, //设置表格高度
+                    page: true, //开启分页
+                    cols: tableHead, //表格的表头
+                    limit: 20,
+                    limits: ['20', '30', '40', '50', '60', '70', '80', '90'],
                     url: url + '/admin/areamodule/fileHistory',
-                    type: 'get',
-                    data: info,
-                    //请求成功时执行的动作
-                    success: function(data) {
-                        // console.log(data);
-                        //将请求到的数据渲染到表格中
-                        layui.use(['layer', 'table', 'laypage', 'form'], function() {
-                            var layer = layui.layer;
-                            var table = layui.table;
-                            //表格渲染
-                            table.render({
-                                elem: '#loan-records-table', //绑定html中的表格
-                                height: 700, //设置表格高度
-                                page: true, //开启分页
-                                cols: tableHead, //表格的表头
-                                data: data.rows, //将返回数据data中row的值取出并放入表格
-                            });
-                        });
+                    method: 'get',
+                    where: info,
+                    request: {
+                        pageName: 'currentPage', //页码的参数名称，默认：page
+                        limitName: 'pageSize' //每页数据量的参数名，默认：limit
+                    },
+                    response: {
+                        statusName: 'code', //数据状态的字段名称，默认：code
+                        statusCode: 1, //成功的状态码，默认：0
+                        msgName: 'msg', //状态信息的字段名称，默认：msg
+                        countName: 'total', //数据总数的字段名称，默认：count
+                        dataName: 'rows', //数据列表的字段名称，默认：data
+                    },
+                    done: function(res) {
+                        DownloadTable(res.rows);
                     }
                 });
-
                 //查询成功后，将两个下拉框和用户输入框的值设置成初始值
                 $(layero).find("#fileLog").val("档案名称");
                 $(layero).find("#findType").val("精确查找");
@@ -164,27 +167,31 @@ layui.use(['table', 'layer', 'laypage', 'form'], function() {
 
     });
     // 查询借阅记录到此结束--------------------------------------------------------------------------------------------------
-
-    //Excel操作由此开始--------------------------------------------------------------------------------------------------
-    $('#excel').change(function() {
-        // select的选中值
-        var excelAction = $('#excel option:selected').val();
-        // console.log(excelAction);
-        // 弹出层第一个下拉列表：档案名称 or 条形码 or RFID码
-        var fileLog = $(layero).find("#fileLog").val();
-        // 弹出层第二个下拉列表：精确查找 or 模糊查找
-        var findType = $(layero).find("#findType").val();
-        // 弹出层用户输入框的值
-        var inputInfo = $(layero).find("#inputInfo").val();
-        // 弹出层的输入框
-        // console.log(fileLog + " " + findType + " " + inputInfo);
-        // 创建数组存储以上信息，发送请求
-        var data = [
-            ['excelAction', excelAction],
-            ['fileLog', fileLog],
-            ['findType', findType],
-            ['inputInfo', inputInfo]
-        ];
-    });
-    //Excel操作到此结束--------------------------------------------------------------------------------------------------
 });
+//Excel操作函数由此开始--------------------------------------------------------------------------------------------------
+/*
+注释： 
+        url：后台接口
+
+        idstr：传给后台的字段名 
+
+        encodeURI(idstr)中的idstr:传给后台，为json对象，所以要通过JSON.stringify转化为json字符串 
+
+        encodeURL:之所以用它，是因为通过href，拼接字符串传给后台（get请求），后台接收到的却是null （原因：url里有特殊字符），所以要用encodeURL()转义特殊字符。
+*/
+function DownloadTable(data) {
+    console.log(data);
+    var idstr, idArray = new Array();
+    for (var i = 0; i < data.length; i++) {
+        idArray[i] = data[i].id;
+    }
+    idstr = idArray.join(',');
+    console.log(idstr);
+    var url2 = url + '/admin/execl/outExcelOfBorrow';
+    $(".downloadTable").click(function() {
+        console.log(encodeURI(idstr));
+        $('.downloadTable').attr('href', url2 + '?' + 'idstr=' + encodeURI(idstr));
+    });
+}
+
+//Excel操作函数到此结束--------------------------------------------------------------------------------------------------

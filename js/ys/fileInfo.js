@@ -4,7 +4,7 @@
  * time: 2018/8/13
  *
  **/
-
+var base = 'http://192.168.2.128:8081/';
 layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'element'], function () {
     let tree = layui.tree,
         layer = layui.layer,
@@ -26,7 +26,8 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         uploadExcel = null,
         uploadInst = null,
         borrowBox = null,
-        fkTemplateId = null;
+        fkTemplateId = null,
+        boxLayer = null;
     let nodes = [];
 
     let showTable = function (cols) {
@@ -172,28 +173,28 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             items +
             '<div style="position: absolute;bottom: 0;width: 100%">' +
             '<hr/>' +
-            `<div class="layui-form-item">
-                <label class="layui-form-label">存放位置</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="stationInput" name="station" class="layui-input layui-disabled" disabled>
-                </div>
-                <a id="setStation" class="layui-btn layui-btn-primary">选择</a>
-             </div>
-             <div class="layui-form-item">
-                <label class="layui-form-label">档案条码</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="archivesBarcode" class="layui-input" lay-verify="required|number" autocomplete="off">
-                </div>
-                <label class="layui-form-label">rfid</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="rfid" class="layui-input" lay-verify="required|number" autocomplete="off">
-                </div>
-                <a id="archivesBarcode" class="layui-btn layui-btn-primary">打印条码</a>
-                <button class="layui-btn" lay-submit="" lay-filter="fileBtn">确定</button>
-                <button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>
-             </div> 
-             </div>
-             </div>` + '</form>';
+            '<div class="layui-form-item">'+
+                '<label class="layui-form-label">存放位置</label>'+
+                '<div class="layui-input-inline">'+
+                    '<input type="text" id="stationInput" name="station" class="layui-input layui-disabled" disabled>'+
+                '</div>'+
+                '<a id="setStation" class="layui-btn layui-btn-primary">选择</a>'+
+             '</div>'+
+             '<div class="layui-form-item">'+
+                '<label class="layui-form-label">档案条码</label>'+
+                '<div class="layui-input-inline">'+
+                    '<input type="text" name="archivesBarcode" class="layui-input" lay-verify="required|number" autocomplete="off">'+
+                '</div>'+
+                '<label class="layui-form-label">rfid</label>'+
+                '<div class="layui-input-inline">'+
+                    '<input type="text" name="rfid" class="layui-input" lay-verify="required|number" autocomplete="off">'+
+                '</div>'+
+                '<a id="archivesBarcode" class="layui-btn layui-btn-primary">打印条码</a>'+
+                '<button class="layui-btn" lay-submit="" lay-filter="fileBtn">确定</button>'+
+                '<button type="reset" id="reset" class="layui-btn layui-btn-primary">重置</button>'+
+             '</div>'+
+             '</div>'+
+             '</div>' + '</form>';
         $('body').append(formBox);
         $('input[name="题名"]').attr('lay-verify','required');
         $('input[name="档号"]').attr('lay-verify','required');
@@ -589,10 +590,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             for (let i = 0; i < fileData.length; i++) {
                 fileID.push(fileData[i].id);
             }
-            boxTable.on('tool(table)', function (obj) {
+            boxLayer = boxTable.on('tool(table)', function (obj) {
                 let data = obj.data,
                     layEvent = obj.event;
-                console.log(fileID);
                 let value = {id: data.id, arcIds: fileID.join()};
                 if (layEvent === 'group') {
                     $.ajax({
@@ -602,6 +602,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                         data: JSON.stringify(value),
                         success: function (result) {
                             layer.msg(result.msg);
+                            layer.close(boxLayer);
                         },
                         error: function () {
                             console.log('出错');
