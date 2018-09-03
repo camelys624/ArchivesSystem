@@ -69,6 +69,7 @@ body {
     display: none;
     float: left;
     min-width: 180px;
+    margin: 3px 0;
     padding: 5px 0;
     font-size: 14px;
     text-align: left;

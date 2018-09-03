@@ -22,19 +22,22 @@ let cols = [];
 // 这里的表头是写死了的，或许以后会先调用接口，然后动态生成表头
 cols.push({field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: 'left'},
     {type: 'checkbox'},
+    {field: 'id', title: 'ID',width:120},
     {field: 'rdTypeName', title: '文档类型', width: 120},
     {field: 'arcName', title: '档案名称', width: 100},
     {
         field: 'fileNum', title: '档号', width: 120,
         templet: function (d) {
-            let details = JSON.parse(d.details);
-            if (details.档号 === undefined) {
-                details = JSON.parse(details);
-                return details.档号
-            } else {
-                return details.档号;
-            }
-            // return details.档号;
+            let details = d.details;
+            // parseJSON(details);
+
+            +function parseJSON(data) {
+                data = JSON.parse(data);
+                if (data.档号 === undefined) {
+                    parseJSON(data);
+                    console.log(data);
+                }
+            }(details);
         }
     },
     {

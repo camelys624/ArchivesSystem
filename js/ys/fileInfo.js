@@ -134,13 +134,13 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
     };
     createTree();
 
-    $(function () {
-        $('.btn-group').hover(function () {
-            $(this).find('.menu').show();
-        }, function () {
-            $('.menu').hide();
-        })
-    });
+    // $(function () {
+    //     $('.btn-group').hover(function () {
+    //         $(this).find('.menu').show();
+    //     }, function () {
+    //         $('.menu').hide();
+    //     });
+    // });
 
     let createForm = function (data) {
         let items = '';
@@ -332,7 +332,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         setStation = layer.open({
             type: 1,
             title: '选择位置',
-            area: ['650px', '500px'],
+            area: ['650px', '600px'],
             content: $('#stationBox'),
             btn: '确定',
             yes: function () {
@@ -550,7 +550,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             boxTable.render({
                 elem: '#box-table',
                 url: url,
-                height: 'full-273',
+                height: 'full-373',
                 page: true,
                 cols: [[
                     {field: 'xuhao', title: '序号', type: 'numbers', fixed: 'left'},
@@ -707,6 +707,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         tableData = null;
     });
 
+    //工具条操作
     let borrowFile = table.on('tool(table)', function (obj) {
         let data = obj.data,
             layEvent = obj.event;
@@ -728,11 +729,11 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 obj.del();
                 layer.close(index);
             });
-        } else if (layEvent === 'station') {
+        }else if (layEvent === 'station') {
             setStation = layer.open({
                 type: 1,
                 title: '选择位置',
-                area: ['650px', '500px'],
+                area: ['650px', '600px'],
                 content: $('#stationBox'),
                 btn: '确定',
                 yes: function () {
@@ -759,7 +760,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                         contentType: 'application/json',
                         data: JSON.stringify(value),
                         success: function (reusult) {
-                            showTable();
+                            showTable(cols);
                             layer.msg(reusult.msg);
                         }
                     });
@@ -788,43 +789,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             console.log("error");
         }
     });
-    $('#upload').click(function () {
-        getCheckedData();
-        if (fileData.length !== 0) {
-            if(fileData.length !== 1){
-                layer.msg("对不起，一次只能选择一份档案上传文件");
-            }else{
-                $('input[name="arcName"]').val(fileData[0].arcName);
-                $('input[name="arcNum"]').val(fileData[0].archivesNumber);
-                layer.open({
-                    type:1,
-                    title:'上传附件',
-                    area:['1000px','600px'],
-                    content:$('#uploadContent')
-                });
-                uploadInst = upload.render({
-                    elem: '#uploadFile',
-                    url: base + 'admin/areamodule/fileOition/uploadMoreArchinfo',
-                    data:{id:fileData[0].id},
-                    accept: 'file',
-                    multiple: true,
-                    done: function (result) {
-                        console.log(fileData[0].id,'返回结果',result);
-                        layer.msg(result.msg);
-                    }
-                });
-            }
 
-        }else {
-            layer.msg("未选择档案，请选择档案后上传");
-        }
-    });
-
-    $('#downloadFile').click(function () {
-        getCheckedData();
-        window.location.href = base + 'admin/areamodule/fileOition/getFile'+'?map[packagename]='+
-            'archivesinfo'+'&filename='+'1610397959299530753.png'+'&detailname='+'Excel.png';
-    });
 
     //excel导出
     let exportExcel = function (jsonData) {
@@ -866,6 +831,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             delete data[index].LAY_TABLE_INDEX;
         }
         let newExcel = col.concat(data);
+        console.log(newExcel);
         downloadExcel(newExcel);
     };
 
@@ -884,5 +850,42 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 }
             }
         })
+    });
+    $('#upload').click(function () {
+        getCheckedData();
+        if (fileData.length !== 0) {
+            if(fileData.length !== 1){
+                layer.msg("对不起，一次只能选择一份档案上传文件");
+            }else{
+                $('input[name="arcName"]').val(fileData[0].arcName);
+                $('input[name="arcNum"]').val(fileData[0].archivesNumber);
+                layer.open({
+                    type:1,
+                    title:'上传附件',
+                    area:['1000px','600px'],
+                    content:$('#uploadContent')
+                });
+                uploadInst = upload.render({
+                    elem: '#uploadFile',
+                    url: base + 'admin/areamodule/fileOition/uploadMoreArchinfo',
+                    data:{id:fileData[0].id},
+                    accept: 'file',
+                    multiple: true,
+                    done: function (result) {
+                        console.log(fileData[0].id,'返回结果',result);
+                        layer.msg(result.msg);
+                    }
+                });
+            }
+
+        }else {
+            layer.msg("未选择档案，请选择档案后上传");
+        }
+    });
+
+    $('#downloadFile').click(function () {
+        getCheckedData();
+        window.location.href = base + 'admin/areamodule/fileOition/getFile'+'?map[packagename]='+
+            'archivesinfo'+'&filename='+'1610397959299530753.png'+'&detailname='+'Excel.png';
     });
 });
