@@ -22,34 +22,30 @@ let cols = [];
 // 这里的表头是写死了的，或许以后会先调用接口，然后动态生成表头
 cols.push({field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: 'left'},
     {type: 'checkbox'},
-    {field: 'id', title: 'ID',width:120},
+    {field: 'id', title: 'ID',width:180},
     {field: 'rdTypeName', title: '文档类型', width: 120},
     {field: 'arcName', title: '档案名称', width: 100},
     {
         field: 'fileNum', title: '档号', width: 120,
         templet: function (d) {
-            let details = d.details;
-            // parseJSON(details);
-
-            +function parseJSON(data) {
-                data = JSON.parse(data);
-                if (data.档号 === undefined) {
-                    parseJSON(data);
-                    console.log(data);
-                }
-            }(details);
+            let details = JSON.parse(d.details);
+            return details.档号;
+            // return +function parseJSON(data) {
+            //     data = JSON.parse(data);
+            //     console.log(data);
+            //     if (data.档号 === undefined) {
+            //         parseJSON(data);
+            //     }
+            //     return data.档号;
+            // }(details);
         }
     },
     {
         field: 'docName', title: '题名', width: 120,
         templet: function (d) {
             let details = JSON.parse(d.details);
-            if (details.题名 === undefined) {
-                details = JSON.parse(details);
-                return details.题名
-            } else {
-                return details.题名;
-            }
+            return details.题名;
+
         }
     },
     {field: 'fkTemplateId', title: '模板编号', width: 180},
@@ -57,7 +53,7 @@ cols.push({field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: '
     {field: 'duration', title: '保管期限', width: 100},
     {field: 'fkDictCodeSecurity', title: '密级'},
     {
-        field: 'storeid', title: '库房ID', width: 120,
+        field: 'storeid', title: '库房ID', width: 180,
         templet: function (d) {
             return d.araeLocation.fkStoreId;
 

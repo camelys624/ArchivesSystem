@@ -53,14 +53,14 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                         let storeData = result.list;
                         for (let i = 0; i < storeData.length; i++) {
                             region = storeData[i].region;
-                            region.storeId = storeData[i].id;
                             for (let q = 0; q < region.length; q++) {
+                                region[q].storeId = storeData[i].id;
                                 for (let j = 0; j < region[q].cols; j++) {
                                     let colsName = region[q].qu_num+'区' + j + '列';
                                     let child = {
                                         name: colsName,
                                         id: j,
-                                        storeId:region.storeId,
+                                        storeId:region[q].storeId,
                                         divs: region[q].divs,
                                         lays: region[q].lays,
                                         children: [
@@ -68,7 +68,7 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                                                 name: '左边',
                                                 parentName: colsName,
                                                 typeId: 1,
-                                                storeId:region.storeId,
+                                                storeId:region[q].storeId,
                                                 parentLays: region[q].lays,
                                                 parentDivs: region[q].divs
                                             },
@@ -76,7 +76,7 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
                                                 name: '右边',
                                                 parentName: colsName,
                                                 typeId: 2,
-                                                storeId:region.storeId,
+                                                storeId:region[q].storeId,
                                                 parentLays: region[q].lays,
                                                 parentDivs: region[q].divs
                                             }

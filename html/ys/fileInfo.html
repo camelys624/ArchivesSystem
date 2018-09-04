@@ -235,13 +235,13 @@
 </ul>
 <iframe class="img-box" id="myIframe">
 </iframe>
-<form id="uploadContent" class="layui-form form-dis">
+<div id="uploadContent" class="layui-form form-dis">
     <div class="layui-form-item" style="margin-left: 20px">
         <div class="layui-inline">
-            <a id="uploadFile" name="files" class="layui-btn">上传</a>
-            <a id="downloadFile" class="layui-btn">下载</a>
-            <a id="deleteFile" class="layui-btn layui-btn-danger">删除</a>
-            <a id="refresh" class="layui-btn">刷新</a>
+            <button type="button" id="uploadFile" class="layui-btn">上传</button>
+            <button type="button" id="downloadFile" class="layui-btn">下载</button>
+            <button type="button" id="deleteFile" class="layui-btn layui-btn-danger">删除</button>
+            <button type="button" id="refresh" class="layui-btn">刷新</button>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">题名</label>
@@ -256,17 +256,11 @@
             </div>
         </div>
     </div>
-    <div style="width: 950px;margin: 0 auto" class="border"></div>
-    <table class="layui-table"
-           lay-data="{height:315, url:'http://192.168.2.128:8081/admin/areamodule/fileOition/uploadMoreArchinfo', page:true, id:'annexTable'}"
-           lay-filter="table">
-        <tr>
-            <th lay-data="{field:'filepackage'}">文件保存位置</th>
-            <th lay-data="{field:'filename'}">文件真实名称</th>
-            <th lay-data="{field:'detailname'}">文件原名</th>
-        </tr>
-    </table>
-</form>
+    <div style="width: 950px;margin: 0 auto">
+        <table class="layui-table" id="annexTable" lay-filter="table"></table>
+    </div>
+</div>
+
 </body>
 <script type="text/javascript" src="../../js/ys/global.js"></script>
 <script type="text/javascript" src="../../js/ys/fileInfo.js"></script>

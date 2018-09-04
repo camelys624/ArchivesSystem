@@ -210,7 +210,6 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         value.storeid = storeId;
         value.fkTemplateId = fkTemplateId;
         value.status = 2;
-        console.log(JSON.stringify(value));
         if (value.station !== '') {
             let station = value.station;
             let stationStr1 = station.split(/区/);
@@ -729,7 +728,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 obj.del();
                 layer.close(index);
             });
-        }else if (layEvent === 'station') {
+        } else if (layEvent === 'station') {
             setStation = layer.open({
                 type: 1,
                 title: '选择位置',
@@ -854,38 +853,92 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
     $('#upload').click(function () {
         getCheckedData();
         if (fileData.length !== 0) {
-            if(fileData.length !== 1){
+            if (fileData.length !== 1) {
                 layer.msg("对不起，一次只能选择一份档案上传文件");
-            }else{
+            } else {
                 $('input[name="arcName"]').val(fileData[0].arcName);
                 $('input[name="arcNum"]').val(fileData[0].archivesNumber);
-                layer.open({
-                    type:1,
-                    title:'上传附件',
-                    area:['1000px','600px'],
-                    content:$('#uploadContent')
-                });
-                uploadInst = upload.render({
-                    elem: '#uploadFile',
-                    url: base + 'admin/areamodule/fileOition/uploadMoreArchinfo',
-                    data:{id:fileData[0].id},
-                    accept: 'file',
-                    multiple: true,
-                    done: function (result) {
-                        console.log(fileData[0].id,'返回结果',result);
-                        layer.msg(result.msg);
+                $.ajax({
+                    type: 'GET',
+                    url:base + 'admin/areamodule/fileArchivesInfo?map[arcName]=' + fileData[0].arcName,
+                    success:function (result) {
+                        let attach = result.rows[0].attach;
+                        let data = [];
+                        if(attach !== undefined){
+                            let items = attach.split(';');
+                            for(let i = 0;i !== items.length;++i){
+                                let item = items[i].split(/[,=]/);
+                                data.push({filepackage:item[1],filename:item[3],detailname:item[5]});
+                            }
+                        }
+                        // console.log(attach);
+                        table.render({
+                            elem:'#annexTable',
+                            cols:[[
+                                {field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: 'left'},
+                                {type: 'checkbox'},
+                                {field: 'filepackage',title: '位置',align:'center'},
+                                {field: 'filename', title: '后台保存文件名',align:'center'},
+                                {field: 'detailname', title: '文件原名',align:'center'}
+                            ]],
+                            data:data
+                        });
                     }
+
+                });
+                layer.open({
+                    type: 1,
+                    title: '上传附件',
+                    area: ['1000px', '600px'],
+                    content: $('#uploadContent')
                 });
             }
 
-        }else {
+        } else {
             layer.msg("未选择档案，请选择档案后上传");
+        }
+    });
+    uploadInst = upload.render({
+        elem: '#uploadFile',
+        url: base + 'admin/areamodule/fileOition/uploadMoreArchinfo',
+        data: {id: function () {
+                getCheckedData();
+                return fileData[0].id;
+            }},
+        accept: 'file',
+        multiple: true,
+        done: function (result) {
+            console.log('返回结果', result);
+            layer.msg(result.msg);
         }
     });
 
     $('#downloadFile').click(function () {
-        getCheckedData();
-        window.location.href = base + 'admin/areamodule/fileOition/getFile'+'?map[packagename]='+
-            'archivesinfo'+'&filename='+'1610397959299530753.png'+'&detailname='+'Excel.png';
+        let checkStatus = table.checkStatus('annexTable'),
+            annexData = checkStatus.data;
+        if(annexData.length !== 1){
+            layer.msg('抱歉，目前只能一次下载一个文件！');
+        }else {
+            window.location.href = base + 'admin/areamodule/fileOition/getFile' + '?packagename=' +
+                annexData[0].filepackage + '&filename=' + annexData[0].filename + '&detailname=' + annexData[0].detailname;
+        }
     });
+    $('#deleteFile').click(function () {
+        let checkStatus = table.checkStatus('annexTable'),
+            annexData = checkStatus.data;
+        if(annexData.length !== 1){
+            layer.msg('抱歉，目前一次只能删除一个文件！');
+        }else {
+            url = base + 'admin/areamodule/fileArchivesInfo/delAttach?id=' + fileData[0].id + '&filename=' + annexData[0].filename;
+            $.ajax({
+                type:'POST',
+                url:url,
+                success:function (res) {
+                    console.log(url);
+                    console.log(annexData[0].filename);
+                    console.log(res);
+                }
+            });
+        }
+    })
 });
