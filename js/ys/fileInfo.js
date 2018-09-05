@@ -850,6 +850,40 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             }
         })
     });
+
+    //上传附件
+    let uploadAnnex = function (url){
+        $.ajax({
+            type: 'GET',
+            url:url,
+            success:function (result) {
+                let attach = result.rows[0].attach;
+                let data = [];
+                if(attach !== undefined){
+                    let items = attach.split(';');
+                    for(let i = 0;i !== items.length;++i){
+                        let item = items[i].split(/[,=]/);
+                        data.push({filepackage:item[1],filename:item[3],detailname:item[5]});
+                    }
+                }
+                // console.log(attach);
+                table.render({
+                    elem:'#annexTable',
+                    cols:[[
+                        {field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: 'left'},
+                        {type: 'checkbox'},
+                        {field: 'filepackage',title: '位置', width:140, align:'center'},
+                        {field: 'filename', title: '后台保存文件名', align:'center'},
+                        {field: 'detailname', title: '文件原名',align:'center'},
+                        {field: 'right', title: '操作', width: 120, align: 'center', toolbar: '#annexToolbar', fixed: 'right'}
+                    ]],
+                    data:data
+                });
+            }
+
+        });
+    };
+
     $('#upload').click(function () {
         getCheckedData();
         if (fileData.length !== 0) {
@@ -858,34 +892,8 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             } else {
                 $('input[name="arcName"]').val(fileData[0].arcName);
                 $('input[name="arcNum"]').val(fileData[0].archivesNumber);
-                $.ajax({
-                    type: 'GET',
-                    url:base + 'admin/areamodule/fileArchivesInfo?map[arcName]=' + fileData[0].arcName,
-                    success:function (result) {
-                        let attach = result.rows[0].attach;
-                        let data = [];
-                        if(attach !== undefined){
-                            let items = attach.split(';');
-                            for(let i = 0;i !== items.length;++i){
-                                let item = items[i].split(/[,=]/);
-                                data.push({filepackage:item[1],filename:item[3],detailname:item[5]});
-                            }
-                        }
-                        // console.log(attach);
-                        table.render({
-                            elem:'#annexTable',
-                            cols:[[
-                                {field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: 'left'},
-                                {type: 'checkbox'},
-                                {field: 'filepackage',title: '位置',align:'center'},
-                                {field: 'filename', title: '后台保存文件名',align:'center'},
-                                {field: 'detailname', title: '文件原名',align:'center'}
-                            ]],
-                            data:data
-                        });
-                    }
-
-                });
+                url = base + 'admin/areamodule/fileArchivesInfo?map[arcName]=' + fileData[0].arcName;
+                uploadAnnex(url);
                 layer.open({
                     type: 1,
                     title: '上传附件',
@@ -908,8 +916,28 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         accept: 'file',
         multiple: true,
         done: function (result) {
-            console.log('返回结果', result);
             layer.msg(result.msg);
+        }
+    });
+    table.on('tool(annexTable)',function (obj) {
+        let data = obj.data,    //附件信息
+            layEvent = obj.event;
+        if(layEvent === 'download'){
+            window.location.href = base + 'admin/areamodule/fileOition/getFile' + '?packagename=' +
+                data.filepackage + '&filename=' + data.filename + '&detailname=' + data.detailname;
+        }else if(layEvent === 'deleteAnnex'){
+            url = base + 'admin/areamodule/fileArchivesInfo/delAttach?id=' + fileData[0].id + '&filename=' + data.filename;
+            $.ajax({
+                type:'POST',
+                url:url,
+                success:function (res) {
+                    layer.msg(res.msg);
+                    if(res.state === true){
+                        obj.del();
+                    }
+
+                }
+            });
         }
     });
 
@@ -940,5 +968,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 }
             });
         }
-    })
+    });
+    $('#refresh').click(function () {
+        url = base + 'admin/areamodule/fileArchivesInfo?map[arcName]=' + fileData[0].arcName;
+        uploadAnnex(url);
+    });
 });

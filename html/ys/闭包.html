@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闭包</title>
+</head>
+<body>
+<script type="text/javascript">
+    var z=10;
+    function foo() {
+        console.log(z);
+    }
+    foo();
+    
+    function bar() {
+        z=20;
+        function foo1(){
+            console.log(z);
+        }
+        (function bar1() {
+            let z = 30;
+           foo1();
+        }());
+       foo()
+    }
+    bar();
+
+    (function (funArg) {
+        z=40;
+        funArg();
+    })(foo);
+</script>
+</body>
+</html>
