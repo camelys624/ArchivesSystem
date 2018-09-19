@@ -159,6 +159,10 @@ body .main tr th {
     margin: 0px 100px;
 }
 
+#boxinfoform div {
+    display: none;
+}
+
 
 /*档案盒信息查询模块,借阅模块*/
 

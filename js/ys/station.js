@@ -45,6 +45,9 @@ layui.use(['tree', 'layer', 'table', 'form', 'layedit'], function () {
             $.ajax({
                     url: base + 'admin/areamodule/araeStoreInfo/getStoreAndRegion',
                     type: 'GET',
+                    headers:{
+                      'authorization': token
+                    },
                     success: function (result) {
                         let store = [],
                             cols = [],

@@ -39,6 +39,7 @@
                     type: 'post',
                     data: userInfo,
                     success: function(data) {
+                        localStorage.setItem('token',data.row);
                         data.msg=='操作成功'?window.location.href="index.html":alert("用户名或密码有误，请重新输入！");
                     }
                 });

@@ -2,6 +2,9 @@
 var base = 'http://192.168.2.128:8081/';
 let url = null;
 
+var token = localStorage.getItem("token");
+console.log(token);
+
 
 //定义一些弹出面板
 let index = null,

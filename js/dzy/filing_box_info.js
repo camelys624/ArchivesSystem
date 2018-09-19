@@ -1,7 +1,9 @@
-var url = "http://192.168.2.128:8081";
 var fileboxOperation = new Object; //定义更多操作对象
 var location;
+var token = localStorage.getItem("token");
+
 $(function () {
+    console.log(token);
     layui.use(['form', 'upload', 'element', 'table', 'laydate'], function () {
         var form = layui.form,
             upload = layui.upload,
@@ -67,6 +69,8 @@ fileboxOperation.btn = function () {
         var form = layui.form;
         //添加档案盒事件
         form.on('submit(fileboxadd_save)', function (data) {
+            data.field.stuts = 2;
+            console.log(data.field);
             fileboxOperation.add(data.field);
         });
 
@@ -85,7 +89,8 @@ fileboxOperation.btn = function () {
             $.ajax({
                 type: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'authorization': token
                 },
                 url: url + '/admin/areamodule/fileBorrow/add',
                 data: jsonData,
@@ -294,7 +299,8 @@ fileboxOperation.btn = function () {
                 $.ajax({
                     type: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'authorization': token
                     },
                     url: url + "/admin/areamodule/fileBoxInfo/update",
                     data: jsonData,
@@ -358,7 +364,8 @@ fileboxOperation.delete = function () {
     $.ajax({
         type: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': token
         },
         url: url + '/admin/areamodule/fileBoxInfo/delete',
         data: jsonData,
@@ -391,7 +398,8 @@ fileboxOperation.add = function (data) {
     $.ajax({
         type: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': token
         },
         url: url + url2,
         data: jsonData,
@@ -409,7 +417,8 @@ fileboxOperation.box_file = function (tablename) {
     $.ajax({
         type: "GET",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': token
         },
         url: url + '/admin/areaModule/FileArchivesInfo',
         data: 'map[fkBoxId]=' + fileboxOperation.trdata.id,
@@ -460,6 +469,9 @@ fileboxOperation.query = function (queryurl, code, send_content) {
     $.ajax({
         type: 'GET',
         url: queryurl,
+        headers: {
+            'authorization': token
+        },
         data: code + '=' + send_content,
         success: function (res) {
             if (res.rows != null && res.rows.length > 0) {
@@ -504,6 +516,9 @@ fileboxOperation.location = function () {
     $.ajax({
         type: "GET",
         url: url + "/admin/areamodule/araeStoreInfo/getStoreAndRegion",
+        headers: {
+            'authorization': token
+        },
         success: function (res) {
             location.info = res.list;
 
@@ -617,6 +632,7 @@ var tableon_hiden = function () {
 function open_layer() {
     //档案盒信息添加
     $("#filebox_add").click(function () {
+        $('.layer_form input').val('');
         layer.open({
             type: 1,
             title: '添加档案盒',
@@ -791,6 +807,9 @@ function gettable_data() {
     $.ajax({
         type: "GET",
         url: url + "/admin/areamodule/fileBorrow",
+        headers: {
+            'authorization': token
+        },
         data: "map[status]=1", //请求参数
         success: function (data) {
             //console.log(data);
@@ -831,6 +850,9 @@ function getMapping(key, checkbox, operation_name) {
     var aj = $.ajax({
         url: url + "/admin/basicsModule/sysDictCode/selectFieldMapping?code=" + key,
         dataType: "json",
+        headers: {
+            'authorization': token
+        },
         async: false,
         success: function (msg) {
             data = msg;

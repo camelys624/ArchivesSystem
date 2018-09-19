@@ -9,9 +9,9 @@
     <link href="../../css/public.css" rel="stylesheet">
     <link href="../../css/dzy/data_dic.css" rel="stylesheet">
     <script src="../../layui/jquery-1.11.1.min.js"></script>
-    <script src="../../layui/layui.all.js"></script>
-    <script src="../../js/dzy/filing_box_info.js"></script>
+    <script src="../../layui/layui.js"></script>
     <script src="../../js/dzy/model.js"></script>
+    <script src="../../js/dzy/filing_box_info.js"></script>
 </head>
 
 <body>
@@ -53,7 +53,7 @@
     <div style="height:5px;overflow-y:hidden;">
         <!--添加档案盒-->
         <div id="add_content" class="layer_form">
-            <form class="layui-form">
+            <form class="layui-form" id="boxinfoform">
                 <p>
                     <label>盒名称</label>
                     <input type="text" name="boxName">

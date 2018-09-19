@@ -34,6 +34,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         table.render({
             elem: '#table',
             url: url,
+            headers: {
+                'authorization': token
+            },
             page: true,
             height: 'full-78',
             limit: 20,
@@ -50,6 +53,7 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             },
             done: function (res, curr, count) {
                 excelData = res.rows;
+                console.log(res);
                 let data = res.rows;
                 $(document).bind('contextmenu', function (e) {
                     e.preventDefault();
@@ -87,8 +91,12 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         $.ajax({
             url: base + 'admin/areamodule/fileArchivesType/selectMenu_all',
             type: 'GET',
+            headers: {
+                'authorization': token
+            },
             data: 'disabled=0',
             success: function (result) {
+                console.log(result);
                 let fileInfoData = result.list;
                 let parent = [], child = [], children = [];
                 for (let i = 0; i < fileInfoData.length; i++) {
@@ -232,10 +240,14 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             url: base + 'admin/areamodule/fileArchivesInfo/add',
             type: 'POST',
             data: JSON.stringify(value),
+            headers: {
+                'authorization': token
+            },
             contentType: 'application/json',
             dataType: 'json',
             success: function (result) {
                 layer.msg(result.msg);
+                console.log(result);
                 if (result.state === true) {
                     layer.close(edit);
                 }
@@ -250,6 +262,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         $.ajax({
             url: url,
             type: 'GET',
+            headers: {
+                'authorization': token
+            },
             success: function (result) {
                 let template = result.rows[0];
                 let templateDefinition = JSON.parse(template.templateDefinition);
@@ -351,10 +366,14 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 } else {
                     value.localtion = 1;
                 }
+                value.status = 2;
                 $.ajax({
                     url: base + 'admin/areamodule/fileArchivesInfo/update',
                     type: 'POST',
                     contentType: 'application/json',
+                    headers: {
+                        'authorization': token
+                    },
                     data: JSON.stringify(value),
                     success: function (reusult) {
                         showTable(cols);
@@ -374,6 +393,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 url: base + 'admin/areamodule/fileArchivesInfo/delete',
                 type: 'POST',
                 data: JSON.stringify(fileID),
+                headers: {
+                    'authorization': token
+                },
                 contentType: 'application/json',
                 dataType: 'json',
                 success: function (result) {
@@ -549,6 +571,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
             boxTable.render({
                 elem: '#box-table',
                 url: url,
+                headers: {
+                    'authorization': token
+                },
                 height: 'full-373',
                 page: true,
                 cols: [[
@@ -593,10 +618,14 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 let data = obj.data,
                     layEvent = obj.event;
                 let value = {id: data.id, arcIds: fileID.join()};
+                console.log(JSON.stringify(value));
                 if (layEvent === 'group') {
                     $.ajax({
                         type: 'POST',
-                        url: base + '/admin/areamodule/fileBoxInfo/groupBox',
+                        url: base + 'admin/areamodule/fileBoxInfo/groupBox',
+                        headers: {
+                            'authorization': token
+                        },
                         contentType: 'application/json',
                         data: JSON.stringify(value),
                         success: function (result) {
@@ -637,6 +666,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
                 url: base + 'admin/areamodule/fileBorrow/add',
                 type: 'POST',
                 contentType: 'application/json',
+                headers: {
+                    'authorization': token
+                },
                 data: JSON.stringify(value),
                 success: function (result) {
                     layer.msg(result.msg);
@@ -778,8 +810,14 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
     uploadExcel = upload.render({
         elem: '#import',
         url: base + '/admin/areamodule/fileBoxInfo/execlImport',
+        headers:{
+            'authorization':token
+        },
         accept: 'file',
         auto: true,
+        before:function (obj){
+          layer.load();
+        },
         done: function (result) {
             console.log(result);
             layer.msg(result.msg);
@@ -841,6 +879,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
         $.ajax({
             type: 'GET',
             url: excelUrl + '&pageSize=1000',
+            headers: {
+                'authorization': token
+            },
             success: function (result) {
                 if (result.state === true) {
                     exportExcel(result.rows);
@@ -852,32 +893,42 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
     });
 
     //上传附件
-    let uploadAnnex = function (url){
+    let uploadAnnex = function (url) {
         $.ajax({
             type: 'GET',
-            url:url,
-            success:function (result) {
+            url: url,
+            headers: {
+                'authorization': token
+            },
+            success: function (result) {
                 let attach = result.rows[0].attach;
                 let data = [];
-                if(attach !== undefined){
+                if (attach !== undefined) {
                     let items = attach.split(';');
-                    for(let i = 0;i !== items.length;++i){
+                    for (let i = 0; i !== items.length; ++i) {
                         let item = items[i].split(/[,=]/);
-                        data.push({filepackage:item[1],filename:item[3],detailname:item[5]});
+                        data.push({filepackage: item[1], filename: item[3], detailname: item[5]});
                     }
                 }
                 // console.log(attach);
                 table.render({
-                    elem:'#annexTable',
-                    cols:[[
+                    elem: '#annexTable',
+                    cols: [[
                         {field: 'xuhao', title: '序号', type: 'numbers', width: 80, fixed: 'left'},
                         {type: 'checkbox'},
-                        {field: 'filepackage',title: '位置', width:140, align:'center'},
-                        {field: 'filename', title: '后台保存文件名', align:'center'},
-                        {field: 'detailname', title: '文件原名',align:'center'},
-                        {field: 'right', title: '操作', width: 120, align: 'center', toolbar: '#annexToolbar', fixed: 'right'}
+                        {field: 'filepackage', title: '位置', width: 140, align: 'center'},
+                        {field: 'filename', title: '后台保存文件名', align: 'center'},
+                        {field: 'detailname', title: '文件原名', align: 'center'},
+                        {
+                            field: 'right',
+                            title: '操作',
+                            width: 120,
+                            align: 'center',
+                            toolbar: '#annexToolbar',
+                            fixed: 'right'
+                        }
                     ]],
-                    data:data
+                    data: data
                 });
             }
 
@@ -909,30 +960,32 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
     uploadInst = upload.render({
         elem: '#uploadFile',
         url: base + 'admin/areamodule/fileOition/uploadMoreArchinfo',
-        data: {id: function () {
+        data: {
+            id: function () {
                 getCheckedData();
                 return fileData[0].id;
-            }},
+            }
+        },
         accept: 'file',
         multiple: true,
         done: function (result) {
             layer.msg(result.msg);
         }
     });
-    table.on('tool(annexTable)',function (obj) {
+    table.on('tool(annexTable)', function (obj) {
         let data = obj.data,    //附件信息
             layEvent = obj.event;
-        if(layEvent === 'download'){
+        if (layEvent === 'download') {
             window.location.href = base + 'admin/areamodule/fileOition/getFile' + '?packagename=' +
                 data.filepackage + '&filename=' + data.filename + '&detailname=' + data.detailname;
-        }else if(layEvent === 'deleteAnnex'){
+        } else if (layEvent === 'deleteAnnex') {
             url = base + 'admin/areamodule/fileArchivesInfo/delAttach?id=' + fileData[0].id + '&filename=' + data.filename;
             $.ajax({
-                type:'POST',
-                url:url,
-                success:function (res) {
+                type: 'POST',
+                url: url,
+                success: function (res) {
                     layer.msg(res.msg);
-                    if(res.state === true){
+                    if (res.state === true) {
                         obj.del();
                     }
 
@@ -944,9 +997,9 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
     $('#downloadFile').click(function () {
         let checkStatus = table.checkStatus('annexTable'),
             annexData = checkStatus.data;
-        if(annexData.length !== 1){
+        if (annexData.length !== 1) {
             layer.msg('抱歉，目前只能一次下载一个文件！');
-        }else {
+        } else {
             window.location.href = base + 'admin/areamodule/fileOition/getFile' + '?packagename=' +
                 annexData[0].filepackage + '&filename=' + annexData[0].filename + '&detailname=' + annexData[0].detailname;
         }
@@ -954,14 +1007,14 @@ layui.use(['tree', 'layer', 'table', 'upload', 'form', 'laydate', 'layedit', 'el
     $('#deleteFile').click(function () {
         let checkStatus = table.checkStatus('annexTable'),
             annexData = checkStatus.data;
-        if(annexData.length !== 1){
+        if (annexData.length !== 1) {
             layer.msg('抱歉，目前一次只能删除一个文件！');
-        }else {
+        } else {
             url = base + 'admin/areamodule/fileArchivesInfo/delAttach?id=' + fileData[0].id + '&filename=' + annexData[0].filename;
             $.ajax({
-                type:'POST',
-                url:url,
-                success:function (res) {
+                type: 'POST',
+                url: url,
+                success: function (res) {
                     console.log(url);
                     console.log(annexData[0].filename);
                     console.log(res);

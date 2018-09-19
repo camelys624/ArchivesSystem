@@ -1,6 +1,7 @@
 let url = "http://192.168.2.128:8081";
 let form;
 var data_dic = new Object;
+console.log(token);
 $(function () {
     layui.use(['form', 'upload', 'tree', 'table', 'layer'], function () {
         form = layui.form; //获取form模块
@@ -132,6 +133,9 @@ $(function () {
 function form_select() {
     $.ajax({
         method: "GET", //请求方式
+        headers: {
+            'authorization': token
+        },
         url: url + "/admin/basicsModule/sysDictCode/selectByParentId",
         data: "parentId=0", //请求参数
         success: function (data) { //返回结果

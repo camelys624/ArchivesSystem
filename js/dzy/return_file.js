@@ -44,6 +44,9 @@ var ReturnFile = {
     onShelf: function (code) { //模糊查询档案盒
         $.ajax({
             type: 'GET',
+            headers: {
+                'authorization': token
+            },
             url: url + '/admin/areamodule/fileBorrow/bybarcode',
             data: {
                 'barcode': code
